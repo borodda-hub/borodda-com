@@ -1,0 +1,215 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+
+const strands = await getCollection('researchStrands');
+strands.sort((a, b) => a.data.order - b.data.order);
+
+const projects = await getCollection('projects');
+const publications = await getCollection('publications');
+
+type RelatedItem =
+  | { kind: 'project'; href: string; label: string; year: string; image?: typeof projects[number]['data']['heroImage']; alt?: string }
+  | { kind: 'publication'; href: string; label: string; year: string };
+
+function relatedFor(strand: (typeof strands)[number]): RelatedItem[] {
+  const items: RelatedItem[] = [];
+  for (const slug of strand.data.relatedProjects) {
+    const p = projects.find((x) => x.id === slug);
+    if (p) {
+      items.push({
+        kind: 'project',
+        href: `/projects/${p.id}/`,
+        label: p.data.title,
+        year: p.data.dateDisplay,
+        image: p.data.heroImage,
+        alt: p.data.heroImageAlt,
+      });
+    }
+  }
+  for (const slug of strand.data.relatedPublications) {
+    const p = publications.find((x) => x.id === slug);
+    if (p) {
+      items.push({
+        kind: 'publication',
+        href: p.data.url ?? (p.data.doi ? `https://doi.org/${p.data.doi}` : '/writing/'),
+        label: p.data.title,
+        year: String(p.data.year),
+      });
+    }
+  }
+  return items.slice(0, 3);
+}
+---
+<Layout
+  title="Research — Bo Rodda"
+  description="Five research strands spanning visualization, game studies, urban computing, experiential media, and industry-engaged pedagogy."
+>
+  <article class="page research-index">
+    <header class="research-header">
+      <h1>Research</h1>
+      <p class="research-intro">
+        Five overlapping strands. They cite each other often — visualization
+        is the medium that translates the urban-computing simulations; the
+        decision-quality work began as a way of evaluating game environments
+        and is now applied to dashboards and planning tools; the
+        industry-engaged pedagogy strand is where the others get tested with
+        students and partners.
+      </p>
+    </header>
+
+    {strands.map((s, i) => {
+      const related = relatedFor(s);
+      return (
+        <>
+          <hr class="strand-rule" />
+          <section class="strand">
+            <p class="strand-number">{String(i + 1).padStart(2, '0')}</p>
+            <h2 class="strand-title">
+              <a href={`/research/${s.id}/`}>{s.data.title}</a>
+            </h2>
+            <p class="strand-summary">{s.data.summary}</p>
+
+            {related.length > 0 && (
+              <div class="strand-related">
+                <span class="related-label">Featured work</span>
+                <ul class="related-list">
+                  {related.map((r) => (
+                    <li>
+                      <a class="related-item" href={r.href}>
+                        <span class="related-title">{r.label}</span>
+                        <span class="related-meta">{r.kind === 'project' ? 'Project' : 'Publication'} · {r.year}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <p class="strand-readmore">
+              <a href={`/research/${s.id}/`}>Read more →</a>
+            </p>
+          </section>
+        </>
+      );
+    })}
+  </article>
+</Layout>
+
+<style>
+  .research-header {
+    margin-block: var(--space-4) var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .research-header h1 {
+    font-size: var(--type-h1);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .research-intro {
+    margin-top: var(--space-4);
+    color: var(--color-ink-muted);
+    line-height: 1.6;
+  }
+
+  .strand-rule {
+    margin-block: var(--space-8);
+  }
+
+  .strand {
+    max-width: var(--max-prose);
+  }
+  .strand-number {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-3);
+  }
+  .strand-title {
+    font-size: var(--type-h2);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-4);
+  }
+  .strand-title a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .strand-title a:hover {
+    color: var(--color-link-hover);
+    text-decoration: none;
+  }
+  .strand-summary {
+    font-size: var(--type-h4);
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+
+  .strand-related {
+    margin-top: var(--space-6);
+  }
+  .related-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-3);
+  }
+  .related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .related-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: var(--space-3);
+  }
+  .related-item:hover {
+    text-decoration: none;
+    border-bottom-color: var(--accent);
+  }
+  .related-title {
+    font-weight: 500;
+    flex: 1 1 auto;
+  }
+  .related-item:hover .related-title {
+    color: var(--color-link-hover);
+  }
+  .related-meta {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.02em;
+    flex: 0 0 auto;
+  }
+
+  .strand-readmore {
+    margin-top: var(--space-5);
+  }
+  .strand-readmore a {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    letter-spacing: 0.02em;
+  }
+  .strand-readmore a:hover {
+    color: var(--color-link-hover);
+  }
+</style>

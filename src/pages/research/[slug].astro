@@ -1,0 +1,248 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('researchStrands');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { data } = entry;
+
+const projects = await getCollection('projects');
+const publications = await getCollection('publications');
+const talks = await getCollection('talks');
+
+const relatedProjects = data.relatedProjects
+  .map((slug) => projects.find((p) => p.id === slug))
+  .filter((p): p is (typeof projects)[number] => Boolean(p));
+const relatedPubs = data.relatedPublications
+  .map((slug) => publications.find((p) => p.id === slug))
+  .filter((p): p is (typeof publications)[number] => Boolean(p));
+const relatedTalks = data.relatedTalks
+  .map((slug) => talks.find((t) => t.id === slug))
+  .filter((t): t is (typeof talks)[number] => Boolean(t));
+---
+<Layout title={`${data.title} — Bo Rodda`} description={data.summary}>
+  <article class="page strand-page">
+    <p class="strand-breadcrumb"><a href="/research/">Research</a></p>
+
+    <header class="strand-header">
+      <h1 class="strand-title">{data.title}</h1>
+      <p class="strand-summary">{data.summary}</p>
+    </header>
+
+    <div class="rich-text prose">
+      <Content />
+    </div>
+
+    {relatedProjects.length > 0 && (
+      <section class="related-section">
+        <h2 class="related-section-title">Related projects</h2>
+        <ul class="related-projects">
+          {relatedProjects.map((p) => (
+            <li>
+              <a href={`/projects/${p.id}/`} class="related-project">
+                <div class="related-project-frame">
+                  {p.data.heroImage ? (
+                    <Image
+                      src={p.data.heroImage}
+                      alt={p.data.heroImageAlt ?? ''}
+                      widths={[320, 480, 640]}
+                      sizes="(min-width: 1080px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="related-project-placeholder" aria-hidden="true"></span>
+                  )}
+                </div>
+                <h3 class="related-project-title">{p.data.title}</h3>
+                <p class="related-project-meta">{p.data.dateDisplay}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {relatedPubs.length > 0 && (
+      <section class="related-section">
+        <h2 class="related-section-title">Related publications</h2>
+        <ul class="pub-list">
+          {relatedPubs.map((p) => (
+            <li class="citation">
+              <span class="citation-text">
+                {p.data.authors} ({p.data.year}). {p.data.title}. <em>{p.data.venue}</em>.
+              </span>
+              {(p.data.doi || p.data.url) && (
+                <a
+                  class="citation-link"
+                  href={p.data.doi ? `https://doi.org/${p.data.doi}` : p.data.url}
+                  target="_blank"
+                  rel="noopener"
+                >{p.data.doi ? 'DOI' : 'Read'}</a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {relatedTalks.length > 0 && (
+      <section class="related-section">
+        <h2 class="related-section-title">Related talks</h2>
+        <ul class="talk-list">
+          {relatedTalks.map((t) => (
+            <li>
+              <span class="talk-title">{t.data.title}</span>
+              <span class="talk-meta"> — {t.data.venue}, {t.data.location}, {t.data.date}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+</Layout>
+
+<style>
+  .strand-page {
+    padding-block: var(--space-6) var(--space-9);
+  }
+  .strand-breadcrumb {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-5);
+    letter-spacing: 0.02em;
+  }
+  .strand-breadcrumb a {
+    color: var(--color-ink-muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+  .strand-breadcrumb a:hover { color: var(--color-link); }
+
+  .strand-header {
+    max-width: var(--max-prose);
+    margin-bottom: var(--space-7);
+  }
+  .strand-title {
+    font-size: var(--type-h1);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .strand-summary {
+    margin-top: var(--space-4);
+    font-size: var(--type-h4);
+    color: var(--color-ink-muted);
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  .related-section {
+    margin-top: var(--space-9);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-rule);
+  }
+  .related-section-title {
+    font-size: var(--type-h3);
+    font-weight: 600;
+    margin-bottom: var(--space-5);
+  }
+
+  .related-projects {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: var(--max-wide);
+  }
+  @media (min-width: 768px) {
+    .related-projects { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1080px) {
+    .related-projects { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  .related-project {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .related-project-frame {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-image);
+    overflow: hidden;
+    transition: opacity 400ms ease;
+    background-color: color-mix(in srgb, var(--color-rule) 70%, var(--color-ink-muted) 30%);
+  }
+  .related-project-frame :global(img),
+  .related-project-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .related-project:hover .related-project-frame { opacity: 0.85; }
+
+  .related-project-title {
+    margin-top: var(--space-3);
+    font-size: var(--type-h4);
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: color 200ms ease;
+  }
+  .related-project:hover .related-project-title { color: var(--color-link-hover); }
+  .related-project-meta {
+    margin-top: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.01em;
+  }
+
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--max-prose);
+  }
+  .citation { line-height: 1.55; }
+  .citation-link {
+    margin-left: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    white-space: nowrap;
+  }
+
+  .talk-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--max-prose);
+  }
+  .talk-title { font-weight: 500; }
+  .talk-meta {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+  }
+</style>
