@@ -112,7 +112,12 @@ body {
   font-size: var(--type-base);
   line-height: var(--lh-body);
   font-synthesis: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+main { flex: 1 0 auto; }
 
 /* ----- 5. Typography ----- */
 h1, h2, h3, h4 {
@@ -195,23 +200,7 @@ hr {
   letter-spacing: -0.02em;
 }
 
-/* ----- 10. Site header (temporary — replaced by Nav in stage 3) ----- */
-.site-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  max-width: var(--max-page);
-  margin: 0 auto;
-  padding: var(--space-4) var(--space-5);
-}
-@media (min-width: 768px) {
-  .site-header { padding: var(--space-5) var(--space-8); }
-}
-@media (min-width: 1280px) {
-  .site-header { padding: var(--space-5) var(--space-9); }
-}
-
-/* ----- 11. Theme toggle ----- */
+/* ----- 10. Theme toggle ----- */
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -227,7 +216,7 @@ hr {
 [data-theme='light'] .theme-toggle .icon-sun  { display: none; }
 [data-theme='dark']  .theme-toggle .icon-moon { display: none; }
 
-/* ----- 12. Focus -----
+/* ----- 11. Focus -----
    Uses --color-link (which brightens in dark mode) so the focus ring
    stays visible against paper-dark even on text-adjacent UI. */
 :focus-visible {
@@ -236,13 +225,13 @@ hr {
   border-radius: 2px;
 }
 
-/* ----- 13. Selection ----- */
+/* ----- 12. Selection ----- */
 ::selection {
   background: var(--accent);
   color: var(--paper-light);
 }
 
-/* ----- 14. Reduced motion ----- */
+/* ----- 13. Reduced motion ----- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
