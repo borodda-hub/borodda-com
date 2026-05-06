@@ -1,0 +1,251 @@
+/* ============================================================
+   borodda.com — design system
+   ============================================================ */
+
+/* ----- 1. Tokens ----- */
+:root {
+  /* color: raw */
+  --paper-light:     #FAF7F2;
+  --paper-dark:      #1A1814;
+  --ink-light:       #1A1A1A;
+  --ink-dark:        #E8E4DC;
+  --ink-muted-light: #5A5A55;
+  --ink-muted-dark:  #9A958B;
+  --rule-light:      #C8C2B6;
+  --rule-dark:       #3A352D;
+  --accent:          #A0522D;
+  --accent-hover:    #C26B3F;
+
+  /* spacing scale (4px base) */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  6rem;
+  --space-10: 8rem;
+
+  /* layout widths */
+  --measure-prose: 65ch;
+  --measure-long:  70ch;
+  --max-prose:     720px;
+  --max-wide:      1080px;
+  --max-page:      1280px;
+
+  /* type families */
+  --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  /* type scale (base 18px = 1.125rem off browser default 16px, ratio 1.25) */
+  --type-base:    1.125rem;   /* 18px body */
+  --type-long:    1.25rem;    /* 20px long-form essays */
+  --type-sm:      0.875rem;   /* 14px metadata */
+  --type-xs:      0.8125rem;  /* 13px fine print */
+  --type-h4:      1.4rem;
+  --type-h3:      1.75rem;
+  --type-h2:      2.2rem;
+  --type-h1:      2.75rem;
+  --type-display: clamp(2.75rem, 4vw + 1.5rem, 4.5rem);
+
+  /* line-heights */
+  --lh-tight: 1.3;
+  --lh-body:  1.6;
+
+  /* misc */
+  --radius-image:    2px;
+  --rule-thickness:  1px;
+}
+
+/* ----- 2. Theme variants (semantic) -----
+   Note on link color: the raw --accent stays identical across modes
+   per the brief (used for hairline rules and small accent details).
+   But for link TEXT, the dark-mode terracotta on near-black paper
+   only reaches ~3:1 contrast (below WCAG AA's 4.5:1 for body text).
+   We override --color-link with a brighter terracotta in dark mode
+   so inline links and the focus ring clear AA. Hairlines and other
+   non-text uses keep the original --accent. */
+:root,
+[data-theme='light'] {
+  --color-paper:      var(--paper-light);
+  --color-ink:        var(--ink-light);
+  --color-ink-muted:  var(--ink-muted-light);
+  --color-rule:       var(--rule-light);
+  --color-link:       var(--accent);
+  --color-link-hover: var(--accent-hover);
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --color-paper:      var(--paper-dark);
+  --color-ink:        var(--ink-dark);
+  --color-ink-muted:  var(--ink-muted-dark);
+  --color-rule:       var(--rule-dark);
+  --color-link:       #D17C50;
+  --color-link-hover: #E89169;
+  color-scheme: dark;
+}
+
+/* ----- 3. Reset (minimal) ----- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html, body { height: 100%; }
+img, picture, video, svg { display: block; max-width: 100%; }
+img { border-radius: var(--radius-image); }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: none; padding: 0; cursor: pointer; }
+
+/* ----- 4. Base ----- */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: var(--type-base);
+  line-height: var(--lh-body);
+  font-synthesis: none;
+}
+
+/* ----- 5. Typography ----- */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  line-height: var(--lh-tight);
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--type-h1); font-weight: 700; letter-spacing: -0.015em; }
+h2 { font-size: var(--type-h2); letter-spacing: -0.01em; }
+h3 { font-size: var(--type-h3); }
+h4 { font-size: var(--type-h4); }
+
+p { max-width: var(--max-prose); }
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 120ms ease;
+}
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+small,
+.caption,
+.meta {
+  font-family: var(--font-sans);
+  font-size: var(--type-sm);
+  color: var(--color-ink-muted);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+/* ----- 6. Section breaks -----
+   Per the brief, accent terracotta (not the neutral rule color)
+   marks section breaks. --color-rule is reserved for grid borders,
+   table dividers, and other non-section hairlines. */
+hr {
+  border: 0;
+  border-top: var(--rule-thickness) solid var(--accent);
+  margin: var(--space-7) 0;
+  max-width: 100%;
+}
+
+/* ----- 7. Long-form (essay pages) ----- */
+.long-form {
+  font-size: var(--type-long);
+}
+.long-form p { max-width: var(--measure-long); }
+
+/* ----- 8. Layout primitives ----- */
+.page {
+  max-width: var(--max-page);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5);
+}
+@media (min-width: 768px) {
+  .page { padding: var(--space-8) var(--space-8); }
+}
+@media (min-width: 1280px) {
+  .page { padding: var(--space-9) var(--space-9); }
+}
+
+.prose      { max-width: var(--max-prose); }
+.wide       { max-width: var(--max-wide);  margin-inline: auto; }
+
+/* ----- 9. Display (homepage hero) ----- */
+.display {
+  font-size: var(--type-display);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ----- 10. Site header (temporary — replaced by Nav in stage 3) ----- */
+.site-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: var(--max-page);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-5);
+}
+@media (min-width: 768px) {
+  .site-header { padding: var(--space-5) var(--space-8); }
+}
+@media (min-width: 1280px) {
+  .site-header { padding: var(--space-5) var(--space-9); }
+}
+
+/* ----- 11. Theme toggle ----- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--color-ink-muted);
+  transition: color 120ms ease;
+}
+.theme-toggle:hover { color: var(--color-link); }
+.theme-toggle svg   { width: 1.25rem; height: 1.25rem; stroke: currentColor; }
+
+[data-theme='light'] .theme-toggle .icon-sun  { display: none; }
+[data-theme='dark']  .theme-toggle .icon-moon { display: none; }
+
+/* ----- 12. Focus -----
+   Uses --color-link (which brightens in dark mode) so the focus ring
+   stays visible against paper-dark even on text-adjacent UI. */
+:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ----- 13. Selection ----- */
+::selection {
+  background: var(--accent);
+  color: var(--paper-light);
+}
+
+/* ----- 14. Reduced motion ----- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

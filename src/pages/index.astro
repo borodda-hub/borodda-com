@@ -1,11 +1,127 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
-
 <Layout>
-	<Welcome />
+  <article class="page">
+    <header class="hero">
+      <h1 class="display">Bo Rodda</h1>
+      <p class="hero-meta">
+        Assistant Professor of Experiential Media and Data Communication<br />
+        Illinois Institute of Technology
+      </p>
+      <p class="hero-statement">
+        Bo Rodda studies and builds at the intersection of design, computation, and lived experience. As Assistant Professor of Experiential Media and Data Communication at Illinois Institute of Technology, his research spans game studies, urban computing, and data visualization, with recent peer-reviewed work developing <em>decision quality</em> as a portable method for analyzing games and decision environments. He has built dynamic urban data platforms with the University of Chicago and Argonne National Laboratory, exhibited internationally as co-founder of ChiLab Design Studio, and led dozens of industry-partnered design studios at Illinois Tech&rsquo;s Kaplan Institute.
+      </p>
+    </header>
+
+    <hr />
+
+    <section class="featured">
+      <h2>Selected projects</h2>
+      <p class="meta">Placeholder content — featured tiles land in stage 6/7.</p>
+      <div class="featured-grid">
+        <article class="project-tile">
+          <div class="project-tile-image" aria-hidden="true"></div>
+          <h3>Lorem ipsum dolor</h3>
+          <p>Sit amet consectetur adipiscing elit, lakeside infrastructure prototype.</p>
+          <p class="meta">2013&ndash;2015</p>
+        </article>
+        <article class="project-tile">
+          <div class="project-tile-image" aria-hidden="true"></div>
+          <h3>Sed do eiusmod tempor</h3>
+          <p>Incididunt ut labore et dolore magna, urban data platform.</p>
+          <p class="meta">2018&ndash;2021</p>
+        </article>
+      </div>
+    </section>
+
+    <hr />
+
+    <section class="recent">
+      <h2>Recent writing</h2>
+      <ul class="writing-list">
+        <li>
+          <h3><a href="#">Decision quality as a portable method</a></h3>
+          <p>Lorem ipsum dolor sit amet — placeholder excerpt for the most recent essay.</p>
+          <p class="meta">2025-12-04</p>
+        </li>
+        <li>
+          <h3><a href="#">Urban computing notes</a></h3>
+          <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+          <p class="meta">2025-09-17</p>
+        </li>
+        <li>
+          <h3><a href="#">Visualization as a humanistic medium</a></h3>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+          <p class="meta">2025-06-22</p>
+        </li>
+      </ul>
+    </section>
+  </article>
 </Layout>
+
+<style>
+  .hero {
+    padding-block: var(--space-7) var(--space-6);
+  }
+  .hero-meta {
+    margin-top: var(--space-4);
+    font-weight: 400;
+    color: var(--color-ink-muted);
+    font-size: var(--type-h4);
+    line-height: 1.4;
+    max-width: var(--max-prose);
+  }
+  .hero-statement {
+    margin-top: var(--space-6);
+    max-width: var(--max-prose);
+  }
+
+  .featured h2,
+  .recent h2 {
+    margin-bottom: var(--space-5);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7) var(--space-7);
+    margin-top: var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .featured-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .project-tile h3 {
+    margin-top: var(--space-3);
+  }
+  .project-tile p {
+    margin-top: var(--space-2);
+  }
+  .project-tile-image {
+    aspect-ratio: 4 / 3;
+    background: var(--color-rule);
+    border-radius: var(--radius-image);
+  }
+
+  .writing-list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-6);
+    display: grid;
+    gap: var(--space-6);
+  }
+  .writing-list h3 {
+    font-size: var(--type-h4);
+    font-weight: 600;
+  }
+  .writing-list h3 a {
+    color: var(--color-ink);
+  }
+  .writing-list h3 a:hover {
+    color: var(--color-link-hover);
+  }
+  .writing-list p {
+    margin-top: var(--space-2);
+  }
+</style>
