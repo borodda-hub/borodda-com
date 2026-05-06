@@ -1,0 +1,254 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { readingTime } from '../../lib/readingTime';
+
+const publications = await getCollection('publications');
+const essays = await getCollection('essays', ({ data }) => !data.draft);
+
+publications.sort((a, b) => b.data.year - a.data.year);
+essays.sort((a, b) => b.data.date.localeCompare(a.data.date));
+
+type PubGroup = {
+  label: string;
+  match: (data: (typeof publications)[number]['data']) => boolean;
+};
+
+const pubGroups: PubGroup[] = [
+  {
+    label: 'Peer-Reviewed Journal Articles',
+    match: (d) => d.status === 'published' && d.type === 'journal',
+  },
+  {
+    label: 'Peer-Reviewed Conference Papers',
+    match: (d) => d.status === 'published' && d.type === 'conference',
+  },
+  {
+    label: 'Book Chapters',
+    match: (d) => d.status === 'published' && d.type === 'chapter',
+  },
+  {
+    label: 'Reviews',
+    match: (d) => d.status === 'published' && d.type === 'review',
+  },
+  {
+    label: 'Under Review',
+    match: (d) => d.status === 'under-review',
+  },
+  {
+    label: 'In Preparation',
+    match: (d) => d.status === 'in-prep',
+  },
+];
+
+const groupedPubs = pubGroups
+  .map((g) => ({ ...g, items: publications.filter((p) => g.match(p.data)) }))
+  .filter((g) => g.items.length > 0);
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+function formatDate(d: string): string {
+  // Anchor noon UTC to avoid timezone-induced day shifts
+  return dateFormatter.format(new Date(`${d}T12:00:00Z`));
+}
+---
+<Layout title="Writing — Bo Rodda" description="Publications and essays by Bo Rodda.">
+  <article class="page writing-page">
+    <header class="writing-header">
+      <h1>Writing</h1>
+      <p class="writing-intro">
+        Peer-reviewed publications above, essays below.
+      </p>
+    </header>
+
+    <section class="publications" aria-label="Publications">
+      <h2 class="section-title">Publications</h2>
+      {groupedPubs.length === 0 && (
+        <p class="empty-state">No publications listed yet.</p>
+      )}
+      {groupedPubs.map((g) => (
+        <section class="pub-group">
+          <h3 class="pub-group-label">{g.label}</h3>
+          <ul class="pub-list">
+            {g.items.map((p) => (
+              <li class:list={['citation', { featured: p.data.featured }]}>
+                <span class="citation-text">
+                  {p.data.authors} ({p.data.year}). {p.data.title}. <em>{p.data.venue}</em>.
+                </span>
+                {(p.data.doi || p.data.url) && (
+                  <a
+                    class="citation-link"
+                    href={p.data.doi ? `https://doi.org/${p.data.doi}` : p.data.url}
+                    target="_blank"
+                    rel="noopener"
+                  >{p.data.doi ? 'DOI' : 'Read'}</a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </section>
+
+    <hr />
+
+    <section class="essays" aria-label="Essays">
+      <header class="essays-header">
+        <h2 class="section-title">Essays</h2>
+        <a class="rss-link" href="/feed.xml">RSS</a>
+      </header>
+      {essays.length === 0 ? (
+        <p class="empty-state">No essays yet — the first ones land here when written.</p>
+      ) : (
+        <ul class="essay-list">
+          {essays.map((e) => (
+            <li class="essay-item">
+              <h3 class="essay-title">
+                <a href={`/writing/essays/${e.id}/`}>{e.data.title}</a>
+              </h3>
+              {e.data.subtitle && <p class="essay-subtitle">{e.data.subtitle}</p>}
+              <p class="essay-excerpt">{e.data.excerpt}</p>
+              <p class="essay-meta">
+                {formatDate(e.data.date)} · {readingTime(e.body)} min read
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .writing-header {
+    margin-block: var(--space-4) var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .writing-header h1 {
+    font-size: var(--type-h1);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .writing-intro {
+    margin-top: var(--space-4);
+    color: var(--color-ink-muted);
+  }
+
+  .section-title {
+    font-size: var(--type-h2);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-6);
+  }
+
+  /* Publications */
+  .pub-group {
+    margin-bottom: var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .pub-group-label {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-4);
+  }
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  .citation {
+    line-height: 1.55;
+  }
+  .citation.featured {
+    border-left: 2px solid var(--accent);
+    padding-left: var(--space-4);
+  }
+  .citation-text {
+    color: var(--color-ink);
+  }
+  .citation-link {
+    margin-left: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    white-space: nowrap;
+  }
+
+  /* Essays */
+  .essays-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  .essays-header .section-title { margin-bottom: 0; }
+  .rss-link {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    color: var(--color-ink-muted);
+  }
+  .rss-link:hover { color: var(--color-link); }
+
+  .essay-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .essay-title {
+    font-size: var(--type-h3);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .essay-title a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .essay-title a:hover {
+    color: var(--color-link-hover);
+    text-decoration: none;
+  }
+  .essay-subtitle {
+    margin-top: var(--space-2);
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+  .essay-excerpt {
+    margin-top: var(--space-3);
+    line-height: 1.6;
+  }
+  .essay-meta {
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .empty-state {
+    color: var(--color-ink-muted);
+    font-style: italic;
+    max-width: var(--max-prose);
+  }
+</style>
