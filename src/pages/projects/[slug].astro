@@ -26,15 +26,17 @@ const { data } = entry;
       )}
     </header>
 
-    <figure class="case-hero">
-      <Image
-        src={data.heroImage}
-        alt={data.heroImageAlt}
-        widths={[480, 720, 1080, 1620]}
-        sizes="(min-width: 1080px) 1080px, 100vw"
-        loading="eager"
-      />
-    </figure>
+    {data.heroImage && (
+      <figure class="case-hero">
+        <Image
+          src={data.heroImage}
+          alt={data.heroImageAlt ?? ''}
+          widths={[480, 720, 1080, 1620]}
+          sizes="(min-width: 1080px) 1080px, 100vw"
+          loading="eager"
+        />
+      </figure>
+    )}
 
     <div class="rich-text prose">
       <Content />

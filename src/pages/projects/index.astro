@@ -1,0 +1,378 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+
+const projects = await getCollection('projects');
+projects.sort((a, b) => b.data.date.localeCompare(a.data.date));
+
+const labelize = (s: string) =>
+  s.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+const statusLabel = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+const projectsForView = projects.map((p) => {
+  const year = parseInt(p.data.date.split('-')[0], 10);
+  const decade = `${Math.floor(year / 10) * 10}s`;
+  return { id: p.id, data: p.data, decade, href: `/projects/${p.id}/` };
+});
+
+const allThemes = Array.from(
+  new Set(projects.flatMap((p) => p.data.themes))
+).sort();
+const allDecades = Array.from(
+  new Set(projectsForView.map((p) => p.decade))
+).sort();
+const allStatuses = Array.from(
+  new Set(projects.map((p) => p.data.status))
+).sort();
+---
+<Layout
+  title="Projects — Bo Rodda"
+  description="Selected projects across data visualization, urban computing, design research, and interactive installation."
+>
+  <article class="page projects-page">
+    <header class="projects-header">
+      <h1>Projects</h1>
+      <p class="projects-intro">
+        Selected projects across data visualization, urban computing, interactive
+        installation, and design research. Filter by theme, decade, or status —
+        the URL updates so any filtered view is shareable.
+      </p>
+    </header>
+
+    <section class="filters" aria-label="Filter projects">
+      {allThemes.length > 0 && (
+        <div class="filter-group">
+          <span class="filter-label">Themes</span>
+          <ul class="filter-pills">
+            {allThemes.map((t) => (
+              <li>
+                <button
+                  type="button"
+                  class="pill"
+                  data-type="theme"
+                  data-value={t}
+                  aria-pressed="false"
+                >{labelize(t)}</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {allDecades.length > 0 && (
+        <div class="filter-group">
+          <span class="filter-label">Decade</span>
+          <ul class="filter-pills">
+            {allDecades.map((d) => (
+              <li>
+                <button
+                  type="button"
+                  class="pill"
+                  data-type="decade"
+                  data-value={d}
+                  aria-pressed="false"
+                >{d}</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {allStatuses.length > 0 && (
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <ul class="filter-pills">
+            {allStatuses.map((s) => (
+              <li>
+                <button
+                  type="button"
+                  class="pill"
+                  data-type="status"
+                  data-value={s}
+                  aria-pressed="false"
+                >{statusLabel(s)}</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <button type="button" class="filter-clear" hidden>Clear filters</button>
+    </section>
+
+    <ul class="projects-grid">
+      {projectsForView.map((p) => (
+        <li>
+          <a
+            href={p.href}
+            class="project-tile"
+            data-themes={p.data.themes.join(' ')}
+            data-decade={p.decade}
+            data-status={p.data.status}
+          >
+            <div class="tile-frame">
+              {p.data.heroImage ? (
+                <Image
+                  src={p.data.heroImage}
+                  alt={p.data.heroImageAlt ?? ''}
+                  widths={[320, 480, 640]}
+                  sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  loading="lazy"
+                />
+              ) : (
+                <span class="tile-placeholder" aria-hidden="true"></span>
+              )}
+            </div>
+            <h3 class="tile-title">{p.data.title}</h3>
+            <p class="tile-meta">{p.data.dateDisplay}</p>
+            <p class="tile-excerpt">{p.data.excerpt}</p>
+            {p.data.themes.length > 0 && (
+              <p class="tile-tags">{p.data.themes.map(labelize).join(' · ')}</p>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="projects-empty" hidden>No projects match the current filters.</p>
+  </article>
+</Layout>
+
+<script>
+  type FilterType = 'theme' | 'decade' | 'status';
+
+  const params = new URLSearchParams(location.search);
+  const active: Record<FilterType, Set<string>> = {
+    theme: new Set(params.getAll('theme')),
+    decade: new Set(params.getAll('decade')),
+    status: new Set(params.getAll('status')),
+  };
+
+  const pills = document.querySelectorAll<HTMLButtonElement>('.pill');
+  const tiles = document.querySelectorAll<HTMLLIElement>('.projects-grid > li');
+  const empty = document.querySelector<HTMLElement>('.projects-empty');
+  const clearBtn = document.querySelector<HTMLButtonElement>('.filter-clear');
+
+  function syncPills() {
+    pills.forEach((btn) => {
+      const type = btn.dataset.type as FilterType;
+      const value = btn.dataset.value as string;
+      btn.setAttribute('aria-pressed', String(active[type].has(value)));
+    });
+    const anyActive =
+      active.theme.size + active.decade.size + active.status.size > 0;
+    if (clearBtn) clearBtn.hidden = !anyActive;
+  }
+
+  function applyFilters() {
+    let visible = 0;
+    tiles.forEach((li) => {
+      const a = li.querySelector<HTMLAnchorElement>('.project-tile');
+      if (!a) return;
+      const tileThemes = (a.dataset.themes || '').split(' ').filter(Boolean);
+      const tileDecade = a.dataset.decade ?? '';
+      const tileStatus = a.dataset.status ?? '';
+      const themePass =
+        active.theme.size === 0 || tileThemes.some((t) => active.theme.has(t));
+      const decadePass =
+        active.decade.size === 0 || active.decade.has(tileDecade);
+      const statusPass =
+        active.status.size === 0 || active.status.has(tileStatus);
+      const show = themePass && decadePass && statusPass;
+      li.hidden = !show;
+      if (show) visible++;
+    });
+    if (empty) empty.hidden = visible > 0;
+  }
+
+  function syncURL() {
+    const np = new URLSearchParams();
+    active.theme.forEach((v) => np.append('theme', v));
+    active.decade.forEach((v) => np.append('decade', v));
+    active.status.forEach((v) => np.append('status', v));
+    const qs = np.toString();
+    history.replaceState(null, '', qs ? `${location.pathname}?${qs}` : location.pathname);
+  }
+
+  pills.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.type as FilterType;
+      const value = btn.dataset.value as string;
+      if (active[type].has(value)) active[type].delete(value);
+      else active[type].add(value);
+      syncPills();
+      applyFilters();
+      syncURL();
+    });
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    active.theme.clear();
+    active.decade.clear();
+    active.status.clear();
+    syncPills();
+    applyFilters();
+    syncURL();
+  });
+
+  syncPills();
+  applyFilters();
+</script>
+
+<style>
+  .projects-header {
+    margin-block: var(--space-4) var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .projects-header h1 {
+    font-size: var(--type-h1);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .projects-intro {
+    margin-top: var(--space-4);
+    color: var(--color-ink-muted);
+  }
+
+  .filters {
+    margin-bottom: var(--space-8);
+    display: grid;
+    gap: var(--space-5);
+  }
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .filter-label {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    flex-shrink: 0;
+    min-width: 70px;
+  }
+  .filter-pills {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .pill {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-rule);
+    background: transparent;
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    line-height: 1.4;
+    transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
+  }
+  .pill:hover {
+    border-color: var(--accent);
+    color: var(--color-ink);
+  }
+  .pill[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--paper-light);
+    border-color: var(--accent);
+  }
+  .pill[aria-pressed='true']:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+  .filter-clear {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+    align-self: start;
+    padding: 0;
+    background: none;
+    border: 0;
+  }
+  .filter-clear:hover { color: var(--color-link); }
+
+  .projects-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7) var(--space-6);
+  }
+  @media (min-width: 768px) {
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1280px) {
+    .projects-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  .project-tile {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .project-tile:hover { text-decoration: none; }
+
+  .tile-frame {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-image);
+    overflow: hidden;
+    transition: opacity 400ms ease;
+    background-color: color-mix(in srgb, var(--color-rule) 70%, var(--color-ink-muted) 30%);
+  }
+  .tile-frame :global(img),
+  .tile-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .project-tile:hover .tile-frame { opacity: 0.85; }
+
+  .tile-title {
+    margin-top: var(--space-4);
+    font-size: var(--type-h4);
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: color 200ms ease;
+  }
+  .project-tile:hover .tile-title { color: var(--color-link-hover); }
+
+  .tile-meta {
+    margin-top: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.01em;
+  }
+  .tile-excerpt {
+    margin-top: var(--space-2);
+    color: var(--color-ink);
+    max-width: none;
+    line-height: 1.55;
+  }
+  .tile-tags {
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .projects-empty {
+    margin-top: var(--space-7);
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+</style>

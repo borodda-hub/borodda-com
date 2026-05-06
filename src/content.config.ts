@@ -14,8 +14,8 @@ const projects = defineCollection({
       themes: z.array(z.string()).default([]),
       partners: z.array(z.string()).default([]),
       featured: z.boolean().default(false),
-      heroImage: image(),
-      heroImageAlt: z.string(),
+      heroImage: image().optional(),
+      heroImageAlt: z.string().optional(),
       excerpt: z.string(),
       credits: z
         .array(
