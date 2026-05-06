@@ -1,8 +1,113 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+type ProjectTile = {
+  href: string;
+  title: string;
+  excerpt: string;
+  dateDisplay: string;
+};
+
+type WritingTile = {
+  href: string;
+  title: string;
+  subtitle?: string;
+  excerpt: string;
+  meta: string;
+  sortKey: string;
+};
+
+const projectEntries = await getCollection('projects', ({ data }) => data.featured);
+
+const featured: ProjectTile[] =
+  projectEntries.length > 0
+    ? projectEntries
+        .sort((a, b) => b.data.date.localeCompare(a.data.date))
+        .slice(0, 4)
+        .map((p) => ({
+          href: `/projects/${p.id}/`,
+          title: p.data.title,
+          excerpt: p.data.excerpt,
+          dateDisplay: p.data.dateDisplay,
+        }))
+    : [
+        {
+          href: '#',
+          title: 'LakeSIM',
+          excerpt: 'A prototype workflow framework coupling urban design with computational modeling for the 600-acre Chicago Lakeside Development.',
+          dateDisplay: '2013–2015',
+        },
+        {
+          href: '#',
+          title: 'ChiLab Design Studio',
+          excerpt: 'Co-founded design research practice with internationally exhibited furniture, lighting, and exhibition work.',
+          dateDisplay: '2012–present',
+        },
+        {
+          href: '#',
+          title: 'Decision Quality Methods',
+          excerpt: 'Peer-reviewed development of decision quality as a portable method for analyzing games and decision environments.',
+          dateDisplay: '2023–present',
+        },
+        {
+          href: '#',
+          title: 'Kaplan Institute IPRO Labs',
+          excerpt: 'Industry-partnered design studios at Illinois Tech serving more than 1,300 students across cohorts.',
+          dateDisplay: '2018–present',
+        },
+      ];
+
+const essayEntries = await getCollection('essays', ({ data }) => !data.draft);
+const pubEntries = await getCollection('publications', ({ data }) => data.featured);
+
+const realWriting: WritingTile[] = [
+  ...essayEntries.map((e) => ({
+    href: `/writing/essays/${e.id}/`,
+    title: e.data.title,
+    subtitle: e.data.subtitle,
+    excerpt: e.data.excerpt,
+    meta: e.data.date,
+    sortKey: e.data.date,
+  })),
+  ...pubEntries.map((p) => ({
+    href: p.data.url ?? (p.data.doi ? `https://doi.org/${p.data.doi}` : '/writing/'),
+    title: p.data.title,
+    excerpt: `${p.data.authors}. ${p.data.venue}, ${p.data.year}.`,
+    meta: String(p.data.year),
+    sortKey: `${p.data.year}-12-31`,
+  })),
+].sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
+const recentWriting: WritingTile[] =
+  realWriting.length > 0
+    ? realWriting.slice(0, 3)
+    : [
+        {
+          href: '#',
+          title: 'Decision quality as a portable method',
+          excerpt: 'Lorem ipsum dolor sit amet — placeholder excerpt for the most recent essay.',
+          meta: '2025-12-04',
+          sortKey: '2025-12-04',
+        },
+        {
+          href: '#',
+          title: 'Urban computing notes',
+          excerpt: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+          meta: '2025-09-17',
+          sortKey: '2025-09-17',
+        },
+        {
+          href: '#',
+          title: 'Visualization as a humanistic medium',
+          excerpt: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+          meta: '2025-06-22',
+          sortKey: '2025-06-22',
+        },
+      ];
 ---
 <Layout>
-  <article class="page">
+  <article class="page home">
     <header class="hero">
       <h1 class="display">Bo Rodda</h1>
       <p class="hero-meta">
@@ -17,53 +122,42 @@ import Layout from '../layouts/Layout.astro';
     <hr />
 
     <section class="featured">
-      <h2>Selected projects</h2>
-      <p class="meta">Placeholder content — featured tiles land in stage 6/7.</p>
+      <h2 class="section-title">Selected projects</h2>
       <div class="featured-grid">
-        <article class="project-tile">
-          <div class="project-tile-image" aria-hidden="true"></div>
-          <h3>Lorem ipsum dolor</h3>
-          <p>Sit amet consectetur adipiscing elit, lakeside infrastructure prototype.</p>
-          <p class="meta">2013&ndash;2015</p>
-        </article>
-        <article class="project-tile">
-          <div class="project-tile-image" aria-hidden="true"></div>
-          <h3>Sed do eiusmod tempor</h3>
-          <p>Incididunt ut labore et dolore magna, urban data platform.</p>
-          <p class="meta">2018&ndash;2021</p>
-        </article>
+        {featured.map((p) => (
+          <a href={p.href} class="tile">
+            <div class="tile-image" aria-hidden="true"></div>
+            <h3 class="tile-title">{p.title}</h3>
+            <p class="tile-excerpt">{p.excerpt}</p>
+            <p class="tile-meta">{p.dateDisplay}</p>
+          </a>
+        ))}
       </div>
     </section>
 
     <hr />
 
     <section class="recent">
-      <h2>Recent writing</h2>
+      <h2 class="section-title">Recent writing</h2>
       <ul class="writing-list">
-        <li>
-          <h3><a href="#">Decision quality as a portable method</a></h3>
-          <p>Lorem ipsum dolor sit amet — placeholder excerpt for the most recent essay.</p>
-          <p class="meta">2025-12-04</p>
-        </li>
-        <li>
-          <h3><a href="#">Urban computing notes</a></h3>
-          <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-          <p class="meta">2025-09-17</p>
-        </li>
-        <li>
-          <h3><a href="#">Visualization as a humanistic medium</a></h3>
-          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-          <p class="meta">2025-06-22</p>
-        </li>
+        {recentWriting.map((item) => (
+          <li class="writing-item">
+            <h3 class="writing-title"><a href={item.href}>{item.title}</a></h3>
+            {item.subtitle && <p class="writing-subtitle">{item.subtitle}</p>}
+            <p class="writing-excerpt">{item.excerpt}</p>
+            <p class="writing-meta">{item.meta}</p>
+          </li>
+        ))}
       </ul>
     </section>
   </article>
 </Layout>
 
 <style>
-  .hero {
+  .home .hero {
     padding-block: var(--space-4) var(--space-6);
   }
+
   .hero-meta {
     margin-top: var(--space-4);
     font-weight: 400;
@@ -77,51 +171,96 @@ import Layout from '../layouts/Layout.astro';
     max-width: var(--max-prose);
   }
 
-  .featured h2,
-  .recent h2 {
-    margin-bottom: var(--space-5);
+  .section-title {
+    font-size: var(--type-h3);
+    font-weight: 600;
+    margin-bottom: var(--space-6);
   }
 
+  /* Featured projects */
   .featured-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-7) var(--space-7);
-    margin-top: var(--space-6);
+    gap: var(--space-8);
   }
   @media (min-width: 768px) {
-    .featured-grid { grid-template-columns: 1fr 1fr; }
+    .featured-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8) var(--space-7);
+    }
   }
 
-  .project-tile h3 {
-    margin-top: var(--space-3);
+  .tile {
+    display: block;
+    color: inherit;
+    text-decoration: none;
   }
-  .project-tile p {
-    margin-top: var(--space-2);
-  }
-  .project-tile-image {
+  .tile:hover { text-decoration: none; }
+
+  .tile-image {
     aspect-ratio: 4 / 3;
-    background: var(--color-rule);
+    background-color: color-mix(in srgb, var(--color-rule) 70%, var(--color-ink-muted) 30%);
     border-radius: var(--radius-image);
+    transition: opacity 400ms ease;
+  }
+  .tile:hover .tile-image { opacity: 0.85; }
+
+  .tile-title {
+    margin-top: var(--space-4);
+    font-size: var(--type-h4);
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: color 200ms ease;
+  }
+  .tile:hover .tile-title { color: var(--color-link-hover); }
+
+  .tile-excerpt {
+    margin-top: var(--space-2);
+    color: var(--color-ink);
+    max-width: none;
+    line-height: 1.55;
+  }
+  .tile-meta {
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.01em;
   }
 
+  /* Recent writing */
   .writing-list {
     list-style: none;
     padding: 0;
-    margin-top: var(--space-6);
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-7);
+    max-width: var(--max-prose);
   }
-  .writing-list h3 {
+  .writing-title {
     font-size: var(--type-h4);
     font-weight: 600;
   }
-  .writing-list h3 a {
+  .writing-title a {
     color: var(--color-ink);
+    text-decoration: none;
   }
-  .writing-list h3 a:hover {
+  .writing-title a:hover {
     color: var(--color-link-hover);
+    text-decoration: none;
   }
-  .writing-list p {
+  .writing-subtitle {
+    margin-top: var(--space-1);
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+  .writing-excerpt {
     margin-top: var(--space-2);
+  }
+  .writing-meta {
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.01em;
   }
 </style>
