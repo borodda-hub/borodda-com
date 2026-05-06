@@ -231,7 +231,83 @@ hr {
   color: var(--paper-light);
 }
 
-/* ----- 13. Reduced motion ----- */
+/* ----- 13. Rendered markdown body -----
+   Applied to any rendered Astro Content body. Wrapper element should
+   carry both .rich-text (these styles) and .prose (width constraint). */
+.rich-text > * + * { margin-top: var(--space-4); }
+.rich-text p { max-width: var(--measure-prose); }
+.rich-text p + p { margin-top: var(--space-4); }
+.rich-text strong { font-weight: 600; }
+.rich-text em { font-style: italic; }
+
+.rich-text h2 {
+  font-size: var(--type-h2);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-4);
+}
+.rich-text h3 {
+  font-size: var(--type-h3);
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-3);
+}
+.rich-text h4 {
+  font-size: var(--type-h4);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-3);
+}
+
+.rich-text blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: var(--space-5);
+  margin: var(--space-6) 0;
+  color: var(--color-ink);
+}
+.rich-text blockquote p { max-width: none; }
+
+.rich-text ul,
+.rich-text ol {
+  padding-left: var(--space-5);
+  max-width: var(--measure-prose);
+}
+.rich-text li + li { margin-top: var(--space-2); }
+
+.rich-text a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.rich-text a:hover { color: var(--color-link-hover); }
+
+.rich-text code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.92em;
+  background: color-mix(in srgb, var(--color-rule) 60%, transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+.rich-text hr {
+  margin-block: var(--space-7);
+}
+
+.rich-text figure {
+  margin-block: var(--space-7);
+}
+.rich-text figure img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-image);
+}
+.rich-text figcaption {
+  font-family: var(--font-sans);
+  font-size: var(--type-sm);
+  color: var(--color-ink-muted);
+  margin-top: var(--space-3);
+  line-height: 1.5;
+}
+
+/* ----- 14. Reduced motion ----- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
