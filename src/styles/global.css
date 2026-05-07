@@ -225,6 +225,38 @@ hr {
   border-radius: 2px;
 }
 
+/* When <main> receives focus from the skip link, suppress the outline
+   on the container itself — the outline ring on a full page area is
+   noisy and the focus state is conveyed by the page jump. */
+main:focus-visible {
+  outline: none;
+}
+
+/* ----- Skip link: visible only when focused ----- */
+.skip-link {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  background: var(--color-paper);
+  color: var(--color-link);
+  border: 1px solid var(--accent);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--type-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 120ms ease;
+  z-index: 100;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ----- 12. Selection ----- */
 ::selection {
   background: var(--accent);

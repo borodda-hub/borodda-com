@@ -51,6 +51,14 @@ const isActive = (href: string) => {
       menu.classList.remove('open');
     });
   });
+  // ESC key closes the open mobile menu
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn?.getAttribute('aria-expanded') === 'true') {
+      btn.setAttribute('aria-expanded', 'false');
+      menu?.classList.remove('open');
+      btn.focus();
+    }
+  });
 </script>
 
 <style>
