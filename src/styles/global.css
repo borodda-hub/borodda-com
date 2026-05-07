@@ -264,20 +264,18 @@ main:focus-visible {
 }
 
 /* ----- 13. Rendered markdown body -----
-   Editorial pattern: text paragraphs ride a 720px (.max-prose) column
-   centered inside a 1080px (.max-wide) container. Image-only paragraphs
-   and figures fill the full 1080px frame. The wrapper element should
-   carry both .rich-text (these styles) and .prose (no longer used as a
-   width constraint here — just .rich-text). */
+   Editorial pattern: text paragraphs are constrained to the 720px
+   (.max-prose) column, left-aligned within the surrounding container
+   (matches the partnerships and CV layouts). Image-only paragraphs
+   and figures fill the full --max-wide container width. */
 .rich-text {
   max-width: var(--max-wide);
-  margin-inline: auto;
 }
 .rich-text > * + * { margin-top: var(--space-4); }
 .rich-text strong { font-weight: 600; }
 .rich-text em { font-style: italic; }
 
-/* Text-bearing children are constrained to the prose measure and centered. */
+/* Text-bearing children stay at the prose measure, left-aligned. */
 .rich-text > p,
 .rich-text > h2,
 .rich-text > h3,
@@ -286,7 +284,6 @@ main:focus-visible {
 .rich-text > ol,
 .rich-text > blockquote {
   max-width: var(--max-prose);
-  margin-inline: auto;
 }
 
 .rich-text h2 {
@@ -308,7 +305,7 @@ main:focus-visible {
 .rich-text blockquote {
   border-left: 2px solid var(--accent);
   padding-left: var(--space-5);
-  margin: var(--space-6) auto;
+  margin: var(--space-6) 0;
   color: var(--color-ink);
 }
 
@@ -337,7 +334,6 @@ main:focus-visible {
 .rich-text hr {
   margin-block: var(--space-7);
   max-width: var(--max-prose);
-  margin-inline: auto;
 }
 
 /* Image-only paragraphs and figures fill the full --max-wide container. */
@@ -357,7 +353,6 @@ main:focus-visible {
 .rich-text figcaption {
   margin-top: var(--space-3);
   max-width: var(--max-prose);
-  margin-inline: auto;
 }
 .rich-text figcaption {
   font-family: var(--font-sans);

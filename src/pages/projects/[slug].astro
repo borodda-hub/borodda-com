@@ -29,16 +29,18 @@ const ogImage = data.heroImage?.src;
 >
   <article class="case-study">
     {data.heroImage && (
-      <header class="case-hero">
-        <Image
-          src={data.heroImage}
-          alt={data.heroImageAlt ?? ''}
-          widths={[720, 1080, 1620, 2400]}
-          sizes="100vw"
-          loading="eager"
-          class="case-hero-image"
-        />
-      </header>
+      <div class="case-hero-wrap">
+        <header class="case-hero">
+          <Image
+            src={data.heroImage}
+            alt={data.heroImageAlt ?? ''}
+            widths={[720, 1080, 1620, 2400]}
+            sizes="(min-width: 1280px) 1088px, 100vw"
+            loading="eager"
+            class="case-hero-image"
+          />
+        </header>
+      </div>
     )}
 
     <header class="case-title-block">
@@ -124,16 +126,25 @@ const ogImage = data.heroImage?.src;
     padding-bottom: var(--space-9);
   }
 
-  /* ----- Full-bleed hero ----- */
+  /* ----- Hero: bounded to the nav's content extent (wordmark → toggle) ----- */
+  .case-hero-wrap {
+    max-width: var(--max-page);
+    margin: 0 auto var(--space-7);
+    padding-inline: var(--space-5);
+  }
+  @media (min-width: 768px) {
+    .case-hero-wrap { padding-inline: var(--space-8); }
+  }
+  @media (min-width: 1280px) {
+    .case-hero-wrap { padding-inline: var(--space-9); }
+  }
+
   .case-hero {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    margin-left: -50vw;
     aspect-ratio: 16 / 9;
     max-height: 80vh;
     overflow: hidden;
     background: var(--color-rule);
+    border-radius: var(--radius-image);
   }
   .case-hero :global(.case-hero-image) {
     width: 100%;
@@ -144,8 +155,8 @@ const ogImage = data.heroImage?.src;
 
   /* ----- Title block ----- */
   .case-title-block {
-    max-width: var(--max-wide);
-    margin: var(--space-8) auto var(--space-7);
+    max-width: var(--max-page);
+    margin: var(--space-7) auto var(--space-7);
     padding: 0 var(--space-5);
   }
   @media (min-width: 768px) {
@@ -212,7 +223,7 @@ const ogImage = data.heroImage?.src;
 
   /* ----- Body ----- */
   .case-body {
-    max-width: var(--max-wide);
+    max-width: var(--max-page);
     margin: 0 auto;
     padding: var(--space-7) var(--space-5) var(--space-9);
   }
@@ -225,7 +236,7 @@ const ogImage = data.heroImage?.src;
 
   /* ----- Credits block ----- */
   .case-credits {
-    max-width: var(--max-wide);
+    max-width: var(--max-page);
     margin: 0 auto;
     padding: var(--space-7) var(--space-5) 0;
     border-top: 1px solid var(--color-rule);
