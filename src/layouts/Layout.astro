@@ -9,9 +9,21 @@ import { SITE } from '../config';
 interface Props {
   title?: string;
   description?: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
 }
 
-const { title = SITE.name, description = SITE.description } = Astro.props;
+const {
+  title = SITE.name,
+  description = SITE.description,
+  ogType = 'website',
+  ogImage,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageURL = ogImage
+  ? new URL(ogImage, Astro.site).toString()
+  : new URL('/favicon.svg', Astro.site).toString();
 ---
 <!doctype html>
 <html lang="en">
@@ -19,8 +31,27 @@ const { title = SITE.name, description = SITE.description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Essays`} href="/feed.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- OpenGraph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
     <title>{title}</title>
     <script is:inline>
       (() => {

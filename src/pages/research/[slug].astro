@@ -30,7 +30,11 @@ const relatedTalks = data.relatedTalks
   .map((slug) => talks.find((t) => t.id === slug))
   .filter((t): t is (typeof talks)[number] => Boolean(t));
 ---
-<Layout title={`${data.title} — Bo Rodda`} description={data.summary}>
+<Layout
+  title={`${data.title} — Bo Rodda`}
+  description={data.summary}
+  ogType="article"
+>
   <article class="page strand-page">
     <p class="strand-breadcrumb"><a href="/research/">Research</a></p>
 

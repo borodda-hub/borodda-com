@@ -27,9 +27,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# photo / source archive (kept out of repo even if placed inside it)
-borodda_com_archive/
-
 # python (defensive, in case scripts get added)
 __pycache__/
 *.pyc

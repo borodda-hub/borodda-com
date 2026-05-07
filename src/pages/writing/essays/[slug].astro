@@ -24,7 +24,11 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 });
 const formattedDate = dateFormatter.format(new Date(`${data.date}T12:00:00Z`));
 ---
-<Layout title={`${data.title} — Bo Rodda`} description={data.excerpt}>
+<Layout
+  title={`${data.title} — Bo Rodda`}
+  description={data.excerpt}
+  ogType="article"
+>
   <article class="page essay long-form">
     <p class="essay-breadcrumb"><a href="/writing/">Writing</a></p>
     <header class="essay-header">

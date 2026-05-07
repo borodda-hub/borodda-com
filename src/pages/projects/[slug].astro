@@ -19,8 +19,14 @@ const { data } = entry;
 const labelize = (s: string) =>
   s.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 const statusLabel = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+const ogImage = data.heroImage?.src;
 ---
-<Layout title={`${data.title} — Bo Rodda`} description={data.excerpt}>
+<Layout
+  title={`${data.title} — Bo Rodda`}
+  description={data.excerpt}
+  ogType="article"
+  ogImage={ogImage}
+>
   <article class="case-study">
     {data.heroImage && (
       <header class="case-hero">
