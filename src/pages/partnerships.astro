@@ -1,0 +1,246 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { EMAILS } from '../config';
+
+const partners = await getCollection('partners');
+
+type Category = 'industry' | 'civic' | 'cultural' | 'research' | 'lab';
+
+const categoryOrder: Category[] = ['industry', 'civic', 'cultural', 'research', 'lab'];
+
+const categoryLabels: Record<Category, string> = {
+  industry: 'Industry',
+  civic: 'Civic',
+  cultural: 'Cultural',
+  research: 'Research',
+  lab: 'National laboratories',
+};
+
+const categoryFraming: Record<Category, string> = {
+  industry: 'Commercial firms — architecture, real estate, energy, technology — that have brought specific design and research problems to my work.',
+  civic: 'Public-sector and civic-organization partners on projects with public-interest stakes.',
+  cultural: 'Museums, exhibition venues, and cultural foundations that have hosted or commissioned the work.',
+  research: 'Academic institutions and research centers I have worked with on funded research, co-teaching, or methods development.',
+  lab: 'National laboratories partnering on research at the seam between computation and design practice.',
+};
+
+function partnersFor(cat: Category) {
+  return partners
+    .filter((p) => p.data.category === cat)
+    .sort((a, b) => {
+      // featured first, then alphabetical by name
+      if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+      return a.data.name.localeCompare(b.data.name);
+    });
+}
+
+const grouped = categoryOrder
+  .map((cat) => ({ cat, label: categoryLabels[cat], framing: categoryFraming[cat], items: partnersFor(cat) }))
+  .filter((g) => g.items.length > 0);
+
+function yearRange(p: (typeof partners)[number]['data']) {
+  if (p.ongoing) return p.yearStart ? `${p.yearStart}–present` : 'ongoing';
+  if (p.yearStart && p.yearEnd) {
+    return p.yearStart === p.yearEnd ? String(p.yearStart) : `${p.yearStart}–${p.yearEnd}`;
+  }
+  if (p.yearStart) return String(p.yearStart);
+  return '';
+}
+
+function faviconURL(url: string | undefined): string | null {
+  if (!url) return null;
+  try {
+    const host = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?sz=64&domain=${host}`;
+  } catch {
+    return null;
+  }
+}
+---
+<Layout
+  title="Partnerships — Bo Rodda"
+  description="Industry, civic, cultural, research, and laboratory partnerships across Bo Rodda's projects and research."
+>
+  <article class="page partnerships-page">
+    <header class="partnerships-header">
+      <h1>Partnerships</h1>
+      <p class="partnerships-intro">
+        Sustained research, design, and pedagogical collaborations across
+        industry, civic, cultural, research, and laboratory partners. Many
+        of these have run through Illinois Tech's IPRO Labs and the Center
+        for Sports Innovation; others through the University of Chicago, the
+        Kaplan Institute, ChiLab Design Studio, and direct industry
+        engagements.
+      </p>
+    </header>
+
+    {grouped.length === 0 && (
+      <p class="empty-state">No partnerships listed yet.</p>
+    )}
+
+    {grouped.map((g) => (
+      <section class="partner-section">
+        <h2 class="partner-section-title">{g.label}</h2>
+        <p class="partner-section-framing">{g.framing}</p>
+        <ul class="partner-list">
+          {g.items.map((p) => {
+            const fav = faviconURL(p.data.url);
+            return (
+              <li class:list={['partner-item', { featured: p.data.featured }]}>
+                <div class="partner-heading">
+                  {fav && (
+                    <img
+                      class="partner-favicon"
+                      src={fav}
+                      alt=""
+                      width="20"
+                      height="20"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                  <p class="partner-name">
+                    {p.data.url
+                      ? <a href={p.data.url} target="_blank" rel="noopener">{p.data.name}</a>
+                      : p.data.name}
+                  </p>
+                </div>
+                {yearRange(p.data) && (
+                  <p class="partner-years">{yearRange(p.data)}</p>
+                )}
+                {p.data.description && (
+                  <p class="partner-desc">{p.data.description}</p>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))}
+
+    <section class="additional-clients">
+      <h2 class="partner-section-title">Selected additional collaborators</h2>
+      <p>
+        Construction, materials, and risk: LafargeHolcim, DuPont, Zurich
+        Insurance International, Breen Capital Partners. Real estate:
+        Strategic Property Partners, JGMA. Community and cultural: eta
+        Creative Arts Foundation, Hothouse, R.A.G.E. Skatepark, Cook County
+        Assessor's Office, WorldChicago. Consumer goods and hospitality:
+        Disney, Walmart, Kellogg, Smart Ones Foods, Kuma's Corner.
+      </p>
+    </section>
+
+    <hr />
+
+    <p class="partnerships-cta">
+      <em>I work with industry, civic, and cultural partners on selected
+      projects through Illinois Tech and independently. For partnership
+      inquiries, contact me at
+      <a href={`mailto:${EMAILS.partnership}`}>{EMAILS.partnership}</a>.</em>
+    </p>
+  </article>
+</Layout>
+
+<style>
+  .partnerships-header {
+    margin-block: var(--space-4) var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .partnerships-header h1 {
+    font-size: var(--type-h1);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .partnerships-intro {
+    margin-top: var(--space-4);
+    color: var(--color-ink-muted);
+  }
+
+  .partner-section {
+    max-width: var(--max-prose);
+    padding-block: var(--space-6) var(--space-3);
+  }
+  .partner-section-title {
+    font-size: var(--type-h3);
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+  .partner-section-framing {
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-5);
+    line-height: 1.55;
+  }
+
+  .partner-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-5);
+  }
+  .partner-item.featured {
+    border-left: 2px solid var(--accent);
+    padding-left: var(--space-4);
+  }
+  .partner-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .partner-favicon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 2px;
+  }
+  .partner-name {
+    font-weight: 600;
+    margin: 0;
+  }
+  .partner-name a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .partner-name a:hover {
+    color: var(--color-link-hover);
+  }
+  .partner-years {
+    margin-top: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    letter-spacing: 0.02em;
+  }
+  .partner-desc {
+    margin-top: var(--space-2);
+    color: var(--color-ink);
+    line-height: 1.55;
+  }
+
+  .additional-clients {
+    max-width: var(--max-prose);
+    padding-block: var(--space-6) 0;
+  }
+  .additional-clients .partner-section-title {
+    font-size: var(--type-h3);
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+  .additional-clients p {
+    line-height: 1.65;
+    color: var(--color-ink);
+  }
+
+  .partnerships-cta {
+    max-width: var(--max-prose);
+    color: var(--color-ink);
+    line-height: 1.6;
+  }
+
+  .empty-state {
+    color: var(--color-ink-muted);
+    font-style: italic;
+    max-width: var(--max-prose);
+  }
+</style>

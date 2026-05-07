@@ -3,8 +3,15 @@ title: "Game Studies and Decision Quality"
 order: 2
 summary: "Recent peer-reviewed work develops decision quality as a portable analytic method — a way to evaluate whether the structure of a decision environment lets agents see clearly enough to act well. The originating context is games; the wager is portability."
 relatedProjects: []
-relatedPublications: []
-relatedTalks: []
+relatedPublications:
+  - "rodda-decision-quality-wing-commander-2026"
+  - "rodda-decisioncoach"
+  - "rodda-labubu-buying-as-game"
+  - "collisson-rodda-escape-rooms-2025"
+  - "rodda-big-monster-toy-lab-2025"
+relatedTalks:
+  - "swpaca-2026-decision-quality"
+  - "swpaca-2025-game-studies-roundtable"
 ---
 
 In recent peer-reviewed work, my collaborators and I have been developing decision quality as a portable analytic method — a way to evaluate not just whether a decision-maker reached a particular outcome, but whether the structure of the decision environment they were operating in was good or bad. The originating context is games: many games have been formally studied as outcome-machines, where the question of interest is whether the optimal move was found. Decision quality reframes that question. It asks whether the decision environment itself — the available information, the visibility of alternatives, the cost structure of error — let a reasonable agent see clearly enough to act well.

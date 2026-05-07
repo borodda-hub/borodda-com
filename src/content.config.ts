@@ -112,6 +112,7 @@ const partners = defineCollection({
     name: z.string(),
     category: z.enum(['industry', 'civic', 'cultural', 'research', 'lab']),
     description: z.string().optional(),
+    url: z.string().url().optional(),
     yearStart: z.number().int().optional(),
     yearEnd: z.number().int().optional(),
     ongoing: z.boolean().default(false),

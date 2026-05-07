@@ -232,13 +232,30 @@ hr {
 }
 
 /* ----- 13. Rendered markdown body -----
-   Applied to any rendered Astro Content body. Wrapper element should
-   carry both .rich-text (these styles) and .prose (width constraint). */
+   Editorial pattern: text paragraphs ride a 720px (.max-prose) column
+   centered inside a 1080px (.max-wide) container. Image-only paragraphs
+   and figures fill the full 1080px frame. The wrapper element should
+   carry both .rich-text (these styles) and .prose (no longer used as a
+   width constraint here — just .rich-text). */
+.rich-text {
+  max-width: var(--max-wide);
+  margin-inline: auto;
+}
 .rich-text > * + * { margin-top: var(--space-4); }
-.rich-text p { max-width: var(--measure-prose); }
-.rich-text p + p { margin-top: var(--space-4); }
 .rich-text strong { font-weight: 600; }
 .rich-text em { font-style: italic; }
+
+/* Text-bearing children are constrained to the prose measure and centered. */
+.rich-text > p,
+.rich-text > h2,
+.rich-text > h3,
+.rich-text > h4,
+.rich-text > ul,
+.rich-text > ol,
+.rich-text > blockquote {
+  max-width: var(--max-prose);
+  margin-inline: auto;
+}
 
 .rich-text h2 {
   font-size: var(--type-h2);
@@ -259,15 +276,13 @@ hr {
 .rich-text blockquote {
   border-left: 2px solid var(--accent);
   padding-left: var(--space-5);
-  margin: var(--space-6) 0;
+  margin: var(--space-6) auto;
   color: var(--color-ink);
 }
-.rich-text blockquote p { max-width: none; }
 
 .rich-text ul,
 .rich-text ol {
   padding-left: var(--space-5);
-  max-width: var(--measure-prose);
 }
 .rich-text li + li { margin-top: var(--space-2); }
 
@@ -289,15 +304,28 @@ hr {
 
 .rich-text hr {
   margin-block: var(--space-7);
+  max-width: var(--max-prose);
+  margin-inline: auto;
 }
 
-.rich-text figure {
+/* Image-only paragraphs and figures fill the full --max-wide container. */
+.rich-text > figure,
+.rich-text > p:has(> img:only-child) {
   margin-block: var(--space-7);
+  max-width: 100%;
 }
+.rich-text img,
 .rich-text figure img {
+  display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: auto;
   border-radius: var(--radius-image);
+}
+.rich-text figcaption {
+  margin-top: var(--space-3);
+  max-width: var(--max-prose);
+  margin-inline: auto;
 }
 .rich-text figcaption {
   font-family: var(--font-sans);

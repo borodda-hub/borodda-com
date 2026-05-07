@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { EMAILS } from '../config';
+---
+<Layout
+  title="Contact — Bo Rodda"
+  description="Three pathways: academic and research, partnership, and press and speaking."
+>
+  <article class="page contact-page">
+    <header class="contact-header">
+      <h1>Contact</h1>
+      <p class="contact-intro">
+        Three pathways. Use the one that fits.
+      </p>
+    </header>
+
+    <section class="pathway">
+      <h2 class="pathway-label">Academic / Research</h2>
+      <p>
+        For collaborations, references, graduate-student inquiries, conference
+        invitations, and review requests, write to
+        <a href={`mailto:${EMAILS.academic}`}>{EMAILS.academic}</a>.
+      </p>
+    </section>
+
+    <section class="pathway">
+      <h2 class="pathway-label">Partnership</h2>
+      <p>
+        For industry, civic, and cultural partnerships through Illinois Tech
+        or independently, see <a href="/partnerships/">/partnerships/</a> for
+        context, then write to
+        <a href={`mailto:${EMAILS.partnership}`}>{EMAILS.partnership}</a>.
+      </p>
+    </section>
+
+    <section class="pathway">
+      <h2 class="pathway-label">Press and Speaking</h2>
+      <p>
+        For interviews, talks, panels, and quotation requests, write to
+        <a href={`mailto:${EMAILS.press}`}>{EMAILS.press}</a>.
+      </p>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .contact-header {
+    margin-block: var(--space-4) var(--space-7);
+    max-width: var(--max-prose);
+  }
+  .contact-header h1 {
+    font-size: var(--type-h1);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .contact-intro {
+    margin-top: var(--space-4);
+    color: var(--color-ink-muted);
+  }
+
+  .pathway {
+    max-width: var(--max-prose);
+    padding-block: var(--space-5) 0;
+  }
+  .pathway + .pathway {
+    margin-top: var(--space-5);
+  }
+  .pathway-label {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-3);
+  }
+  .pathway p {
+    line-height: 1.6;
+  }
+</style>

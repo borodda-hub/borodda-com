@@ -4,7 +4,9 @@ order: 5
 summary: "Industry partnership as a method for design pedagogy, not a veneer applied over coursework. Building the institutional infrastructure that makes the encounter productive — contracts, sequencing, expectations, scaffolding."
 relatedProjects: ["lakesim", "boolean-lamp"]
 relatedPublications: []
-relatedTalks: []
+relatedTalks:
+  - "lafargeholcim-2017-emerging-tech-construction"
+  - "zurich-2017-exponential-tech"
 ---
 
 This strand grows directly from the institutional work I have done at Illinois Institute of Technology since 2018: building the College of Engineering Management's experiential-media curriculum, leading IPRO Labs studios that have served more than 1,300 students, and co-teaching the Art of Data Visualization course across SAIC and Northwestern. Across all of it, the operative question has been whether industry partnership can function as a serious method for design pedagogy — not merely as a real-world veneer applied over coursework that would otherwise be the same.

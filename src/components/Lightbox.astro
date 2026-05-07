@@ -1,0 +1,107 @@
+---
+---
+<dialog class="lightbox" aria-label="Image viewer">
+  <button class="lightbox-close" type="button" aria-label="Close image viewer">Close</button>
+  <img class="lightbox-img" alt="" />
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  const lbImg = dialog?.querySelector<HTMLImageElement>('.lightbox-img');
+  const closeBtn = dialog?.querySelector<HTMLButtonElement>('.lightbox-close');
+
+  function largestSrc(el: HTMLImageElement): string {
+    const srcset = el.getAttribute('srcset');
+    if (!srcset) return el.currentSrc || el.src;
+    const sources = srcset
+      .split(',')
+      .map((s) => {
+        const parts = s.trim().split(/\s+/);
+        const w = parseInt(parts[1] ?? '0', 10) || 0;
+        return { url: parts[0], w };
+      })
+      .filter((s) => s.url);
+    sources.sort((a, b) => b.w - a.w);
+    return sources[0]?.url || el.currentSrc || el.src;
+  }
+
+  const targets = document.querySelectorAll<HTMLImageElement>(
+    '.case-hero img, .rich-text img'
+  );
+  targets.forEach((el) => {
+    el.classList.add('lightbox-trigger');
+    el.addEventListener('click', () => {
+      if (!dialog || !lbImg) return;
+      lbImg.src = largestSrc(el);
+      lbImg.alt = el.alt || '';
+      dialog.showModal();
+    });
+  });
+
+  closeBtn?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  dialog?.addEventListener('close', () => {
+    if (lbImg) lbImg.src = '';
+  });
+</script>
+
+<style is:global>
+  .lightbox-trigger {
+    cursor: zoom-in;
+  }
+
+  .lightbox {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    color: white;
+  }
+  .lightbox::backdrop {
+    background: rgba(10, 8, 6, 0.94);
+  }
+  .lightbox[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-img {
+    display: block;
+    max-width: 92vw;
+    max-height: 92vh;
+    width: auto;
+    height: auto;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .lightbox-close {
+    position: fixed;
+    top: var(--space-4);
+    right: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+  .lightbox-close:hover {
+    color: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+  .lightbox-close:focus-visible {
+    outline: 2px solid var(--accent-hover);
+    outline-offset: 2px;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
+import Lightbox from '../../../components/Lightbox.astro';
 import { readingTime } from '../../../lib/readingTime';
 
 export async function getStaticPaths() {
@@ -35,6 +36,8 @@ const formattedDate = dateFormatter.format(new Date(`${data.date}T12:00:00Z`));
     <div class="rich-text prose">
       <Content />
     </div>
+
+    <Lightbox />
   </article>
 </Layout>
 

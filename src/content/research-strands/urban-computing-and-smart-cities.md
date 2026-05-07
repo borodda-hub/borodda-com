@@ -4,7 +4,15 @@ order: 3
 summary: "Cities are designed at scales their tools cannot model. This strand investigates the seam between scientific computation and design practice, with most of the work asking how computational outputs become legible enough to act on at urban scale."
 relatedProjects: ["lakesim", "city-of-big-data-maps", "bridges"]
 relatedPublications: ["lakesim-isocarp"]
-relatedTalks: []
+relatedTalks:
+  - "open-city-workshop-2018-lakesim"
+  - "smart-cities-panel-2018"
+  - "kellogg-kin-2016-smart-cities"
+  - "murpa-2015-open-data"
+  - "south-korea-2014-smart-cities"
+  - "caf-2014-chicago-city-model"
+  - "open-government-hack-night-2014"
+  - "icis-2012-physical-pervasive-computing"
 ---
 
 Cities are designed at scales their tools cannot model. A single building can be modeled with confidence; a 600-acre master plan, unfolding over decades, exceeds the working tools of any single profession. The decisions that matter most at urban scale — energy, transportation, water, infrastructure investment — interact in ways that demand computation, but the people making those decisions, mostly, are designers and planners whose training has given them a different language. This strand investigates the seam between those languages.

@@ -4,7 +4,8 @@ order: 4
 summary: "What happens when an architectural surface or object is given the means to respond. The phenomenology of the space changes — and the work of making that change intelligible falls to designers more than to engineers."
 relatedProjects: ["active-light-cloud", "react", "bridges"]
 relatedPublications: []
-relatedTalks: []
+relatedTalks:
+  - "acadia-2010-active-light-cloud"
 ---
 
 This strand investigates what happens when an architectural surface or object is given the means to respond. The conventional building is a fixed register; it organizes space and accepts use, but the use leaves no trace and the building offers nothing back. An experiential or immersive medium changes that register. The surface watches, the object acknowledges, the room registers presence. The phenomenology of the space changes — not always for the better, but in ways that ask design questions worth taking seriously.

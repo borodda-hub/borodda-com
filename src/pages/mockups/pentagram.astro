@@ -1,0 +1,276 @@
+---
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Lightbox from '../../components/Lightbox.astro';
+
+const entry = await getEntry('projects', 'active-light-cloud');
+if (!entry) throw new Error('active-light-cloud project missing');
+const { data } = entry;
+
+const studio = (await import('../../content/projects/_assets/active-light-cloud-studio.jpg')).default;
+const diagram = (await import('../../content/projects/_assets/active-light-cloud-diagram.png')).default;
+const structure = (await import('../../content/projects/_assets/active-light-cloud-structure.jpg')).default;
+const milan = (await import('../../content/projects/_assets/active-light-cloud-milan.jpg')).default;
+const render = (await import('../../content/projects/_assets/active-light-cloud-render.jpg')).default;
+---
+<Layout title="MOCKUP: Pentagram — Active Light Cloud" description="Layout mockup using Pentagram case-study pattern.">
+  <p class="mockup-banner">
+    <strong>MOCKUP — Pattern 4: Pentagram case-study format.</strong>
+    Full-bleed hero, structured 2-up and 3-up image rows, project-as-portfolio register.
+    <a href="/mockups/nyt/">Compare with Pattern 3 →</a> · <a href="/projects/active-light-cloud/">Current layout →</a>
+  </p>
+
+  <article class="pgm">
+    {/* Full-bleed hero */}
+    <header class="pgm-hero">
+      {data.heroImage && (
+        <Image
+          src={data.heroImage}
+          alt={data.heroImageAlt ?? ''}
+          widths={[720, 1080, 1620, 2400]}
+          sizes="100vw"
+          loading="eager"
+          class="pgm-hero-image"
+        />
+      )}
+    </header>
+
+    {/* Title block sits below the hero, no overlay */}
+    <header class="pgm-title-block">
+      <p class="pgm-eyebrow">Selected work · {data.dateDisplay}</p>
+      <h1 class="pgm-title">{data.title}</h1>
+      <p class="pgm-subtitle">{data.subtitle}</p>
+      <dl class="pgm-meta">
+        <div>
+          <dt>Years</dt>
+          <dd>{data.dateDisplay}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{data.status.charAt(0).toUpperCase() + data.status.slice(1)}</dd>
+        </div>
+        <div>
+          <dt>Partners</dt>
+          <dd>{data.partners.join(', ')}</dd>
+        </div>
+        <div>
+          <dt>Themes</dt>
+          <dd>{data.themes.join(', ')}</dd>
+        </div>
+      </dl>
+    </header>
+
+    <div class="pgm-body">
+      <section class="pgm-section">
+        <p class="pgm-lede">An innovative approach to how we light the world of tomorrow.</p>
+        <p>Active Light Cloud was a gesture-responsive lighting system that used advanced computer vision — developed in OpenFrameworks — to predict a user's particular lighting needs through movement. Users could throw light down a dark hallway or bring a cluster of task light to themselves with a single gesture.</p>
+      </section>
+
+      {/* 2-up image pair */}
+      <section class="pgm-grid pgm-grid-2">
+        <figure>
+          <Image src={studio} alt="Studio installation" widths={[480, 720, 1080]} sizes="(min-width: 1080px) 540px, 50vw" />
+          <figcaption>GFRY Studio, SAIC.</figcaption>
+        </figure>
+        <figure>
+          <Image src={milan} alt="Milan Design Week installation" widths={[480, 720, 1080]} sizes="(min-width: 1080px) 540px, 50vw" />
+          <figcaption>Fabrica del Vapore, Milan, 2010.</figcaption>
+        </figure>
+      </section>
+
+      <section class="pgm-section">
+        <h2>The system</h2>
+        <p>The work began as my MFA thesis at the School of the Art Institute of Chicago's Department of Architecture, Interior Architecture, and Designed Objects (AIADO), under thesis advisor Anders Nereim. The system tracked bodies moving beneath the array using overhead computer vision and rendered the tracking data into a fluid simulation that, in turn, drove the lighting in real time.</p>
+      </section>
+
+      {/* 3-up grid for variations / details */}
+      <section class="pgm-grid pgm-grid-3">
+        <figure>
+          <Image src={diagram} alt="Technical diagram" widths={[320, 480, 640]} sizes="(min-width: 1080px) 360px, 33vw" />
+          <figcaption>System diagram.</figcaption>
+        </figure>
+        <figure>
+          <Image src={structure} alt="Structural detail" widths={[320, 480, 640]} sizes="(min-width: 1080px) 360px, 33vw" />
+          <figcaption>Structural lighting array, detail.</figcaption>
+        </figure>
+        <figure>
+          <Image src={render} alt="3D rendering" widths={[320, 480, 640]} sizes="(min-width: 1080px) 360px, 33vw" />
+          <figcaption>3D site rendering.</figcaption>
+        </figure>
+      </section>
+
+      <section class="pgm-section">
+        <h2>Reception</h2>
+        <p>The thesis received the AIADO MFA Award of Academic Excellence (2010). The work was presented at the 2009 ACADIA Annual Conference at the Art Institute of Chicago, and at <em>The Bauhaus — From Laboratory to Project</em> international conference at Bauhaus-Universität Weimar (October 2009, presented by Anders Nereim). It was subsequently exhibited as part of the GFRY Design Studio's <em>2000 Watt Living</em> exhibitions in Chicago and Milan.</p>
+      </section>
+    </div>
+
+    <Lightbox />
+  </article>
+</Layout>
+
+<style>
+  .mockup-banner {
+    background: var(--accent);
+    color: var(--paper-light);
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    text-align: center;
+    margin: 0;
+  }
+  .mockup-banner a {
+    color: var(--paper-light);
+    text-decoration: underline;
+    margin-left: var(--space-3);
+  }
+
+  /* ----- Full-bleed hero ----- */
+  .pgm-hero {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    aspect-ratio: 16 / 9;
+    max-height: 80vh;
+    overflow: hidden;
+    background: var(--color-rule);
+  }
+  .pgm-hero :global(.pgm-hero-image) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ----- Title block ----- */
+  .pgm-title-block {
+    max-width: var(--max-wide);
+    margin: var(--space-8) auto var(--space-7);
+    padding: 0 var(--space-5);
+  }
+  @media (min-width: 768px) {
+    .pgm-title-block { padding: 0 var(--space-8); }
+  }
+  .pgm-eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-4);
+  }
+  .pgm-title {
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .pgm-subtitle {
+    margin-top: var(--space-3);
+    font-size: var(--type-h3);
+    font-weight: 400;
+    color: var(--color-ink-muted);
+    max-width: 60ch;
+  }
+  .pgm-meta {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-rule);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .pgm-meta {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+    }
+  }
+  .pgm-meta div {}
+  .pgm-meta dt {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-2);
+  }
+  .pgm-meta dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    line-height: 1.5;
+  }
+
+  /* ----- Body ----- */
+  .pgm-body {
+    max-width: var(--max-wide);
+    margin: 0 auto;
+    padding: var(--space-7) var(--space-5) var(--space-9);
+  }
+  @media (min-width: 768px) {
+    .pgm-body { padding-inline: var(--space-8); }
+  }
+
+  .pgm-section {
+    max-width: var(--max-prose);
+    margin: 0 auto var(--space-8);
+  }
+  .pgm-section h2 {
+    font-family: var(--font-sans);
+    font-size: var(--type-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-4);
+  }
+  .pgm-lede {
+    font-size: var(--type-h3);
+    line-height: 1.4;
+    margin-bottom: var(--space-5);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .pgm-section p {
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+  }
+
+  /* ----- Image grids: 2-up and 3-up ----- */
+  .pgm-grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-block: var(--space-8);
+  }
+  .pgm-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .pgm-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .pgm-grid-2 { grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+    .pgm-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); }
+  }
+  .pgm-grid figure {
+    margin: 0;
+  }
+  .pgm-grid :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-image);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .pgm-grid figcaption {
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+  }
+</style>
