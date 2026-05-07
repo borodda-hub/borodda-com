@@ -296,6 +296,10 @@ Available upon request.
 <style>{`
   .cv-page {
     padding-block: var(--space-6) var(--space-9);
+  }
+  /* Constrain content children to the prose measure, left-aligned within
+     the .page container — matches the partnerships-page pattern. */
+  .cv-page > * {
     max-width: var(--max-prose);
   }
 
