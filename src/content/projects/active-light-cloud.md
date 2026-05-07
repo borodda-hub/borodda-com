@@ -7,7 +7,7 @@ status: "completed"
 themes: ["interactive-installation", "design-research"]
 partners:
   - "School of the Art Institute of Chicago"
-featured: false
+featured: true
 heroImage: "./_assets/active-light-cloud-hero.jpg"
 heroImageAlt: "The Active Light Cloud installation: a ceiling-mounted gesture-responsive lighting array at SAIC's GFRY Studio."
 excerpt: "An interactive lighting system using computer vision to track human movement and generate responsive illumination through gesture recognition."

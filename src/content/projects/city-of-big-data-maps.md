@@ -10,7 +10,7 @@ partners:
   - "UrbanCCD / University of Chicago"
   - "Data Science for Social Good"
   - "University of Illinois Chicago"
-featured: false
+featured: true
 heroImage: "./_assets/cbd-building-age.jpg"
 heroImageAlt: "City of Big Data Maps: Chicago building-age data rendered as a 96-by-96-inch fabric print for the Chicago Architecture Foundation's City of Big Data exhibition."
 excerpt: "A series of large-format printed and projected maps using Chicago's open-data infrastructure, produced for the Chicago Architecture Foundation's City of Big Data exhibition."

@@ -7,7 +7,7 @@ status: "ongoing"
 themes: ["object-design", "design-research"]
 partners:
   - "ChiLab Design Studio"
-featured: false
+featured: true
 heroImage: "./_assets/boolean-lamp-hero.jpg"
 heroImageAlt: "ChiLab's Boolean Lamp: a hand-blown glass pendant in smoke glass on a cast-concrete base."
 excerpt: "A hand-blown glass pendant series that reimagines the aluminum clip light through artisanal craft. Best in Show, Wanted Design NYC 2014. Available in smoke, umber, and light-blue glass on cast concrete, aluminum, or acrylic bases."
