@@ -12,7 +12,7 @@ partners:
   - ChiLab Design Studio
   - Gensler Chicago
   - Uber Freight
-featured: false
+featured: true
 heroImage: ./_assets/grand-spiral-stair-hero.webp
 heroImageAlt: >-
   The Grand Spiral Stair, a sixteen-foot-diameter helical staircase finished in

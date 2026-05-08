@@ -62,9 +62,11 @@ Two known Vite/Astro caching quirks; fix either with the same recipe:
 
 ```sh
 # Kill dev server (Ctrl+C), then:
-rm -rf .astro/ node_modules/.vite
-npm run dev -- --force
+npm run dev:fresh
 ```
+
+(Equivalent to `rimraf .astro node_modules/.vite && astro dev --force`,
+cross-platform.)
 
 Production builds are not affected; this is a dev-only quirk.
 
