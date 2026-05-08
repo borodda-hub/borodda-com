@@ -39,6 +39,20 @@ npm run build        # static site to dist/
 npx pa11y --standard WCAG2AA <url>   # accessibility check
 ```
 
+## Keystatic image-field quirk
+
+If you edit an entry in Keystatic whose images were added manually (file
+copied to `_assets/` + YAML edited by hand or by Claude Code), Keystatic
+may strip the image `src` values on save — even if you didn't touch
+those fields. The form treats unmounted images as empty.
+
+Workarounds:
+- Re-upload each image through the Keystatic form before saving, OR
+- Edit only text fields for those entries via Keystatic, OR
+- Edit the `.md` file directly for entries with manually-managed images
+- For brand-new entries, create them entirely in Keystatic and never
+  hit this issue
+
 ## When the dev server gets weird
 
 Two known Vite/Astro caching quirks; fix either with the same recipe:

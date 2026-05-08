@@ -1,43 +1,60 @@
 ---
-title: "Grand Spiral Stair"
-subtitle: "Centerpiece staircase for Uber Freight at the Old Chicago Post Office"
-date: "2022-01-01"                       # [INFERRED — verify completion year]
-dateDisplay: "2021–2022"                 # [INFERRED — verify range]
-status: "completed"
-themes: ["design-research", "digital-fabrication", "architecture"]
+title: Grand Spiral Stair
+subtitle: Centerpiece staircase for Uber Freight at the Old Chicago Post Office
+date: '2022-01-01'
+dateDisplay: 2021–2022
+status: completed
+themes:
+  - design-research
+  - digital-fabrication
+  - architecture
 partners:
-  - "ChiLab Design Studio"
-  - "Gensler Chicago"
-  - "Uber Freight"
+  - ChiLab Design Studio
+  - Gensler Chicago
+  - Uber Freight
 featured: false
-heroImage: "./_assets/grand-spiral-stair-hero.webp"
-heroImageAlt: "The Grand Spiral Stair, a sixteen-foot-diameter helical staircase finished in a blue-toned patina, descending through the floor plate of Uber Freight's headquarters in the Old Chicago Post Office"
-excerpt: "A sixteen-foot-diameter spiral staircase designed with ChiLab Design Studio and Gensler Chicago for Uber Freight's headquarters in the Old Chicago Post Office."
+heroImage: ./_assets/grand-spiral-stair-hero.webp
+heroImageAlt: >-
+  The Grand Spiral Stair, a sixteen-foot-diameter helical staircase finished in
+  a blue-toned patina, descending through the floor plate of Uber Freight's
+  headquarters in the Old Chicago Post Office
+excerpt: >-
+  A sixteen-foot-diameter spiral staircase designed with ChiLab Design Studio
+  and Gensler Chicago for Uber Freight's headquarters in the Old Chicago Post
+  Office.
 credits:
-  - role: "Co-Designer and Partner"
-    name: "Ben Stagl"
-    affiliation: "ChiLab Design Studio"
-  - role: "Digital Design Lead"           # [INFERRED — verify exact title you used on the project]
-    name: "Bo Rodda"
-    affiliation: "ChiLab Design Studio"
-  - role: "Architect of Record"            # [INFERRED — verify Gensler's exact role]
-    name: "Gensler Chicago"
-    affiliation: "Gensler"
+  - role: Co-Designer and Partner
+    name: Ben Stagl
+    affiliation: ChiLab Design Studio
+  - role: Digital Design Lead
+    name: Bo Rodda
+    affiliation: ChiLab Design Studio
+  - role: Architect of Record
+    name: Gensler Chicago
+    affiliation: Gensler
 funding: []
-press: []
+press:
+  - citation: >-
+      https://artisanalmetals.com/2024/07/08/chilab-studio-transforms-ubers-chicago-office-with-innovative-design-and-craftsmanship/
+  - citation: https://www.cassidylday.com/work/uber
+  - citation: >-
+      https://www.er2image.com/uber-freight-transports-you-to-one-incredible-office-environment/
 gallery:
-  - src: "./_assets/grand-spiral-stair-1.webp"
-    alt: "The Grand Spiral Stair viewed from below, showing the helical descent through the floor plate."
-  - src: "./_assets/grand-spiral-stair-2.webp"
-    alt: "Detail of the patinated steel surface and the joinery between sections."
-  - src: "./_assets/grand-spiral-stair-3.webp"
-    alt: "The stair landing in context, integrated into the Old Chicago Post Office's interior architecture."
-  - src: "./_assets/grand-spiral-stair-4.webp"
-    alt: "Side elevation of the helix, showing the full sixteen-foot diameter."
-  - src: "./_assets/grand-spiral-stair-5.webp"
-    alt: "The infinity mirror at the upper landing, looking up through the helix."
+  - src: ./_assets/grand-spiral-stair-1.webp
+    alt: >-
+      The Grand Spiral Stair viewed from below, showing the helical descent
+      through the floor plate.
+  - src: ./_assets/grand-spiral-stair-2.webp
+    alt: Detail of the patinated steel surface and the joinery between sections.
+  - src: ./_assets/grand-spiral-stair-3.webp
+    alt: >-
+      The stair landing in context, integrated into the Old Chicago Post
+      Office's interior architecture.
+  - src: ./_assets/grand-spiral-stair-4.webp
+    alt: Side elevation of the helix, showing the full sixteen-foot diameter.
+  - src: ./_assets/grand-spiral-stair-5.webp
+    alt: The infinity mirror at the upper landing, looking up through the helix.
 ---
-
 **Old buildings ask hard questions of new design.**
 
 The Old Chicago Post Office was, for most of the twentieth century, one of the largest postal facilities in the country — a building whose interior logic was logistics, defined by the movement of paper. After the USPS vacated it in the 1990s [INFERRED — verify decade], the structure sat largely empty for decades before being redeveloped as a mixed-use commercial building. Uber Freight took its headquarters there. The historical irony is plain: a logistics building became a logistics company's headquarters. The cargo changed; the argument did not.
