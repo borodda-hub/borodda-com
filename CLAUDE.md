@@ -129,9 +129,13 @@ Before starting:
 
 ```sh
 git pull origin main
-npm install              # if package.json changed since last pull
-npm run dev
+npm install              # always safe; runs in seconds if no changes
+npm run dev:fresh        # use :fresh after a pull to clear caches and
+                         # avoid the schema-stale / Vite-deps quirks
 ```
+
+If `npm run dev:fresh` doesn't exist yet on this machine's package.json,
+you're on an older revision — `git pull` first.
 
 Before stopping:
 
