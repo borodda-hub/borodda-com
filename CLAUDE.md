@@ -2,7 +2,7 @@
 
 Personal academic + design-portfolio site for **Warner B. ("Bo") Rodda**,
 Assistant Professor of Experiential Media and Data Communication at
-Illinois Institute of Technology. Built with Astro 6, deployed to
+Illinois Institute of Technology. Built with Astro 5, deployed to
 Cloudflare Pages.
 
 ## Where to start
@@ -19,13 +19,14 @@ Cloudflare Pages.
 
 ## Stack
 
-- Astro 6 (static SSG, no SSR adapter — confirmed at stage 13 after
-  reverting Cloudflare's auto-config)
+- Astro 5 (downgraded from 6 for Keystatic CMS compatibility — upgrade
+  when @keystatic/astro officially supports Astro 6/Vite 7)
+- Keystatic CMS (local git-backed admin at /keystatic in dev only)
 - TypeScript strict
 - Vanilla CSS with custom-property design tokens (no Tailwind)
 - Source Serif 4 (body/display) + Inter (UI/metadata) self-hosted via
   fontsource
-- @astrojs/mdx, @astrojs/sitemap, @astrojs/rss
+- @astrojs/mdx, @astrojs/sitemap, @astrojs/rss, @astrojs/react
 - Deployment: Cloudflare Pages from GitHub `main` branch
 - Repo: https://github.com/borodda-hub/borodda-com (private)
 

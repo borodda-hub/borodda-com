@@ -38,3 +38,8 @@ venv/
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Keystatic CMS admin routes (SSR — would break static Cloudflare build)
+# Run `npm run cms:setup` after pulling on a new machine to restore them
+src/pages/keystatic/
+src/pages/api/keystatic/
