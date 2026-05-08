@@ -34,10 +34,25 @@ Cloudflare Pages.
 
 ```sh
 npm install          # first run on a new machine
-npm run dev          # http://localhost:4321
+npm run dev          # http://localhost:4321 (Keystatic admin at /keystatic)
 npm run build        # static site to dist/
 npx pa11y --standard WCAG2AA <url>   # accessibility check
 ```
+
+## When the dev server gets weird
+
+Two known Vite/Astro caching quirks; fix either with the same recipe:
+
+- **Schema change in `content.config.ts` not reflected** → stale `.astro/`
+- **504 "Outdated Optimize Dep" on a hard refresh** → stale Vite pre-bundled deps in `node_modules/.vite/`
+
+```sh
+# Kill dev server (Ctrl+C), then:
+rm -rf .astro/ node_modules/.vite
+npm run dev -- --force
+```
+
+Production builds are not affected; this is a dev-only quirk.
 
 ## Key paths
 

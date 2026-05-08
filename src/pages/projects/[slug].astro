@@ -71,10 +71,26 @@ const ogImage = data.heroImage?.src;
       </dl>
     </header>
 
-    <div class="case-body">
+    <div class:list={['case-body', { 'has-gallery': data.gallery.length > 0 }]}>
       <div class="rich-text">
         <Content />
       </div>
+      {data.gallery.length > 0 && (
+        <aside class="case-gallery" aria-label="Project gallery">
+          {data.gallery.map((g) => (
+            <figure class="gallery-item">
+              <Image
+                src={g.src}
+                alt={g.alt}
+                widths={[320, 480, 720, 1080]}
+                sizes="(min-width: 1080px) 360px, (min-width: 768px) 50vw, 100vw"
+                loading="lazy"
+              />
+              {g.caption && <figcaption>{g.caption}</figcaption>}
+            </figure>
+          ))}
+        </aside>
+      )}
     </div>
 
     <Lightbox />
@@ -232,6 +248,57 @@ const ogImage = data.heroImage?.src;
   }
   @media (min-width: 1280px) {
     .case-body { padding-inline: var(--space-9); }
+  }
+
+  /* When a gallery is present, the body splits into a 2-column grid:
+     text left (capped at the prose measure), gallery right. */
+  .case-body.has-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+  @media (min-width: 1080px) {
+    .case-body.has-gallery {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+
+  /* ----- Right-side gallery ----- */
+  .case-gallery {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    align-content: start;
+  }
+  @media (min-width: 1080px) {
+    .case-gallery {
+      position: sticky;
+      top: var(--space-5);
+    }
+  }
+
+  .gallery-item {
+    margin: 0;
+  }
+  .gallery-item :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-image);
+    cursor: zoom-in;
+    transition: opacity 200ms ease;
+  }
+  .gallery-item :global(img):hover {
+    opacity: 0.85;
+  }
+  .gallery-item figcaption {
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--type-sm);
+    color: var(--color-ink-muted);
+    line-height: 1.5;
   }
 
   /* ----- Credits block ----- */

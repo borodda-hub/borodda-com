@@ -17,6 +17,15 @@ const projects = defineCollection({
       heroImage: image().optional(),
       heroImageAlt: z.string().optional(),
       excerpt: z.string(),
+      gallery: z
+        .array(
+          z.object({
+            src: image(),
+            alt: z.string(),
+            caption: z.string().optional(),
+          })
+        )
+        .default([]),
       credits: z
         .array(
           z.object({

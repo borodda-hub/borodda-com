@@ -67,6 +67,21 @@ export default config({
             itemLabel: (props) => props.fields.citation.value.slice(0, 60) + '…',
           }
         ),
+        gallery: fields.array(
+          fields.object({
+            src: fields.image({
+              label: 'Image',
+              directory: 'src/content/projects/_assets',
+              publicPath: './_assets/',
+            }),
+            alt: fields.text({ label: 'Alt text' }),
+            caption: fields.text({ label: 'Caption (optional)' }),
+          }),
+          {
+            label: 'Gallery (right-side images on the project page)',
+            itemLabel: (props) => props.fields.alt.value || 'Image',
+          }
+        ),
         content: fields.markdoc({
           label: 'Content',
           extension: 'md',
