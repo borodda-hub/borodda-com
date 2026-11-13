@@ -30,7 +30,37 @@ Four audiences, one homepage. None is hidden from the others.
 Where audiences conflict, scholarly accuracy wins. Nothing on the site
 may overstate what a project did or proved.
 
-## 2. Voice: two lanes
+## 2. Positioning
+
+Decided 2026-11-13: **a broad thesis, with decision quality named as
+the primary field beneath it.** The homepage frames Bo in three layers,
+each doing one job.
+
+1. **Label**: roles and territory. "Designer, researcher, educator.
+   Art and design for emerging technologies."
+2. **Thesis**: one line wide enough for all the work, from the
+   visualizations and instruments to the fabricated and installed
+   pieces. Current draft: "I turn new technologies into things people
+   can see, handle and judge." The direction is settled; the wording is
+   Bo's to finalize.
+3. **Primary field**: decision quality, as a method for analyzing games
+   and decision environments. It is stated in the homepage credentials
+   list and in About, and its strand is listed first.
+
+Rules that follow from this:
+
+- Technology is the material, not the subject. Lead with what the work
+  lets people do, not with the technology used.
+- The five research strands stay, but they are not presented as equals.
+  Game Studies and Decision Quality is primary; the other four are the
+  same question at other scales and in other media.
+- Decision quality is an established term from decision analysis. Bo's
+  contribution is carrying it into games, design and instruments. Say
+  so wherever the claim is made; never present the term as his coinage.
+- Fabrication, installation and public art are presented as evidence
+  of the thesis, not as a separate portfolio.
+
+## 3. Voice: two lanes
 
 **Lane A, scholarly.** Project case studies, research strands,
 publications, talks, exhibitions, About, CV. Direct, scholarly,
@@ -62,7 +92,7 @@ Draft flags, removed before publication:
 - `[INFERRED]` metadata derived rather than stated
 - `[DRAFT — Bo:]` a gap only Bo can fill
 
-## 3. Practice and hiring
+## 4. Practice and hiring
 
 The site says openly that Bo takes on outside work. Keep it understated
 and specific.
@@ -81,7 +111,7 @@ and specific.
   section, no hiring language.
 - Prior partners are listed as plain text. No logo walls.
 
-## 4. Goldeneye and other live research
+## 5. Goldeneye and other live research
 
 - Goldeneye is a research instrument for decision quality, not a
   trading product.
@@ -91,13 +121,13 @@ and specific.
   including the homepage.
 - Ground every claim in what is built. If unsure, ask.
 
-## 5. Information architecture
+## 6. Information architecture
 
 Homepage sections, in order, numbered 00 to 05 on the page:
 
 | No. | Section | Contents |
 |---|---|---|
-| — | Thesis | Small label, one thesis line, and a credentials list (position, school, studio, links to Research and CV) |
+| — | Thesis | Small label, one thesis line, and a credentials list (position, school, studio, primary field, links to Research and CV). See section 2. |
 | 00 | Featured project | Currently Goldeneye Research Terminal |
 | 01 | Selected work | Category index with counts, six project cards, link to the full index |
 | 02 | Practice | One sentence, the engagement list, the one invitation, prior partners |
@@ -122,17 +152,17 @@ Routes:
 Work-index categories, one per project: **Research, Platforms, Public
 Art and Fabrication, Teaching, Writing.**
 
-The five research strands, in order: Visualization as Humanistic
-Medium; Game Studies and Decision Quality; Urban Computing and Smart
-Cities; Experiential and Immersive Media; Industry-Engaged Pedagogy and
-Institutional Innovation.
+The five research strands, in order: Game Studies and Decision Quality
+(primary); Visualization as Humanistic Medium; Urban Computing and
+Smart Cities; Experiential and Immersive Media; Industry-Engaged
+Pedagogy and Institutional Innovation.
 
 Open IA questions for Bo (do not decide these unasked):
 
 - Whether `/projects/` is renamed `/work/`.
 - Whether About becomes its own page or stays a homepage section.
 
-## 6. Look
+## 7. Look
 
 Related to chilabstudio.com, not a copy of it. The approved reference
 is the homepage mockup, saved in the repo at
@@ -211,7 +241,7 @@ accent, the warm cream and brown neutrals, and the name-first hero with
 a three-sentence statement. `src/styles/global.css` and the page
 templates still carry them until the redesign is implemented.
 
-## 7. Content structures
+## 8. Content structures
 
 **Project case studies** use seven moves; LakeSIM is the model.
 
@@ -240,7 +270,7 @@ rule here calls for a field the schema lacks, say so and leave it out
 until the schema is changed. Known gap: projects have no `category`
 field yet.
 
-## 8. Stack
+## 9. Stack
 
 - Astro 5, static output, TypeScript strict
 - Vanilla CSS with custom-property tokens in `src/styles/global.css`.
@@ -287,7 +317,7 @@ Not in the repo, on Bo's primary Windows machine:
 - CV: `C:\Users\Bo\Projects\Bo Rodda Docs\Rodda_CV_May_2026.pdf`. Read
   it before adding publications, talks or partnerships.
 
-## 9. Out of scope
+## 10. Out of scope
 
 - Sales copy, pricing, packages, testimonials
 - Blog framing; the site has essays
@@ -295,9 +325,9 @@ Not in the repo, on Bo's primary Windows machine:
 - Internationalization, e-commerce, paywall or membership content
 - Client-side JavaScript beyond the theme toggle, the project filter
   and the lightbox
-- Anything not in section 5
+- Anything not in section 6
 
-## 10. State of the build
+## 11. State of the build
 
 Done: scaffold, layout shell, schemas, all page templates, RSS,
 sitemap, OpenGraph, an accessibility pass, and real content in
@@ -306,7 +336,7 @@ strands (5).
 
 Not done, roughly in order:
 
-1. Implement the look in section 6, working from
+1. Implement the look in section 7, working from
    `design/homepage-mockup.html`: tokens, fonts, navigation, homepage
 2. Correct the title and affiliation in `src/config.ts`, the homepage,
    the CV page and anywhere else it reads "Data Communication" or omits
@@ -314,15 +344,18 @@ Not done, roughly in order:
 3. Rename `/partnerships/` to `/practice/` and write the page, once Bo
    supplies the engagement list
 4. Add `category` to the projects schema and assign each project
-5. Replace homepage placeholder tiles and placeholder writing items
+5. Reorder the research strands (`order` frontmatter) so Game Studies
+   and Decision Quality is first, and revise the strand pages and
+   About copy to the positioning in section 2
+6. Replace homepage placeholder tiles and placeholder writing items
    with real entries
-6. Essays: none exist yet. Exhibitions: none exist yet.
-7. Teaching entries for the work index
-8. Canonical Google Scholar profile link in `src/config.ts`
-9. Cloudflare Pages deployment, then Plausible
-10. Final accessibility and performance audit against the new look
+7. Essays: none exist yet. Exhibitions: none exist yet.
+8. Teaching entries for the work index
+9. Canonical Google Scholar profile link in `src/config.ts`
+10. Cloudflare Pages deployment, then Plausible
+11. Final accessibility and performance audit against the new look
 
-## 11. Working across machines
+## 12. Working across machines
 
 Bo works on this from more than one machine, alongside a claude.ai
 Project used for drafting. Drafting happens there; code and file
