@@ -1,6 +1,6 @@
 ---
 title: "Visualization as Humanistic Medium"
-order: 1
+order: 2
 summary: "Visualization is a medium with its own history, conventions, and ethics — not merely a method for displaying analytic results. This strand treats it that way, and asks what kind of training the field needs as a consequence."
 relatedProjects: ["lakesim", "city-of-big-data-maps", "energy-dashboard"]
 relatedPublications: ["lakesim-isocarp"]

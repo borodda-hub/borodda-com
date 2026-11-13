@@ -1,6 +1,6 @@
 ---
 title: "Game Studies and Decision Quality"
-order: 2
+order: 1
 summary: "Recent peer-reviewed work develops decision quality as a portable analytic method — a way to evaluate whether the structure of a decision environment lets agents see clearly enough to act well. The originating context is games; the wager is portability."
 relatedProjects: []
 relatedPublications:
