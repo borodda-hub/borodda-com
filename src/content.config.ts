@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { CATEGORIES } from './config';
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
@@ -11,6 +12,8 @@ const projects = defineCollection({
       date: z.string(),
       dateDisplay: z.string(),
       status: z.enum(['completed', 'ongoing', 'archived']),
+      // Work-index category, one per project. Optional until Bo confirms each assignment.
+      category: z.enum(CATEGORIES).optional(),
       themes: z.array(z.string()).default([]),
       partners: z.array(z.string()).default([]),
       featured: z.boolean().default(false),
