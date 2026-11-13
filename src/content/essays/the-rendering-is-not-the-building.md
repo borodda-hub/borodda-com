@@ -1,6 +1,8 @@
 ---
 title: "The rendering is not the building"
 date: "2026-11-13"
+image: "./_assets/studio-crit.jpg"
+imageAlt: "Black-and-white photograph of a studio critique: a student stands beside drawings and diagrams pinned to the wall while a seated viewer, seen from behind, looks on"
 excerpt: "You can do almost anything with AI, if you can actually think. The question for a university is where thinking of that kind gets taught. My answer is the studio."
 draft: false
 ---

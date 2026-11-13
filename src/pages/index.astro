@@ -243,6 +243,9 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
           {essays.length === 0 && <p class="essay empty">No essays published yet.</p>}
           {essays.slice(0, 3).map((e) => (
             <a class="essay" href={`/writing/essays/${e.id}/`}>
+              {e.data.image && (
+                <Image class="essayfig" src={e.data.image} alt={e.data.imageAlt ?? ''} widths={[480, 800, 1280]} sizes="(min-width: 961px) 56vw, 100vw" loading="lazy" />
+              )}
               <h3>{e.data.title}</h3>
               <p>{e.data.subtitle ?? e.data.excerpt}</p>
               <span class="meta">{fmtDate(e.data.date)} · {readingTime(e.body)} min read</span>
@@ -487,6 +490,7 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
   .home a.essay p { font-size: 15px; line-height: 1.45; color: var(--muted); margin-bottom: 4px; }
 
   .home .pubs .cite a { text-decoration: none; }
+  .home .essayfig { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--tile); margin-bottom: 16px; }
   .home .pubfig { margin-bottom: 14px; }
   .home .pubfig img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--tile); }
 

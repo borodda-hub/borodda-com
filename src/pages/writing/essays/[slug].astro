@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import Lightbox from '../../../components/Lightbox.astro';
 import { readingTime } from '../../../lib/readingTime';
@@ -28,6 +29,7 @@ const formattedDate = dateFormatter.format(new Date(`${data.date}T12:00:00Z`));
   title={`${data.title} — Bo Rodda`}
   description={data.excerpt}
   ogType="article"
+  ogImage={data.image?.src}
 >
   <article class="wrap essay long-form">
     <header class="pagehead">
@@ -38,6 +40,17 @@ const formattedDate = dateFormatter.format(new Date(`${data.date}T12:00:00Z`));
     </header>
 
     <div class="sec body">
+      {data.image && (
+        <div class="case-hero essay-hero offset">
+          <Image
+            src={data.image}
+            alt={data.imageAlt ?? ''}
+            widths={[640, 960, 1280]}
+            sizes="(min-width: 961px) 60vw, 100vw"
+            loading="eager"
+          />
+        </div>
+      )}
       <div class="rich-text offset">
         <Content />
       </div>
@@ -49,4 +62,6 @@ const formattedDate = dateFormatter.format(new Date(`${data.date}T12:00:00Z`));
 
 <style>
   .body { padding-top: 56px; }
+  .essay-hero { max-width: calc(var(--measure) * 1.25); margin-bottom: 48px; }
+  .essay-hero :global(img) { display: block; width: 100%; height: auto; background: var(--tile); }
 </style>

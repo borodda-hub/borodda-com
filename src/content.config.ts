@@ -73,13 +73,17 @@ const publications = defineCollection({
 
 const essays = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/essays' }),
-  schema: z.object({
-    title: z.string(),
-    subtitle: z.string().optional(),
-    date: z.string(),
-    excerpt: z.string(),
-    draft: z.boolean().default(false),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      subtitle: z.string().optional(),
+      date: z.string(),
+      excerpt: z.string(),
+      draft: z.boolean().default(false),
+      // Optional lead image, shown on the essay page, the homepage and in link previews.
+      image: image().optional(),
+      imageAlt: z.string().optional(),
+    }),
 });
 
 const talks = defineCollection({
