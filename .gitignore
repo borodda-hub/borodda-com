@@ -38,3 +38,6 @@ venv/
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Exports from other Claude projects: source material, includes items not for publication
+CLAUDE Projects/

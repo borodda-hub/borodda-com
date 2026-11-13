@@ -46,8 +46,8 @@ It was, at root, a set of questions about energy, attention, ambient intelligenc
 
 The thesis received the AIADO MFA Award of Academic Excellence (2010). The work was presented at the 2009 [ACADIA](https://acadia.org) Annual Conference at the Art Institute of Chicago, and at *The Bauhaus — From Laboratory to Project* international conference at [Bauhaus-Universität Weimar](https://www.uni-weimar.de) (October 2009, presented by Anders Nereim).
 
-![Active Light Cloud at the GFRY Design Studio's 2000 Watt Living exhibition in Milan, 2010](./_assets/active-light-cloud-milan.jpg)
+![Active Light Cloud at the GFRY Design Studio's 2000 Watt Living exhibition in Milan, 2009](./_assets/active-light-cloud-milan.jpg)
 
-It was subsequently exhibited as part of the GFRY Design Studio's *2000 Watt Living* exhibitions in Chicago (Sullivan Galleries, 2010) and Milan (Fabrica del Vapore, 2010, concurrent with Salone Internazionale del Mobile / Milan Design Week).
+It was subsequently exhibited as part of the GFRY Design Studio's *2000 Watt Living* exhibitions in Chicago (Sullivan Galleries, 2010) and Milan (Fabrica del Vapore, 2009, concurrent with Salone Internazionale del Mobile / Milan Design Week).
 
 ![3D rendering of the installation site](./_assets/active-light-cloud-render.jpg)

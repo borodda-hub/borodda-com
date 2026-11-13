@@ -1,8 +1,8 @@
 # borodda.com
 
 Personal site of **Warner B. ("Bo") Rodda**: Assistant Professor of
-Experiential Media and Data Communication in the Department of Humanities,
-Lewis College of Science and Letters, at Illinois Institute of Technology, and co-founder of ChiLab
+Experiential Media and Data Communication in the School of Design + Society,
+College of Design Futures, at Illinois Institute of Technology, and co-founder of ChiLab
 Design Studio. (Title and affiliation follow the November 2026 CV, per Bo
 on 2026-11-13. He also serves on School of Design + Society committees;
 the School is not his appointment line.)

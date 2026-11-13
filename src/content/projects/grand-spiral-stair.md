@@ -27,7 +27,7 @@ credits:
   - role: Co-Designer and Partner
     name: Ben Stagl
     affiliation: ChiLab Design Studio
-  - role: Digital Design Lead
+  - role: Co-designer and technical engineer
     name: Bo Rodda
     affiliation: ChiLab Design Studio
   - role: Architect of Record

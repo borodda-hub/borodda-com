@@ -2,14 +2,14 @@ export const SITE = {
   name: 'Bo Rodda',
   fullName: 'Warner B. "Bo" Rodda',
   title: 'Assistant Professor of Experiential Media and Data Communication',
-  department: 'Department of Humanities',
-  college: 'Lewis College of Science and Letters',
+  department: 'School of Design + Society',
+  college: 'College of Design Futures',
   institution: 'Illinois Institute of Technology',
   location: 'Chicago, Illinois',
   studio: 'ChiLab Design Studio',
   studioRole: 'Co-founder, ChiLab Design Studio',
   description:
-    'Bo Rodda is Assistant Professor of Experiential Media and Data Communication in the Department of Humanities at Illinois Institute of Technology, and co-founder of ChiLab Design Studio.',
+    'Bo Rodda is Assistant Professor of Experiential Media and Data Communication in the School of Design + Society at Illinois Institute of Technology, and co-founder of ChiLab Design Studio.',
 } as const;
 
 export const EMAILS = {
