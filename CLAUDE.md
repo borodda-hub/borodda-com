@@ -1,9 +1,11 @@
 # borodda.com
 
 Personal site of **Warner B. ("Bo") Rodda**: Assistant Professor of
-Experiential Media and Data Communications in the School of Design +
-Society at Illinois Institute of Technology, and co-founder of ChiLab
-Design Studio.
+Experiential Media and Data Communication in the Department of Humanities,
+Lewis College of Science and Letters, at Illinois Institute of Technology, and co-founder of ChiLab
+Design Studio. (Title and affiliation follow the November 2026 CV, per Bo
+on 2026-11-13. He also serves on School of Design + Society committees;
+the School is not his appointment line.)
 
 The site has never been published. This is a rebuild toward launch.
 
@@ -311,7 +313,8 @@ npx pa11y --standard WCAG2AA <url>
 | `src/layouts/Layout.astro` | Page shell, OpenGraph metadata, theme bootstrap |
 | `src/styles/global.css` | Design tokens and base styles |
 | `src/config.ts` | Site identity, emails, profile links, route list |
-| `public/` | Favicon, robots.txt, feed stylesheet |
+| `src/assets/` | Site images that belong to no collection (the portrait) |
+| `public/` | Favicon, robots.txt, feed stylesheet, `cv.pdf` (exported from the Word CV) |
 | `design/homepage-mockup.html` | Approved homepage mockup; reference only, not built |
 
 Images live in `_assets/` beside each collection's entries, at full
@@ -348,20 +351,15 @@ Not done, roughly in order:
 
 1. Assign a `category` to each project once Bo confirms the proposed
    assignments, then make the field required
-2. Confirm the appointment lines marked `[VERIFY]` in `src/pages/cv.mdx`
-   and the matching line on `/teaching/` (Department of Humanities and
-   Lewis College alongside the School of Design + Society)
-3. Write the `/practice/` page once Bo supplies the engagement list;
+2. Write the `/practice/` page once Bo supplies the engagement list;
    the homepage list is still the mockup's placeholder
-4. Revise the strand pages, the Research intro and About copy to the
+3. Revise the strand pages, the Research intro and About copy to the
    positioning in section 2
-5. Portrait for the homepage About section; `public/cv.pdf` for the CV
-   download link (neither file exists yet)
-6. Essays: none exist yet. Exhibitions: none exist yet.
-7. Teaching entries for the work index
-8. Canonical Google Scholar profile link in `src/config.ts`
-9. Cloudflare Pages deployment, then Plausible
-10. Final accessibility and performance audit against the new look
+4. Essays: none exist yet. Exhibitions: none exist yet.
+5. Teaching entries for the work index
+6. Canonical Google Scholar profile link in `src/config.ts`
+7. Cloudflare Pages deployment, then Plausible
+8. Final accessibility and performance audit against the new look
 
 ## 12. Working across machines
 

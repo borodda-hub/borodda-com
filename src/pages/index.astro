@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import { SITE, EMAILS, CATEGORIES } from '../config';
 import { readingTime } from '../lib/readingTime';
+import portrait from '../assets/bo-rodda-portrait.webp';
 
 // ---- Curated order. Everything shown is read from the collections;
 // ---- these lists only choose which entries appear and in what order.
@@ -107,7 +108,7 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
     <section class="wrap hero" aria-label="Introduction">
       <div class="intro">
         <h1 class="thesis">I turn new technologies into things people can see, handle and judge.</h1>
-        <p class="biop">I am a designer and researcher working in art and design for emerging technologies. I am {SITE.title} in the {SITE.school} at {SITE.institution}, and co-founder of {SITE.studio}.</p>
+        <p class="biop">I am a designer and researcher working in art and design for emerging technologies. I am {SITE.title} in the {SITE.department} at {SITE.institution}, and co-founder of {SITE.studio}.</p>
         <dl class="kv creds">
           <dt>Field</dt><dd>Decision quality, as a method for analyzing games and decision environments</dd>
           <dt>Research</dt><dd><a class="lnk" href="/research/">Five strands, publications and talks</a></dd>
@@ -287,10 +288,11 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
         <span class="meta">BFA, Rhode Island School of Design · MFA, School of the Art Institute of Chicago</span>
       </div>
       <div class="two">
-        <!-- [DRAFT — Bo:] portrait image needed -->
-        <div class="portrait"><span class="meta">[Portrait]</span></div>
+        <div class="portrait">
+          <Image src={portrait} alt="Bo Rodda, arms crossed, in a gray button-down shirt against a light gray backdrop" widths={[320, 480, 720, 960]} sizes="(min-width: 961px) 24vw, 320px" loading="lazy" />
+        </div>
         <div class="bio">
-          <p>Bo Rodda studies and builds at the intersection of design, computation, and lived experience. As {SITE.title} in the {SITE.school} at {SITE.institution}, his research spans game studies, urban computing, and data visualization, with recent peer-reviewed work developing <em>decision quality</em> as a portable method for analyzing games and decision environments. He has built dynamic urban data platforms with the University of Chicago and Argonne National Laboratory, exhibited internationally as co-founder of ChiLab Design Studio, and led dozens of industry-partnered design studios at Illinois Tech's Kaplan Institute.</p>
+          <p>Bo Rodda studies and builds at the intersection of design, computation, and lived experience. As {SITE.title} in the {SITE.department} at {SITE.institution}, his research spans game studies, urban computing, and data visualization, with recent peer-reviewed work developing <em>decision quality</em> as a portable method for analyzing games and decision environments. He has built dynamic urban data platforms with the University of Chicago and Argonne National Laboratory, exhibited internationally as co-founder of ChiLab Design Studio, and led dozens of industry-partnered design studios at Illinois Tech's Kaplan Institute.</p>
           <div>
             <p class="sub">Research strands</p>
             <div class="strands">
@@ -494,6 +496,7 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
   .home .pubfig img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--tile); }
 
   /* about */
+  .home .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
   .home .portrait {
     grid-column: span 3;
     aspect-ratio: 4 / 5;
