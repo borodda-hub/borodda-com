@@ -6,75 +6,59 @@ import { EMAILS } from '../config';
   title="Contact — Bo Rodda"
   description="Three pathways: academic and research, partnership, and press and speaking."
 >
-  <article class="page contact-page">
-    <header class="contact-header">
-      <h1>Contact</h1>
-      <p class="contact-intro">
-        Three pathways. Use the one that fits.
-      </p>
+  <div class="wrap">
+    <header class="pagehead">
+      <h1 class="display">Contact</h1>
+      <p class="pagelead">Three pathways. Use the one that fits.</p>
     </header>
 
-    <section class="pathway">
-      <h2 class="pathway-label">Academic / Research</h2>
-      <p>
-        For collaborations, references, graduate-student inquiries, conference
-        invitations, and review requests, write to
-        <a href={`mailto:${EMAILS.academic}`}>{EMAILS.academic}</a>.
-      </p>
-    </section>
+    <section class="sec" aria-label="Contact pathways">
+      <div class="paths">
+        <div class="path">
+          <h2 class="meta">Academic / Research</h2>
+          <a class="mail" href={`mailto:${EMAILS.academic}`}>{EMAILS.academic}</a>
+          <p>
+            For collaborations, references, graduate-student inquiries, conference
+            invitations, and review requests.
+          </p>
+        </div>
 
-    <section class="pathway">
-      <h2 class="pathway-label">Partnership</h2>
-      <p>
-        For industry, civic, and cultural partnerships through Illinois Tech
-        or independently, see <a href="/partnerships/">/partnerships/</a> for
-        context, then write to
-        <a href={`mailto:${EMAILS.partnership}`}>{EMAILS.partnership}</a>.
-      </p>
-    </section>
+        <div class="path">
+          <h2 class="meta">Partnership</h2>
+          <a class="mail" href={`mailto:${EMAILS.partnership}`}>{EMAILS.partnership}</a>
+          <p>
+            For industry, civic, and cultural partnerships through Illinois Tech
+            or independently. See <a class="lnk" href="/practice/">Practice</a> for
+            context.
+          </p>
+        </div>
 
-    <section class="pathway">
-      <h2 class="pathway-label">Press and Speaking</h2>
-      <p>
-        For interviews, talks, panels, and quotation requests, write to
-        <a href={`mailto:${EMAILS.press}`}>{EMAILS.press}</a>.
-      </p>
+        <div class="path">
+          <h2 class="meta">Press and Speaking</h2>
+          <a class="mail" href={`mailto:${EMAILS.press}`}>{EMAILS.press}</a>
+          <p>For interviews, talks, panels, and quotation requests.</p>
+        </div>
+      </div>
     </section>
-  </article>
+  </div>
 </Layout>
 
 <style>
-  .contact-header {
-    margin-block: var(--space-4) var(--space-7);
-    max-width: var(--max-prose);
+  .sec { border-top: 0; padding-top: 0; }
+  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px var(--gap); }
+  .path { border-top: 1px solid var(--strong); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .path h2 { font-weight: 400; }
+  .mail {
+    font-size: clamp(18px, 1.7vw, 26px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    overflow-wrap: anywhere;
   }
-  .contact-header h1 {
-    font-size: var(--type-h1);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-  }
-  .contact-intro {
-    margin-top: var(--space-4);
-    color: var(--color-ink-muted);
-  }
-
-  .pathway {
-    max-width: var(--max-prose);
-    padding-block: var(--space-5) 0;
-  }
-  .pathway + .pathway {
-    margin-top: var(--space-5);
-  }
-  .pathway-label {
-    font-family: var(--font-sans);
-    font-size: var(--type-xs);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-ink-muted);
-    margin-bottom: var(--space-3);
-  }
-  .pathway p {
-    line-height: 1.6;
+  .path p { font-size: 16px; line-height: 1.5; max-width: 40ch; margin-top: 8px; }
+  @media (max-width: 760px) {
+    .paths { grid-template-columns: minmax(0, 1fr); }
   }
 </style>
