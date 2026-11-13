@@ -2,302 +2,516 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
+import { SITE, EMAILS, CATEGORIES } from '../config';
+import { readingTime } from '../lib/readingTime';
 
-type ProjectTile = {
-  href: string;
-  title: string;
-  excerpt: string;
-  dateDisplay: string;
-  heroImage?: ImageMetadata;
-  heroImageAlt?: string;
-};
+// ---- Curated order. Everything shown is read from the collections;
+// ---- these lists only choose which entries appear and in what order.
+const FEATURED = 'goldeneye-research-terminal';
+const GALLERY = [
+  'grand-spiral-stair',
+  'lakesim',
+  'boolean-lamp',
+  'city-of-big-data-maps',
+  'active-light-cloud',
+  'bridges',
+  'goldeneye-research-terminal',
+];
+const CARDS = [
+  'lakesim',
+  'grand-spiral-stair',
+  'city-of-big-data-maps',
+  'boolean-lamp',
+  'active-light-cloud',
+  'bridges',
+];
+const PRIOR_PARTNERS = [
+  'argonne',
+  'university-of-chicago',
+  'skidmore-owings-merrill',
+  'chicago-architecture-foundation',
+  'city-of-chicago',
+  'adler-planetarium',
+  'microsoft',
+  'motorola-solutions',
+  'united-airlines',
+  'wilson-sporting-goods',
+];
+// Crop anchor for images whose subject sits off-center in a cover crop.
+const FOCUS: Record<string, string> = { 'city-of-big-data-maps': '12% 50%' };
 
-type WritingTile = {
-  href: string;
-  title: string;
-  subtitle?: string;
-  excerpt: string;
-  meta: string;
-  sortKey: string;
-};
-
-const projectEntries = await getCollection('projects', ({ data }) => data.featured);
-
-const realTiles: ProjectTile[] = projectEntries
-  .sort((a, b) => b.data.date.localeCompare(a.data.date))
-  .map((p) => ({
-    href: `/projects/${p.id}/`,
-    title: p.data.title,
-    excerpt: p.data.excerpt,
-    dateDisplay: p.data.dateDisplay,
-    heroImage: p.data.heroImage,
-    heroImageAlt: p.data.heroImageAlt,
-  }));
-
-const placeholderTiles: ProjectTile[] = [
-  {
-    href: '#',
-    title: 'LakeSIM',
-    excerpt: 'A prototype workflow framework coupling urban design with computational modeling for the 600-acre Chicago Lakeside Development.',
-    dateDisplay: '2013–2015',
-  },
-  {
-    href: '#',
-    title: 'ChiLab Design Studio',
-    excerpt: 'Co-founded design research practice with internationally exhibited furniture, lighting, and exhibition work.',
-    dateDisplay: '2012–present',
-  },
-  {
-    href: '#',
-    title: 'Decision Quality Methods',
-    excerpt: 'Peer-reviewed development of decision quality as a portable method for analyzing games and decision environments.',
-    dateDisplay: '2023–present',
-  },
-  {
-    href: '#',
-    title: 'Kaplan Institute IPRO Labs',
-    excerpt: 'Industry-partnered design studios at Illinois Tech serving more than 1,300 students across cohorts.',
-    dateDisplay: '2018–present',
-  },
+// DRAFT, awaiting Bo (CLAUDE.md section 4): placeholder engagement list from the mockup.
+const ENGAGEMENTS = [
+  'Decision-quality instruments',
+  'Data visualization',
+  'Experiential media',
+  'Fabrication, through ChiLab Design Studio',
 ];
 
-// Mix real entries with placeholders, deduping by title, capped at 4
-const realTitles = new Set(realTiles.map((t) => t.title));
-const fillers = placeholderTiles.filter((p) => !realTitles.has(p.title));
-const featured: ProjectTile[] = [...realTiles, ...fillers].slice(0, 4);
+const projects = await getCollection('projects');
+const bySlug = new Map(projects.map((p) => [p.id, p]));
+const pick = (slugs: string[]) =>
+  slugs.map((s) => bySlug.get(s)).filter((p): p is (typeof projects)[number] => Boolean(p));
 
-const essayEntries = await getCollection('essays', ({ data }) => !data.draft);
-const pubEntries = await getCollection('publications', ({ data }) => data.featured);
+const partnerLine = (p: (typeof projects)[number]) => p.data.partners.slice(0, 2).join(', ');
 
-const realWriting: WritingTile[] = [
-  ...essayEntries.map((e) => ({
-    href: `/writing/essays/${e.id}/`,
-    title: e.data.title,
-    subtitle: e.data.subtitle,
-    excerpt: e.data.excerpt,
-    meta: e.data.date,
-    sortKey: e.data.date,
-  })),
-  ...pubEntries.map((p) => ({
-    href: p.data.url ?? (p.data.doi ? `https://doi.org/${p.data.doi}` : '/writing/'),
-    title: p.data.title,
-    excerpt: `${p.data.authors}. ${p.data.venue}, ${p.data.year}.`,
-    meta: String(p.data.year),
-    sortKey: `${p.data.year}-12-31`,
-  })),
-].sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+const slides = pick(GALLERY).filter((p) => p.data.heroImage);
+const cards = pick(CARDS);
+const featured = bySlug.get(FEATURED);
 
-const recentWriting: WritingTile[] =
-  realWriting.length > 0
-    ? realWriting.slice(0, 3)
-    : [
-        {
-          href: '#',
-          title: 'Decision quality as a portable method',
-          excerpt: 'Lorem ipsum dolor sit amet — placeholder excerpt for the most recent essay.',
-          meta: '2025-12-04',
-          sortKey: '2025-12-04',
-        },
-        {
-          href: '#',
-          title: 'Urban computing notes',
-          excerpt: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-          meta: '2025-09-17',
-          sortKey: '2025-09-17',
-        },
-        {
-          href: '#',
-          title: 'Visualization as a humanistic medium',
-          excerpt: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-          meta: '2025-06-22',
-          sortKey: '2025-06-22',
-        },
-      ];
+const pad = (n: number) => String(n).padStart(2, '0');
+
+// Work index: counts come from the data. A dash means nothing is assigned yet.
+const essays = (await getCollection('essays', ({ data }) => !data.draft)).sort((a, b) =>
+  b.data.date.localeCompare(a.data.date)
+);
+const publications = await getCollection('publications');
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const index = CATEGORIES.map((label) => {
+  if (label === 'Writing') {
+    return { label, count: publications.length + essays.length, href: '/writing/' };
+  }
+  if (label === 'Teaching') {
+    const n = projects.filter((p) => p.data.category === label).length;
+    return { label, count: n, href: '/teaching/' };
+  }
+  return {
+    label,
+    count: projects.filter((p) => p.data.category === label).length,
+    href: `/projects/?category=${slugify(label)}`,
+  };
+});
+
+const partners = await getCollection('partners');
+const partnerNames = PRIOR_PARTNERS.map((s) => partners.find((p) => p.id === s)?.data.name).filter(Boolean);
+
+const pubTag = (d: (typeof publications)[number]['data']) => {
+  if (d.status === 'under-review') return `Under review, ${d.year}`;
+  if (d.status === 'in-prep') return 'In preparation';
+  const type = { journal: 'Journal article', conference: 'Conference paper', chapter: 'Book chapter', review: 'Review' }[d.type];
+  return `${type}, ${d.year}`;
+};
+const recentPubs = publications
+  .filter((p) => p.data.featured)
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 3);
+
+const strands = (await getCollection('researchStrands')).sort((a, b) => a.data.order - b.data.order);
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
 ---
 <Layout>
-  <article class="page home">
-    <header class="hero">
-      <h1 class="display">Bo Rodda</h1>
-      <p class="hero-meta">
-        Assistant Professor of Experiential Media and Data Communication<br />
-        Illinois Institute of Technology
-      </p>
-      <p class="hero-statement">
-        Bo Rodda studies and builds at the intersection of design, computation, and lived experience. As Assistant Professor of Experiential Media and Data Communication at Illinois Institute of Technology, his research spans game studies, urban computing, and data visualization, with recent peer-reviewed work developing <em>decision quality</em> as a portable method for analyzing games and decision environments. He has built dynamic urban data platforms with the University of Chicago and Argonne National Laboratory, exhibited internationally as co-founder of ChiLab Design Studio, and led dozens of industry-partnered design studios at Illinois Tech&rsquo;s Kaplan Institute.
-      </p>
-    </header>
+  <div class="home">
+    <section class="wrap hero" aria-label="Introduction">
+      <div class="intro">
+        <h1 class="thesis">I turn new technologies into things people can see, handle and judge.</h1>
+        <p class="biop">I am a designer and researcher working in art and design for emerging technologies. I am {SITE.title} in the {SITE.school} at {SITE.institution}, and co-founder of {SITE.studio}.</p>
+        <dl class="kv creds">
+          <dt>Field</dt><dd>Decision quality, as a method for analyzing games and decision environments</dd>
+          <dt>Research</dt><dd><a class="lnk" href="/research/">Five strands, publications and talks</a></dd>
+          <dt>CV</dt><dd><a class="lnk" href="/cv/">Full CV, HTML and PDF</a></dd>
+        </dl>
+      </div>
 
-    <hr />
+      {slides.length > 0 && (
+        <div class="gal" role="group" aria-label="Selected projects">
+          <div class="frame">
+            {slides.map((p, i) => (
+              <Image
+                src={p.data.heroImage!}
+                alt={p.data.heroImageAlt ?? ''}
+                widths={[640, 960, 1280, 1920]}
+                sizes="(min-width: 961px) 58vw, 100vw"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                class:list={['slide', { on: i === 0 }]}
+                style={FOCUS[p.id] ? `object-position:${FOCUS[p.id]}` : undefined}
+                data-title={p.data.title}
+                data-meta={[p.data.dateDisplay, partnerLine(p)].filter(Boolean).join(' / ')}
+                data-href={`/projects/${p.id}/`}
+                aria-hidden={i === 0 ? 'false' : 'true'}
+              />
+            ))}
+          </div>
+          <div class="galbar">
+            <span class="galcap">
+              <span class="num" id="g-count">01 / {pad(slides.length)}</span>
+              <a class="galtitle" id="g-title" href={`/projects/${slides[0].id}/`}>{slides[0].data.title}</a>
+              <span class="meta" id="g-meta">{[slides[0].data.dateDisplay, partnerLine(slides[0])].filter(Boolean).join(' / ')}</span>
+            </span>
+            <span class="galbtns">
+              <button type="button" id="g-prev">Prev</button>
+              <button type="button" id="g-pause">Pause</button>
+              <button type="button" id="g-next">Next</button>
+            </span>
+          </div>
+        </div>
+      )}
+    </section>
 
-    <section class="featured">
-      <h2 class="section-title">Selected projects</h2>
-      <div class="featured-grid">
-        {featured.map((p) => (
-          <a href={p.href} class="tile">
-            <div class="tile-frame">
-              {p.heroImage ? (
+    {featured && (
+      <section class="wrap sec" aria-labelledby="h-feat">
+        <div class="sechead">
+          <h2 id="h-feat"><span class="num">00</span>Featured project</h2>
+          <span class="meta">Ongoing research</span>
+        </div>
+        <a class="feat" href={`/projects/${featured.id}/`}>
+          <figure>
+            {featured.data.heroImage && (
+              <Image
+                src={featured.data.heroImage}
+                alt={featured.data.heroImageAlt ?? ''}
+                widths={[720, 1080, 1620, 2400]}
+                sizes="(min-width: 961px) 72vw, 100vw"
+                loading="lazy"
+              />
+            )}
+          </figure>
+          <div class="featside">
+            <h3>{featured.data.title}</h3>
+            <p>A research instrument for commodity markets that records an analyst's conviction at the moment of judgment and resolves it against what the market did.</p>
+            <dl class="kv">
+              {featured.data.category && (<><dt>Category</dt><dd>{featured.data.category}</dd></>)}
+              <dt>Year</dt><dd>{featured.data.dateDisplay}</dd>
+              <dt>Measures</dt><dd>Decision quality, independently of outcome</dd>
+              <dt>Finding</dt><dd>The audit found no confirmed directional predictive edge. Calibrated volatility ranges are the one confirmed capability.</dd>
+            </dl>
+          </div>
+        </a>
+      </section>
+    )}
+
+    <section class="wrap sec" id="work" aria-labelledby="h-work">
+      <div class="sechead">
+        <h2 id="h-work"><span class="num">01</span>Selected work</h2>
+        <a class="more lnk" href="/projects/">Index of {projects.length} projects</a>
+      </div>
+      <div class="work">
+        <ul class="index" aria-label="Work index by category">
+          {index.map((c) => (
+            <li><a href={c.href}><span>{c.label}</span><span class="ct">{c.count > 0 ? pad(c.count) : '—'}</span></a></li>
+          ))}
+        </ul>
+        <div class="cards">
+          {cards.map((p) => (
+            <a class="card" href={`/projects/${p.id}/`}>
+              {p.data.heroImage ? (
                 <Image
-                  src={p.heroImage}
-                  alt={p.heroImageAlt ?? ''}
-                  widths={[480, 720, 960]}
-                  sizes="(min-width: 768px) 50vw, 100vw"
+                  src={p.data.heroImage}
+                  alt={p.data.heroImageAlt ?? ''}
+                  widths={[400, 640, 960]}
+                  sizes="(min-width: 961px) 24vw, (min-width: 601px) 48vw, 100vw"
                   loading="lazy"
+                  style={FOCUS[p.id] ? `object-position:${FOCUS[p.id]}` : undefined}
                 />
               ) : (
-                <span class="tile-placeholder" aria-hidden="true"></span>
+                <span class="ph" aria-hidden="true"></span>
               )}
-            </div>
-            <h3 class="tile-title">{p.title}</h3>
-            <p class="tile-excerpt">{p.excerpt}</p>
-            <p class="tile-meta">{p.dateDisplay}</p>
-          </a>
-        ))}
+              <h3>{p.data.title}</h3>
+              <span class="meta">{p.data.dateDisplay}</span>
+              {partnerLine(p) && <span class="meta">{partnerLine(p)}</span>}
+            </a>
+          ))}
+        </div>
       </div>
     </section>
 
-    <hr />
-
-    <section class="recent">
-      <h2 class="section-title">Recent writing</h2>
-      <ul class="writing-list">
-        {recentWriting.map((item) => (
-          <li class="writing-item">
-            <h3 class="writing-title"><a href={item.href}>{item.title}</a></h3>
-            {item.subtitle && <p class="writing-subtitle">{item.subtitle}</p>}
-            <p class="writing-excerpt">{item.excerpt}</p>
-            <p class="writing-meta">{item.meta}</p>
-          </li>
-        ))}
-      </ul>
+    <section class="wrap sec" id="practice" aria-labelledby="h-prac">
+      <div class="sechead">
+        <h2 id="h-prac"><span class="num">02</span>Practice</h2>
+        <a class="more lnk" href="/practice/">Engagements and partnerships</a>
+      </div>
+      <div class="two">
+        <div class="lead">
+          <p>I work with industry, civic and cultural partners on selected projects, through Illinois Tech and independently.</p>
+          <p class="invite-row"><a class="invite" href="#contact">Tell me what you are trying to make.</a></p>
+        </div>
+        <ul class="side plain">
+          {ENGAGEMENTS.map((e) => <li>{e}</li>)}
+        </ul>
+        {partnerNames.length > 0 && (
+          <p class="partners">Prior partners include {partnerNames.join(' · ')}</p>
+        )}
+      </div>
     </section>
-  </article>
+
+    <section class="wrap sec" id="writing" aria-labelledby="h-writ">
+      <div class="sechead">
+        <h2 id="h-writ"><span class="num">03</span>Writing</h2>
+        <a class="more lnk" href="/writing/">All essays and publications</a>
+      </div>
+      <div class="two">
+        <div class="essays">
+          <p class="sub">Essays</p>
+          {essays.length === 0 && <p class="essay empty">No essays published yet.</p>}
+          {essays.slice(0, 3).map((e) => (
+            <a class="essay" href={`/writing/essays/${e.id}/`}>
+              <h3>{e.data.title}</h3>
+              <p>{e.data.subtitle ?? e.data.excerpt}</p>
+              <span class="meta">{fmtDate(e.data.date)} · {readingTime(e.body)} min read</span>
+            </a>
+          ))}
+        </div>
+        <div class="pubs">
+          <p class="sub">Publications</p>
+          {recentPubs.map((p) => (
+            <p class="cite">{p.data.authors} {p.data.title}. {p.data.venue}.<span class="tag">{pubTag(p.data)}</span></p>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap sec" id="about" aria-labelledby="h-about">
+      <div class="sechead">
+        <h2 id="h-about"><span class="num">04</span>About</h2>
+        <span class="meta">BFA, Rhode Island School of Design · MFA, School of the Art Institute of Chicago</span>
+      </div>
+      <div class="two">
+        <!-- [DRAFT — Bo:] portrait image needed -->
+        <div class="portrait"><span class="meta">[Portrait]</span></div>
+        <div class="bio">
+          <p>Bo Rodda studies and builds at the intersection of design, computation, and lived experience. As {SITE.title} in the {SITE.school} at {SITE.institution}, his research spans game studies, urban computing, and data visualization, with recent peer-reviewed work developing <em>decision quality</em> as a portable method for analyzing games and decision environments. He has built dynamic urban data platforms with the University of Chicago and Argonne National Laboratory, exhibited internationally as co-founder of ChiLab Design Studio, and led dozens of industry-partnered design studios at Illinois Tech's Kaplan Institute.</p>
+          <div>
+            <p class="sub">Research strands</p>
+            <div class="strands">
+              {strands.map((s, i) => (
+                <a href={`/research/${s.id}/`}><span class="num">{i + 1}</span>{s.data.title}{i === 0 ? ' (primary field)' : ''}</a>
+              ))}
+            </div>
+          </div>
+          <div class="links">
+            <a class="lnk" href="/research/">Research</a>
+            <a class="lnk" href="/cv/">Curriculum vitae</a>
+            <a class="lnk" href="/teaching/">Teaching</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap sec last" id="contact" aria-labelledby="h-contact">
+      <div class="sechead">
+        <h2 id="h-contact"><span class="num">05</span>Contact</h2>
+      </div>
+      <div class="paths">
+        <div class="path">
+          <span class="meta">Academic and research</span>
+          <a href={`mailto:${EMAILS.academic}`}>{EMAILS.academic}</a>
+        </div>
+        <div class="path">
+          <span class="meta">Practice and partnerships</span>
+          <a href={`mailto:${EMAILS.partnership}`}>{EMAILS.partnership}</a>
+        </div>
+        <div class="path">
+          <span class="meta">Press and speaking</span>
+          <a href={`mailto:${EMAILS.press}`}>{EMAILS.press}</a>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
 
-<style>
+<script>
+  // Hero gallery: crossfade every 5 seconds, with Prev / Pause / Next.
+  // Does not auto-advance when the visitor prefers reduced motion.
+  const slides = [...document.querySelectorAll<HTMLImageElement>('.frame .slide')];
+  const el = (id: string) => document.getElementById(id);
+  const count = el('g-count'), title = el('g-title') as HTMLAnchorElement | null, meta = el('g-meta');
+  const prev = el('g-prev'), next = el('g-next'), pause = el('g-pause');
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  if (slides.length > 1 && count && title && meta && prev && next && pause) {
+    let i = 0;
+    let timer: number | undefined;
+    const show = (n: number) => {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => {
+        s.classList.toggle('on', k === i);
+        s.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+      });
+      count.textContent = `${pad(i + 1)} / ${pad(slides.length)}`;
+      title.textContent = slides[i].dataset.title ?? '';
+      title.href = slides[i].dataset.href ?? '#';
+      meta.textContent = slides[i].dataset.meta ?? '';
+    };
+    const stop = () => { clearInterval(timer); timer = undefined; pause.textContent = 'Play'; };
+    const start = () => { clearInterval(timer); timer = window.setInterval(() => show(i + 1), 5000); pause.textContent = 'Pause'; };
+    prev.addEventListener('click', () => show(i - 1));
+    next.addEventListener('click', () => show(i + 1));
+    pause.addEventListener('click', () => (timer ? stop() : start()));
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) stop(); else start();
+  }
+</script>
+
+<style is:global>
+  /* Homepage. Values follow design/homepage-mockup.html. */
+  .home a.feat:hover, .home a.essay:hover { color: inherit; }
+  .home a.feat:hover h3, .home a.essay:hover h3 { color: var(--accent); }
+
+  /* hero */
   .home .hero {
-    padding-block: var(--space-4) var(--space-6);
-  }
-  .home .hero::before {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 1px;
-    background: var(--accent);
-    margin-bottom: var(--space-5);
-  }
-
-  .hero-meta {
-    margin-top: var(--space-4);
-    font-weight: 400;
-    color: var(--color-ink-muted);
-    font-size: var(--type-h4);
-    line-height: 1.4;
-    max-width: var(--max-prose);
-  }
-  .hero-statement {
-    margin-top: var(--space-6);
-    max-width: var(--max-prose);
-  }
-
-  .section-title {
-    font-size: var(--type-h3);
-    font-weight: 600;
-    margin-bottom: var(--space-6);
-  }
-
-  /* Featured projects */
-  .featured-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: 40px;
+    padding-block: 48px 72px;
+    align-items: start;
   }
-  @media (min-width: 768px) {
-    .featured-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-8) var(--space-7);
-    }
+  .home .intro { grid-column: span 5; display: flex; flex-direction: column; gap: 28px; }
+  .home .thesis {
+    font-weight: var(--dw);
+    letter-spacing: var(--dls);
+    font-size: clamp(28px, 3vw, 48px);
+    line-height: 1.05;
+    text-wrap: balance;
   }
-
-  .tile {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-  }
-  .tile:hover { text-decoration: none; }
-
-  .tile-frame {
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-image);
-    overflow: hidden;
-    transition: opacity 400ms ease;
-    background-color: color-mix(in srgb, var(--color-rule) 70%, var(--color-ink-muted) 30%);
-  }
-  .tile-frame :global(img),
-  .tile-placeholder {
-    display: block;
+  .home .biop { font-size: 17px; line-height: 1.5; max-width: 46ch; }
+  .home .gal { grid-column: span 7; }
+  .home .frame { position: relative; aspect-ratio: 3 / 2; background: var(--tile); overflow: hidden; }
+  .home .slide {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity .9s ease;
   }
-  .tile:hover .tile-frame { opacity: 0.85; }
+  .home .slide.on { opacity: 1; }
+  .home .galbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0 24px;
+    border-bottom: 1px solid var(--rule);
+    min-height: 48px;
+  }
+  .home .galcap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; padding-block: 8px; }
+  .home .galtitle { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .home .galbtns { display: flex; gap: 4px; }
+  .home .galbtns button {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 8px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .home .galbtns button:hover { color: var(--accent); }
 
-  .tile-title {
-    margin-top: var(--space-4);
-    font-size: var(--type-h4);
-    font-weight: 600;
-    color: var(--color-ink);
-    transition: color 200ms ease;
+  /* featured */
+  .home .feat { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); }
+  .home .feat figure { grid-column: span 9; }
+  .home .feat img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: left top;
+    background: var(--tile);
   }
-  .tile:hover .tile-title { color: var(--color-link-hover); }
+  .home .featside { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
+  .home .feat h3 {
+    font-weight: var(--dw);
+    letter-spacing: var(--dls);
+    font-size: clamp(28px, 2.6vw, 40px);
+    line-height: 1.02;
+  }
+  .home .featside p { font-size: 16px; line-height: 1.45; }
 
-  .tile-excerpt {
-    margin-top: var(--space-2);
-    color: var(--color-ink);
-    max-width: none;
-    line-height: 1.55;
+  /* work */
+  .home .work { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); }
+  .home .index { grid-column: span 3; }
+  .home .index li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    min-height: 44px;
+    padding-block: 10px;
+    border-top: 1px solid var(--rule);
+    font-size: 16px;
+    font-weight: 500;
   }
-  .tile-meta {
-    margin-top: var(--space-2);
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.01em;
+  .home .index li:first-child a { border-top: 1px solid var(--strong); }
+  .home .index .ct { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--muted); }
+  .home .work .cards { grid-column: span 9; }
+
+  /* practice */
+  .home .lead { grid-column: span 8; }
+  .home .invite-row { margin-top: 32px; }
+  .home .side { grid-column: 10 / span 3; }
+  .home .partners {
+    grid-column: span 12;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .03em;
+    line-height: 2;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
-  /* Recent writing */
-  .writing-list {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: var(--space-7);
-    max-width: var(--max-prose);
+  /* writing */
+  .home .essays { grid-column: span 7; }
+  .home .pubs { grid-column: 9 / span 4; }
+  .home .essay { display: block; padding-block: 18px 22px; border-top: 1px solid var(--rule); }
+  .home .essay:first-of-type { border-top: 1px solid var(--strong); }
+  .home .essay h3 {
+    font-weight: var(--dw);
+    font-size: clamp(20px, 1.8vw, 28px);
+    line-height: 1.05;
+    letter-spacing: var(--dls);
+    margin-bottom: 8px;
   }
-  .writing-title {
-    font-size: var(--type-h4);
-    font-weight: 600;
+  .home a.essay p { font-size: 15px; line-height: 1.45; color: var(--muted); margin-bottom: 4px; }
+
+  /* about */
+  .home .portrait {
+    grid-column: span 3;
+    aspect-ratio: 4 / 5;
+    background: var(--tile);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .writing-title a {
-    color: var(--color-ink);
-    text-decoration: none;
+  .home .bio { grid-column: 5 / span 8; display: flex; flex-direction: column; gap: 40px; }
+  .home .bio > p { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.42; letter-spacing: -0.01em; max-width: 60ch; }
+  .home .strands { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); }
+  .home .strands a {
+    display: flex;
+    gap: 20px;
+    align-items: baseline;
+    min-height: 44px;
+    padding-block: 10px;
+    border-top: 1px solid var(--rule);
+    font-size: 15px;
+    font-weight: 500;
   }
-  .writing-title a:hover {
-    color: var(--color-link-hover);
-    text-decoration: none;
+
+  /* contact */
+  .home .sec.last { padding-bottom: 80px; }
+  .home .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+  .home .path { border-top: 1px solid var(--strong); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .home .path a {
+    font-size: clamp(18px, 1.7vw, 26px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    overflow-wrap: anywhere;
   }
-  .writing-subtitle {
-    margin-top: var(--space-1);
-    color: var(--color-ink-muted);
-    font-style: italic;
+
+  @media (max-width: 960px) {
+    .home .hero { padding-block: 40px 56px; }
+    .home .intro, .home .gal, .home .feat figure, .home .featside, .home .index, .home .work .cards,
+    .home .lead, .home .side, .home .essays, .home .pubs, .home .portrait, .home .bio { grid-column: 1 / -1; }
+    .home .portrait { max-width: 320px; }
   }
-  .writing-excerpt {
-    margin-top: var(--space-2);
-  }
-  .writing-meta {
-    margin-top: var(--space-2);
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.01em;
+  @media (max-width: 600px) {
+    .home .paths, .home .strands { grid-template-columns: minmax(0, 1fr); }
   }
 </style>
