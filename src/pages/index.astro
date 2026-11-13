@@ -93,7 +93,8 @@ const pubTag = (d: (typeof publications)[number]['data']) => {
 };
 const recentPubs = publications
   .filter((p) => p.data.featured)
-  .sort((a, b) => b.data.year - a.data.year)
+  // newest first; within a year, published work before work under review
+  .sort((a, b) => b.data.year - a.data.year || Number(b.data.status === 'published') - Number(a.data.status === 'published'))
   .slice(0, 3);
 
 const strands = (await getCollection('researchStrands')).sort((a, b) => a.data.order - b.data.order);
@@ -255,7 +256,26 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
         <div class="pubs">
           <p class="sub">Publications</p>
           {recentPubs.map((p) => (
-            <p class="cite">{p.data.authors} {p.data.title}. {p.data.venue}.<span class="tag">{pubTag(p.data)}</span></p>
+            <div class="cite">
+              {p.data.image && (
+                <figure class="pubfig">
+                  <Image
+                    src={p.data.image}
+                    alt={p.data.imageAlt ?? ''}
+                    widths={[400, 640, 960]}
+                    sizes="(min-width: 961px) 32vw, 100vw"
+                    loading="lazy"
+                  />
+                  {p.data.imageCredit && <figcaption class="tag">{p.data.imageCredit}</figcaption>}
+                </figure>
+              )}
+              <p>
+                {p.data.doi || p.data.url
+                  ? <a href={p.data.doi ? `https://doi.org/${p.data.doi}` : p.data.url}>{`${p.data.authors} ${p.data.title}. ${p.data.venue}.`}</a>
+                  : `${p.data.authors} ${p.data.title}. ${p.data.venue}.`}
+                <span class="tag">{pubTag(p.data)}</span>
+              </p>
+            </div>
           ))}
         </div>
       </div>
@@ -282,6 +302,7 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
           <div class="links">
             <a class="lnk" href="/research/">Research</a>
             <a class="lnk" href="/cv/">Curriculum vitae</a>
+            <a class="lnk" href="/cv.pdf">Download CV (PDF)</a>
             <a class="lnk" href="/teaching/">Teaching</a>
           </div>
         </div>
@@ -467,6 +488,10 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
     margin-bottom: 8px;
   }
   .home a.essay p { font-size: 15px; line-height: 1.45; color: var(--muted); margin-bottom: 4px; }
+
+  .home .pubs .cite a { text-decoration: none; }
+  .home .pubfig { margin-bottom: 14px; }
+  .home .pubfig img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--tile); }
 
   /* about */
   .home .portrait {

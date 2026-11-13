@@ -52,17 +52,23 @@ const projects = defineCollection({
 
 const publications = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/publications' }),
-  schema: z.object({
-    title: z.string(),
-    authors: z.string(),
-    venue: z.string(),
-    year: z.number().int(),
-    status: z.enum(['published', 'under-review', 'in-prep']),
-    type: z.enum(['journal', 'conference', 'chapter', 'review']),
-    doi: z.string().optional(),
-    url: z.string().url().optional(),
-    featured: z.boolean().default(false),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      authors: z.string(),
+      venue: z.string(),
+      year: z.number().int(),
+      status: z.enum(['published', 'under-review', 'in-prep']),
+      type: z.enum(['journal', 'conference', 'chapter', 'review']),
+      doi: z.string().optional(),
+      url: z.string().url().optional(),
+      featured: z.boolean().default(false),
+      // Optional thumbnail, shown beside the citation on the homepage.
+      image: image().optional(),
+      imageAlt: z.string().optional(),
+      // Rights line for images Bo does not own, shown under the thumbnail.
+      imageCredit: z.string().optional(),
+    }),
 });
 
 const essays = defineCollection({
