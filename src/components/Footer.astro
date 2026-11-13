@@ -2,87 +2,27 @@
 import { SITE, PROFILES } from '../config';
 const year = new Date().getFullYear();
 ---
-<footer class="footer">
-  <div class="footer-inner">
-    <p class="footer-copy">© {year} {SITE.name}</p>
-    <ul class="footer-profiles">
-      <li><a href={PROFILES.orcid} rel="me noopener" target="_blank">ORCID</a></li>
-      <li><a href={PROFILES.scholar} rel="noopener" target="_blank">Google Scholar</a></li>
-      <li><a href={PROFILES.linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
-      <li><a href="/feed.xml">RSS</a></li>
-    </ul>
-    <p class="footer-credit">
-      Built with <a href="https://astro.build" rel="noopener" target="_blank">Astro</a>
-    </p>
+<footer class="wrap">
+  <div class="foot meta">
+    <span>© {year} {SITE.name}</span>
+    <div class="links">
+      <a href={PROFILES.orcid} rel="me noopener" target="_blank">ORCID</a>
+      <a href={PROFILES.scholar} rel="noopener" target="_blank">Google Scholar</a>
+      <a href={PROFILES.linkedin} rel="me noopener" target="_blank">LinkedIn</a>
+      <a href="/feed.xml">RSS</a>
+    </div>
   </div>
 </footer>
 
 <style>
-  .footer {
-    border-top: 1px solid var(--color-rule);
-    margin-top: var(--space-9);
-    background: var(--color-paper);
-  }
-  .footer-inner {
-    max-width: var(--max-page);
-    margin: 0 auto;
-    padding: var(--space-6) var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    align-items: flex-start;
-  }
-  .footer-copy {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    margin: 0;
-  }
-  .footer-profiles {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .foot {
+    border-top: 1px solid var(--strong);
+    padding-block: 14px 40px;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-5);
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 32px;
   }
-  .footer-profiles a {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    text-decoration: none;
-    letter-spacing: 0.02em;
-  }
-  .footer-profiles a:hover {
-    color: var(--color-link);
-    text-decoration: none;
-  }
-  .footer-credit {
-    font-family: var(--font-sans);
-    font-size: var(--type-xs);
-    color: var(--color-ink-muted);
-    margin: 0;
-  }
-  .footer-credit a {
-    color: var(--color-ink-muted);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-  }
-  .footer-credit a:hover {
-    color: var(--color-link);
-  }
-
-  @media (min-width: 768px) {
-    .footer-inner {
-      padding: var(--space-6) var(--space-8);
-      flex-direction: row;
-      align-items: center;
-      gap: var(--space-7);
-    }
-    .footer-credit { margin-left: auto; }
-  }
-  @media (min-width: 1280px) {
-    .footer-inner { padding: var(--space-6) var(--space-9); }
-  }
+  .foot .links { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: .04em; }
 </style>

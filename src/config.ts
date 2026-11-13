@@ -1,10 +1,14 @@
 export const SITE = {
   name: 'Bo Rodda',
   fullName: 'Warner B. "Bo" Rodda',
-  title: 'Assistant Professor of Experiential Media and Data Communication',
+  title: 'Assistant Professor of Experiential Media and Data Communications',
+  school: 'School of Design + Society',
   institution: 'Illinois Institute of Technology',
+  location: 'Chicago, Illinois',
+  studio: 'ChiLab Design Studio',
+  studioRole: 'Co-founder, ChiLab Design Studio',
   description:
-    'Bo Rodda — Assistant Professor of Experiential Media and Data Communication, Illinois Institute of Technology.',
+    'Bo Rodda is Assistant Professor of Experiential Media and Data Communications in the School of Design + Society at Illinois Institute of Technology, and co-founder of ChiLab Design Studio.',
 } as const;
 
 export const EMAILS = {
@@ -21,12 +25,22 @@ export const PROFILES = {
     'https://scholar.google.com/citations?view_op=new_articles&hl=en&imq=Bo+Rodda',
 } as const;
 
+// Navigation order follows the approved mockup. /projects/ is shown as "Work".
 export const ROUTES = [
+  { href: '/projects/', label: 'Work' },
   { href: '/research/', label: 'Research' },
-  { href: '/projects/', label: 'Projects' },
-  { href: '/teaching/', label: 'Teaching' },
+  { href: '/practice/', label: 'Practice' },
   { href: '/writing/', label: 'Writing' },
-  { href: '/partnerships/', label: 'Partnerships' },
+  { href: '/teaching/', label: 'Teaching' },
   { href: '/cv/', label: 'CV' },
   { href: '/contact/', label: 'Contact' },
+] as const;
+
+// Work-index categories, one per project (CLAUDE.md section 6).
+export const CATEGORIES = [
+  'Research',
+  'Platforms',
+  'Public Art and Fabrication',
+  'Teaching',
+  'Writing',
 ] as const;
