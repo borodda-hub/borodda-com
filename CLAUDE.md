@@ -36,13 +36,16 @@ Decided 2026-11-13: **a broad thesis, with decision quality named as
 the primary field beneath it.** The homepage frames Bo in three layers,
 each doing one job.
 
-1. **Label**: roles and territory. "Designer, researcher, educator.
-   Art and design for emerging technologies."
-2. **Thesis**: one line wide enough for all the work, from the
+1. **Thesis**: one line wide enough for all the work, from the
    visualizations and instruments to the fabricated and installed
    pieces. Current draft: "I turn new technologies into things people
    can see, handle and judge." The direction is settled; the wording is
-   Bo's to finalize.
+   Bo's to finalize. It is set at a moderate size (about 48px at most),
+   not as a full-width display line.
+2. **Short bio**: two sentences in the first person, directly under the
+   thesis, giving roles and territory (designer and researcher; art and
+   design for emerging technologies), position, school, and ChiLab.
+   This replaced an earlier small uppercase label.
 3. **Primary field**: decision quality, as a method for analyzing games
    and decision environments. It is stated in the homepage credentials
    list and in About, and its strand is listed first.
@@ -127,7 +130,7 @@ Homepage sections, in order, numbered 00 to 05 on the page:
 
 | No. | Section | Contents |
 |---|---|---|
-| — | Thesis | Small label, one thesis line, and a credentials list (position, school, studio, primary field, links to Research and CV). See section 2. |
+| — | Thesis | Left: thesis line, short bio, and a short list (primary field, links to Research and CV). Right: a rotating gallery of project images, each captioned with title, year and partner. See section 2. |
 | 00 | Featured project | Currently Goldeneye Research Terminal |
 | 01 | Selected work | Category index with counts, six project cards, link to the full index |
 | 02 | Practice | One sentence, the engagement list, the one invitation, prior partners |
@@ -225,8 +228,12 @@ buttons or badges.
 - 12-column grid, page padding and gutters of `clamp(20px, 2.4vw, 40px)`,
   content up to 1680px wide
 - Every section opens with a strong hairline rule and a mono label
-- No rounded corners, shadows, gradients, parallax, scroll-triggered
-  or auto-playing animation
+- No rounded corners, shadows, gradients, parallax, or scroll-triggered
+  animation
+- One exception to the no-auto-play rule: the homepage hero gallery. It
+  crossfades slowly (about every 5 seconds), has visible Prev, Pause
+  and Next controls, and does not auto-advance when the visitor has
+  asked for reduced motion. Nothing else on the site moves by itself.
 - Hover changes color or image contrast only
 - Links and controls are text with hairline underlines, not filled
   buttons
@@ -323,8 +330,8 @@ Not in the repo, on Bo's primary Windows machine:
 - Blog framing; the site has essays
 - Newsletter signup, contact forms, comments, search
 - Internationalization, e-commerce, paywall or membership content
-- Client-side JavaScript beyond the theme toggle, the project filter
-  and the lightbox
+- Client-side JavaScript beyond the theme toggle, the project filter,
+  the lightbox and the homepage hero gallery
 - Anything not in section 6
 
 ## 11. State of the build

@@ -2,14 +2,18 @@
 <!--
   borodda.com homepage mockup. REFERENCE ONLY, not part of the site build.
   Approved look as of 2026-11-13: Geist, medium display weight, cobalt accent, dark default.
-  See CLAUDE.md section 6. Open this file directly in a browser from the repo
+  See CLAUDE.md sections 2, 6 and 7. Open this file directly in a browser from the repo
   (images load from ../src/content/projects/_assets/).
   Alternates explored: change the classes on #pg.
     theme:   t-dark | t-light
     accent:  a-cobalt | a-chartreuse | a-verdigris
     face:    f-geist | f-instrument | f-schibsted | f-archivo
     weight:  w-medium | w-bold | w-black
-  Placeholder copy is in [BRACKETS]. The thesis line and the Practice list are drafts.
+  Placeholder copy is in [BRACKETS]. The thesis line and short bio are drafts in the agreed
+  direction (broad thesis, decision quality named as the primary field beneath it).
+  The Practice list is a draft.
+  The hero gallery crossfades every 5 seconds, has Prev / Pause / Next controls, and does
+  not auto-advance when the visitor prefers reduced motion.
   Fonts load from Google Fonts here for convenience; the site self-hosts them.
 -->
 <html lang="en">
@@ -60,10 +64,22 @@ body{margin:0}
 .subnav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;border-top:1px solid var(--strong);padding-block:10px}
 
 /* hero */
-.hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:56px;padding-block:72px 64px}
-.kicker{grid-column:1/-1}
-.thesis{grid-column:span 9;font-weight:var(--dw);letter-spacing:var(--dls);font-size:clamp(44px,6.6vw,112px);line-height:.98;text-wrap:balance;margin-top:-36px}
-.creds{grid-column:span 3;align-self:end}
+.hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:40px;padding-block:48px 72px;align-items:start}
+.intro{grid-column:span 5;display:flex;flex-direction:column;gap:28px}
+.thesis{font-weight:var(--dw);letter-spacing:var(--dls);font-size:clamp(28px,3vw,48px);line-height:1.05;text-wrap:balance}
+.biop{font-size:17px;line-height:1.5;max-width:46ch}
+.gal{grid-column:span 7}
+.frame{position:relative;aspect-ratio:3/2;background:var(--tile);overflow:hidden}
+.slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
+.slide.on{opacity:1}
+.slide.pl{object-position:12% 50%}
+.galbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0 24px;border-bottom:1px solid var(--rule);min-height:48px}
+.galcap{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.galtitle{font-size:15px;font-weight:600;letter-spacing:-0.01em}
+.galbtns{display:flex;gap:4px}
+.galbtns button{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:none;border:0;padding:0 8px;min-height:44px;min-width:44px;cursor:pointer}
+.galbtns button:hover{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}}
 .kv{display:grid;grid-template-columns:88px minmax(0,1fr);border-top:1px solid var(--strong)}
 .kv dt,.kv dd{padding-block:10px;border-bottom:1px solid var(--rule)}
 .kv dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:13px}
@@ -98,7 +114,7 @@ body{margin:0}
 
 /* practice */
 .two{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:56px var(--gap)}
-.lead{grid-column:span 8;font-weight:var(--dw);font-size:clamp(28px,3.4vw,56px);line-height:1.04;letter-spacing:var(--dls);text-wrap:balance}
+.lead{grid-column:span 8;font-weight:var(--dw);font-size:clamp(24px,2.4vw,38px);line-height:1.1;letter-spacing:var(--dls);text-wrap:balance}
 .side{grid-column:10 / span 3}
 .plain li{padding-block:11px;border-top:1px solid var(--rule);font-size:16px;font-weight:500}
 .plain li:first-child{border-top:1px solid var(--strong)}
@@ -111,7 +127,7 @@ body{margin:0}
 .sub{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .essay{display:block;padding-block:18px 22px;border-top:1px solid var(--rule)}
 .essay:first-of-type{border-top:1px solid var(--strong)}
-.essay h3{font-weight:var(--dw);font-size:clamp(24px,2.4vw,36px);line-height:1.05;letter-spacing:var(--dls);margin-bottom:8px}
+.essay h3{font-weight:var(--dw);font-size:clamp(20px,1.8vw,28px);line-height:1.05;letter-spacing:var(--dls);margin-bottom:8px}
 .essay p{font-size:15px;line-height:1.45;color:var(--muted);margin-bottom:4px}
 .cite{padding-block:14px;border-top:1px solid var(--rule);font-size:14.5px;line-height:1.45}
 .cite:first-of-type{border-top:1px solid var(--strong)}
@@ -134,9 +150,8 @@ body{margin:0}
 .foot .links{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.04em}
 
 @media (max-width:960px){
-  .hero{padding-block:48px}
-  .thesis{margin-top:-24px}
-  .wordmark,.navlist,.thesis,.creds,.feat figure,.featside,.index,.cards,.lead,.side,.essays,.pubs,.portrait,.bio{grid-column:1/-1}
+  .hero{padding-block:40px 56px}
+  .wordmark,.navlist,.intro,.gal,.feat figure,.featside,.index,.cards,.lead,.side,.essays,.pubs,.portrait,.bio{grid-column:1/-1}
   .navlist{justify-content:flex-start}
   .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .portrait{max-width:320px}
@@ -173,16 +188,33 @@ body{margin:0}
 
   <main id="top">
     <section class="wrap hero" aria-label="Introduction">
-      <p class="kicker meta">Art and design for emerging technologies</p>
-      <h1 class="thesis">I study how people decide, and I build the instruments that let them see it.</h1>
-      <div class="creds">
-        <dl class="kv">
-          <dt>Position</dt><dd>Assistant Professor of Experiential Media and Data Communications</dd>
-          <dt>School</dt><dd>School of Design + Society, Illinois Institute of Technology</dd>
-          <dt>Studio</dt><dd>Co-founder, ChiLab Design Studio</dd>
+      <div class="intro">
+        <h1 class="thesis">I turn new technologies into things people can see, handle and judge.</h1>
+        <p class="biop">I am a designer and researcher working in art and design for emerging technologies. I am Assistant Professor of Experiential Media and Data Communications in the School of Design + Society at Illinois Institute of Technology, and co-founder of ChiLab Design Studio.</p>
+        <dl class="kv creds">
+          <dt>Field</dt><dd>Decision quality, as a method for analyzing games and decision environments</dd>
           <dt>Research</dt><dd><a class="lnk" href="#about">Five strands, publications and talks</a></dd>
           <dt>CV</dt><dd><a class="lnk" href="#about">Full CV, HTML and PDF</a></dd>
         </dl>
+      </div>
+      <div class="gal" role="group" aria-label="Selected projects">
+        <div class="frame">
+          <img class="slide on" src="../src/content/projects/_assets/grand-spiral-stair-hero.webp" alt="The Grand Spiral Stair seen from above, a helical steel staircase with a blue-toned patina" data-title="Grand Spiral Stair" data-meta="2021–2022 / Gensler Chicago, Uber Freight">
+          <img class="slide" src="../src/content/projects/_assets/lakesim-hero.jpg" alt="LakeSIM model of the Chicago Lakeside Development on the lakefront site plan" data-title="LakeSIM" data-meta="2013–2015 / UrbanCCD, Argonne" aria-hidden="true">
+          <img class="slide" src="../src/content/projects/_assets/boolean-lamp/heroImage.jpg" alt="Boolean Lamp, a hand-blown smoke-glass pendant lit on a concrete floor" data-title="Boolean Lamp" data-meta="2014–present / ChiLab Design Studio" aria-hidden="true">
+          <img class="slide pl" src="../src/content/projects/_assets/cbd-building-age.jpg" alt="Map of downtown Chicago shaded by average building age" data-title="City of Big Data Maps" data-meta="2014–2015 / Chicago Architecture Foundation" aria-hidden="true">
+          <img class="slide" src="../src/content/projects/_assets/active-light-cloud-hero.jpg" alt="Active Light Cloud, a lattice structure of ribs and sensors in a studio" data-title="Active Light Cloud" data-meta="2008–2010 / SAIC" aria-hidden="true">
+          <img class="slide" src="../src/content/projects/_assets/bridges-hero.jpg" alt="Lit fiber-optic strands from the Bridges proposal" data-title="Bridges" data-meta="2011–2013 / Chicago River proposal" aria-hidden="true">
+          <img class="slide" src="../src/content/projects/_assets/goldeneye-hero.png" alt="The Goldeneye Research Terminal dashboard" data-title="Goldeneye Research Terminal" data-meta="2026–present / Research instrument" aria-hidden="true">
+        </div>
+        <div class="galbar">
+          <span class="galcap"><span class="num" id="g-count">01 / 07</span><span class="galtitle" id="g-title">Grand Spiral Stair</span><span class="meta" id="g-meta">2021–2022 / Gensler Chicago, Uber Freight</span></span>
+          <span class="galbtns">
+            <button type="button" id="g-prev">Prev</button>
+            <button type="button" id="g-pause">Pause</button>
+            <button type="button" id="g-next">Next</button>
+          </span>
+        </div>
       </div>
     </section>
 
@@ -325,8 +357,8 @@ body{margin:0}
           <div>
             <p class="sub">Research strands</p>
             <div class="strands">
-              <a href="#about"><span class="num">1</span>Visualization as Humanistic Medium</a>
-              <a href="#about"><span class="num">2</span>Game Studies and Decision Quality</a>
+              <a href="#about"><span class="num">1</span>Game Studies and Decision Quality (primary field)</a>
+              <a href="#about"><span class="num">2</span>Visualization as Humanistic Medium</a>
               <a href="#about"><span class="num">3</span>Urban Computing and Smart Cities</a>
               <a href="#about"><span class="num">4</span>Experiential and Immersive Media</a>
               <a href="#about"><span class="num">5</span>Industry-Engaged Pedagogy and Institutional Innovation</a>
@@ -382,6 +414,24 @@ body{margin:0}
     pg.classList.toggle('t-light', !dark);
     t.textContent = dark ? 'Light' : 'Dark';
   });
+
+  // Hero gallery
+  const slides = [...document.querySelectorAll('.frame .slide')];
+  const el = (id) => document.getElementById(id);
+  let i = 0, timer = null;
+  const show = (n) => {
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s, k) => { s.classList.toggle('on', k === i); s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
+    el('g-count').textContent = '0' + (i + 1) + ' / 0' + slides.length;
+    el('g-title').textContent = slides[i].dataset.title;
+    el('g-meta').textContent = slides[i].dataset.meta;
+  };
+  const stop = () => { clearInterval(timer); timer = null; el('g-pause').textContent = 'Play'; };
+  const start = () => { clearInterval(timer); timer = setInterval(() => show(i + 1), 5000); el('g-pause').textContent = 'Pause'; };
+  el('g-prev').addEventListener('click', () => show(i - 1));
+  el('g-next').addEventListener('click', () => show(i + 1));
+  el('g-pause').addEventListener('click', () => (timer ? stop() : start()));
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) stop(); else start();
 </script>
 </body>
 </html>
