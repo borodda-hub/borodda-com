@@ -368,7 +368,8 @@ Not done, roughly in order:
    the homepage list is still the mockup's placeholder
 2. Revise the strand pages, the Research intro and About copy to the
    positioning in section 2
-3. Essays: none exist yet
+3. More essays; the first, "The rendering is not the building", is
+   published
 4. Images for the seven text-only projects; resolve the `# CHECK:`
    notes in project and exhibition frontmatter
 5. Re-export `public/cv.pdf` once the Word CV carries the corrected
