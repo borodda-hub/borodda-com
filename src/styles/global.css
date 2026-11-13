@@ -1,103 +1,58 @@
 /* ============================================================
-   borodda.com — design system
+   borodda.com design system
+   Rules: CLAUDE.md section 7. Reference: design/homepage-mockup.html
    ============================================================ */
 
-/* ----- 1. Tokens ----- */
+/* ----- 1. Tokens. Dark is the default. ----- */
 :root {
-  /* color: raw */
-  --paper-light:     #F0EEE6;
-  --paper-dark:      #1A1814;
-  --ink-light:       #1A1A1A;
-  --ink-dark:        #E8E4DC;
-  --ink-muted-light: #5A5A55;
-  --ink-muted-dark:  #9A958B;
-  --rule-light:      #C8C2B6;
-  --rule-dark:       #3A352D;
-  --accent:          #A0522D;
-  --accent-hover:    #C26B3F;
+  --bg:     #101113;
+  --ink:    #EDEDEA;
+  --muted:  #9A9CA3;
+  --rule:   #2B2D31;
+  --strong: #5E6168;
+  --tile:   #1A1B1E;
+  --accent: #86A2FF;
 
-  /* spacing scale (4px base) */
-  --space-1:  0.25rem;
-  --space-2:  0.5rem;
-  --space-3:  0.75rem;
-  --space-4:  1rem;
-  --space-5:  1.5rem;
-  --space-6:  2rem;
-  --space-7:  3rem;
-  --space-8:  4rem;
-  --space-9:  6rem;
-  --space-10: 8rem;
+  --sans: 'Geist Variable', 'Geist', Arial, Helvetica, sans-serif;
+  --mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
 
-  /* layout widths */
-  --measure-prose: 65ch;
-  --measure-long:  70ch;
-  --max-prose:     720px;
-  --max-wide:      1080px;
-  --max-page:      1280px;
+  /* display weight and tracking */
+  --dw:  500;
+  --dls: -0.035em;
 
-  /* type families */
-  --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-sans:  'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* grid */
+  --edge: clamp(20px, 2.4vw, 40px);
+  --gap:  clamp(20px, 2.4vw, 40px);
+  --max:  1680px;
 
-  /* type scale (base 18px = 1.125rem off browser default 16px, ratio 1.25) */
-  --type-base:    1.125rem;   /* 18px body */
-  --type-long:    1.25rem;    /* 20px long-form essays */
-  --type-sm:      0.875rem;   /* 14px metadata */
-  --type-xs:      0.8125rem;  /* 13px fine print */
-  --type-h4:      1.4rem;
-  --type-h3:      1.75rem;
-  --type-h2:      2.2rem;
-  --type-h1:      2.75rem;
-  --type-display: clamp(2.75rem, 4vw + 1.5rem, 4.5rem);
+  /* reading measure for case studies and essays */
+  --measure: 68ch;
 
-  /* line-heights */
-  --lh-tight: 1.3;
-  --lh-body:  1.6;
-
-  /* misc */
-  --radius-image:    2px;
-  --rule-thickness:  1px;
-}
-
-/* ----- 2. Theme variants (semantic) -----
-   Note on link color: the raw --accent stays identical across modes
-   per the brief (used for hairline rules and small accent details).
-   But for link TEXT, the dark-mode terracotta on near-black paper
-   only reaches ~3:1 contrast (below WCAG AA's 4.5:1 for body text).
-   We override --color-link with a brighter terracotta in dark mode
-   so inline links and the focus ring clear AA. Hairlines and other
-   non-text uses keep the original --accent. */
-:root,
-[data-theme='light'] {
-  --color-paper:      var(--paper-light);
-  --color-ink:        var(--ink-light);
-  --color-ink-muted:  var(--ink-muted-light);
-  --color-rule:       var(--rule-light);
-  --color-link:       var(--accent);
-  --color-link-hover: var(--accent-hover);
-  color-scheme: light;
-}
-
-[data-theme='dark'] {
-  --color-paper:      var(--paper-dark);
-  --color-ink:        var(--ink-dark);
-  --color-ink-muted:  var(--ink-muted-dark);
-  --color-rule:       var(--rule-dark);
-  --color-link:       #D17C50;
-  --color-link-hover: #E89169;
   color-scheme: dark;
 }
 
-/* ----- 3. Reset (minimal) ----- */
+[data-theme='light'] {
+  --bg:     #F4F4F2;
+  --ink:    #111214;
+  --muted:  #62646B;
+  --rule:   #D9D9D5;
+  --strong: #111214;
+  --tile:   #E8E8E5;
+  --accent: #1F47D6;
+  color-scheme: light;
+}
+
+/* ----- 2. Reset ----- */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
 html, body { height: 100%; }
 img, picture, video, svg { display: block; max-width: 100%; }
-img { border-radius: var(--radius-image); }
 input, button, textarea, select { font: inherit; color: inherit; }
-button { background: none; border: none; padding: 0; cursor: pointer; }
+button { background: none; border: 0; padding: 0; cursor: pointer; border-radius: 0; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+dd { margin: 0; }
 
-/* ----- 4. Base ----- */
+/* ----- 3. Base ----- */
 html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
@@ -106,12 +61,13 @@ html {
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-serif);
-  font-size: var(--type-base);
-  line-height: var(--lh-body);
-  font-synthesis: none;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+  /* Geist ships no italic; allow a synthesized oblique, never synthesized weight */
+  font-synthesis: style;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -119,250 +75,256 @@ body {
 
 main { flex: 1 0 auto; }
 
-/* ----- 5. Typography ----- */
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  line-height: var(--lh-tight);
-  font-weight: 600;
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.15; text-wrap: balance; }
+strong { font-weight: 600; }
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--accent); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+main:focus-visible { outline: none; }
+
+::selection { background: var(--ink); color: var(--bg); }
+
+/* ----- 4. Shared pieces (names follow the mockup) ----- */
+.wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding-inline: var(--edge); }
+
+.meta {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.num { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: .04em; }
+.sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-top: 6px;
+}
+
+/* text links carry a hairline, not a fill */
+.lnk { border-bottom: 1px solid var(--strong); padding-bottom: 2px; }
+.lnk:hover { border-bottom-color: var(--accent); }
+
+.links { display: flex; flex-wrap: wrap; gap: 8px 32px; font-size: 14px; font-weight: 500; }
+.links a { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* the one invitation per page */
+.invite {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+/* key/value list */
+.kv { display: grid; grid-template-columns: 88px minmax(0, 1fr); border-top: 1px solid var(--strong); }
+.kv dt, .kv dd { padding-block: 10px; border-bottom: 1px solid var(--rule); }
+.kv dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 13px;
+}
+.kv dd { font-size: 15px; line-height: 1.4; }
+.kv.wide { grid-template-columns: minmax(120px, 1fr) minmax(0, 3fr); column-gap: var(--gap); }
+
+/* numbered section */
+.sec { border-top: 1px solid var(--strong); padding-block: 12px 120px; }
+.sechead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: baseline;
+  margin-bottom: 56px;
+}
+.sechead h2, .sechead .label {
+  grid-column: span 6;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  display: flex;
+  gap: 24px;
+  align-items: baseline;
+}
+.sechead .more, .sechead > .meta { grid-column: span 6; justify-self: end; text-align: right; }
+.sechead .more { font-size: 14px; font-weight: 500; }
+
+/* 12-column content grid */
+.two { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 56px var(--gap); }
+.two > .full { grid-column: 1 / -1; }
+.two > .main { grid-column: 4 / span 8; }
+.two > .aside { grid-column: span 3; }
+
+/* display type */
+.display {
+  font-weight: var(--dw);
+  letter-spacing: var(--dls);
+  font-size: clamp(40px, 6.6vw, 112px);
+  line-height: 1;
+}
+.lead {
+  font-weight: var(--dw);
+  font-size: clamp(24px, 2.4vw, 38px);
+  line-height: 1.1;
+  letter-spacing: var(--dls);
   text-wrap: balance;
 }
 
-h1 { font-size: var(--type-h1); font-weight: 700; letter-spacing: -0.015em; }
-h2 { font-size: var(--type-h2); letter-spacing: -0.01em; }
-h3 { font-size: var(--type-h3); }
-h4 { font-size: var(--type-h4); }
+/* inner-page header */
+.pagehead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 28px var(--gap);
+  align-items: end;
+  padding-block: 48px 72px;
+}
+.pagehead > * { grid-column: 1 / -1; }
+.pagehead .pagelead {
+  grid-column: span 8;
+  font-size: clamp(18px, 1.5vw, 22px);
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+  max-width: 60ch;
+}
+.pagehead .crumb { margin-bottom: -12px; }
+.crumb a { min-height: 44px; display: inline-flex; align-items: center; }
+.display.sm { font-size: clamp(34px, 4.6vw, 76px); line-height: 1.02; max-width: 22ch; }
 
-p { max-width: var(--max-prose); }
+/* single prose column set off the left edge by three grid columns */
+.offset { margin-left: calc((100% + var(--gap)) / 4); }
 
-a {
-  color: var(--color-link);
-  text-decoration: none;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  transition: color 120ms ease;
-}
-a:hover {
-  color: var(--color-link-hover);
-  text-decoration: underline;
-}
+/* plain ruled list */
+.plain li { padding-block: 11px; border-top: 1px solid var(--rule); font-size: 16px; font-weight: 500; }
+.plain li:first-child { border-top: 1px solid var(--strong); }
 
-strong { font-weight: 600; }
-em { font-style: italic; }
+/* citations */
+.cite { padding-block: 14px; border-top: 1px solid var(--rule); font-size: 14.5px; line-height: 1.45; }
+.cite:first-of-type { border-top: 1px solid var(--strong); }
+.cite a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; text-decoration-color: var(--strong); }
+.cite a:hover { text-decoration-color: var(--accent); }
 
-small,
-.caption,
-.meta {
-  font-family: var(--font-sans);
-  font-size: var(--type-sm);
-  color: var(--color-ink-muted);
-  letter-spacing: 0.01em;
-  line-height: 1.5;
-}
-
-/* ----- 6. Section breaks -----
-   Per the brief, accent terracotta (not the neutral rule color)
-   marks section breaks. --color-rule is reserved for grid borders,
-   table dividers, and other non-section hairlines. */
-hr {
-  border: 0;
-  border-top: var(--rule-thickness) solid var(--accent);
-  margin: var(--space-7) 0;
-  max-width: 100%;
-}
-
-/* ----- 7. Long-form (essay pages) ----- */
-.long-form {
-  font-size: var(--type-long);
-}
-.long-form p { max-width: var(--measure-long); }
-
-/* ----- 8. Layout primitives ----- */
-.page {
-  max-width: var(--max-page);
-  margin: 0 auto;
-  padding: var(--space-7) var(--space-5);
-}
-@media (min-width: 768px) {
-  .page { padding: var(--space-8) var(--space-8); }
-}
-@media (min-width: 1280px) {
-  .page { padding: var(--space-9) var(--space-9); }
-}
-
-.prose      { max-width: var(--max-prose); }
-.wide       { max-width: var(--max-wide);  margin-inline: auto; }
-
-/* ----- 9. Display (homepage hero) ----- */
-.display {
-  font-size: var(--type-display);
-  line-height: 1.05;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-/* ----- 10. Theme toggle ----- */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  color: var(--color-ink-muted);
-  transition: color 120ms ease;
-}
-.theme-toggle:hover { color: var(--color-link); }
-.theme-toggle svg   { width: 1.25rem; height: 1.25rem; stroke: currentColor; }
-
-[data-theme='light'] .theme-toggle .icon-sun  { display: none; }
-[data-theme='dark']  .theme-toggle .icon-moon { display: none; }
-
-/* ----- 11. Focus -----
-   Uses --color-link (which brightens in dark mode) so the focus ring
-   stays visible against paper-dark even on text-adjacent UI. */
-:focus-visible {
-  outline: 2px solid var(--color-link);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
-/* When <main> receives focus from the skip link, suppress the outline
-   on the container itself — the outline ring on a full page area is
-   noisy and the focus state is conveyed by the page jump. */
-main:focus-visible {
-  outline: none;
-}
-
-/* ----- Skip link: visible only when focused ----- */
-.skip-link {
-  position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
-  background: var(--color-paper);
-  color: var(--color-link);
-  border: 1px solid var(--accent);
-  padding: var(--space-2) var(--space-4);
-  font-family: var(--font-sans);
-  font-size: var(--type-sm);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  transform: translateY(-200%);
-  transition: transform 120ms ease;
-  z-index: 100;
-}
-.skip-link:focus,
-.skip-link:focus-visible {
-  transform: translateY(0);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ----- 12. Selection ----- */
-::selection {
-  background: var(--accent);
-  color: var(--paper-light);
-}
-
-/* ----- 13. Rendered markdown body -----
-   Editorial pattern: text paragraphs are constrained to the 720px
-   (.max-prose) column, left-aligned within the surrounding container
-   (matches the partnerships and CV layouts). Image-only paragraphs
-   and figures fill the full --max-wide container width. */
-.rich-text {
-  max-width: var(--max-wide);
-}
-.rich-text > * + * { margin-top: var(--space-4); }
-.rich-text strong { font-weight: 600; }
-.rich-text em { font-style: italic; }
-
-/* Text-bearing children stay at the prose measure, left-aligned. */
-.rich-text > p,
-.rich-text > h2,
-.rich-text > h3,
-.rich-text > h4,
-.rich-text > ul,
-.rich-text > ol,
-.rich-text > blockquote {
-  max-width: var(--max-prose);
-}
-
-.rich-text h2 {
-  font-size: var(--type-h2);
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-4);
-}
-.rich-text h3 {
-  font-size: var(--type-h3);
-  margin-top: var(--space-7);
-  margin-bottom: var(--space-3);
-}
-.rich-text h4 {
-  font-size: var(--type-h4);
-  margin-top: var(--space-6);
-  margin-bottom: var(--space-3);
-}
-
-.rich-text blockquote {
-  border-left: 2px solid var(--accent);
-  padding-left: var(--space-5);
-  margin: var(--space-6) 0;
-  color: var(--color-ink);
-}
-
-.rich-text ul,
-.rich-text ol {
-  padding-left: var(--space-5);
-}
-.rich-text li + li { margin-top: var(--space-2); }
-
-.rich-text a {
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-}
-.rich-text a:hover { color: var(--color-link-hover); }
-
-.rich-text code {
-  font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
-  font-size: 0.92em;
-  background: color-mix(in srgb, var(--color-rule) 60%, transparent);
-  padding: 0.1em 0.35em;
-  border-radius: 2px;
-}
-
-.rich-text hr {
-  margin-block: var(--space-7);
-  max-width: var(--max-prose);
-}
-
-/* Image-only paragraphs and figures fill the full --max-wide container. */
-.rich-text > figure,
-.rich-text > p:has(> img:only-child) {
-  margin-block: var(--space-7);
-  max-width: 100%;
-}
-.rich-text img,
-.rich-text figure img {
+/* project cards, 4:3 frames */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 64px var(--gap); }
+.card { display: flex; flex-direction: column; gap: 3px; }
+.card img, .card .ph {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: auto;
-  border-radius: var(--radius-image);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--tile);
+  margin-bottom: 10px;
+  transition: filter .24s ease;
 }
-.rich-text figcaption {
-  margin-top: var(--space-3);
-  max-width: var(--max-prose);
+.card:hover img { filter: contrast(1.05) saturate(1.05); }
+.card h3 { font-weight: 600; font-size: 18px; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 3px; }
+a.card:hover { color: inherit; }
+a.card:hover h3 { color: var(--accent); }
+
+/* ----- 5. Prose: case studies, strands, essays, CV ----- */
+.rich-text { font-size: 18px; line-height: 1.6; }
+.rich-text > * { max-width: var(--measure); }
+.rich-text > * + * { margin-top: 1.1em; }
+.rich-text h2 {
+  font-weight: var(--dw);
+  font-size: clamp(24px, 2vw, 30px);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-top: 2.4em;
 }
+.rich-text h3 { font-size: 20px; letter-spacing: -0.015em; margin-top: 2em; }
+.rich-text h4 { font-size: 17px; margin-top: 1.6em; }
+.rich-text ul, .rich-text ol { padding-left: 1.2em; }
+.rich-text li + li { margin-top: .4em; }
+.rich-text a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+  text-decoration-color: var(--strong);
+}
+.rich-text a:hover { text-decoration-color: var(--accent); }
+.rich-text blockquote { border-left: 1px solid var(--strong); padding-left: 24px; margin-block: 2em; }
+.rich-text code { font-family: var(--mono); font-size: .88em; background: var(--tile); padding: .1em .35em; }
+.rich-text hr { border: 0; border-top: 1px solid var(--rule); margin-block: 3em; }
+.rich-text > figure,
+.rich-text > p:has(> img:only-child) { max-width: 100%; margin-block: 3em; }
+.rich-text img { width: 100%; height: auto; background: var(--tile); }
 .rich-text figcaption {
-  font-family: var(--font-sans);
-  font-size: var(--type-sm);
-  color: var(--color-ink-muted);
-  margin-top: var(--space-3);
-  line-height: 1.5;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .03em;
+  color: var(--muted);
+  max-width: var(--measure);
+}
+.long-form .rich-text { font-size: 19px; }
+
+.empty { color: var(--muted); font-size: 15px; }
+
+/* ----- 6. Skip link ----- */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--strong);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  transform: translateY(-300%);
+  z-index: 100;
+}
+.skip-link:focus, .skip-link:focus-visible { transform: translateY(0); }
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-/* ----- 14. Reduced motion ----- */
+/* ----- 7. Narrow screens ----- */
+@media (max-width: 960px) {
+  .sec { padding-bottom: 72px; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .two > .main, .two > .aside, .pagehead .pagelead { grid-column: 1 / -1; }
+  .pagehead { padding-block: 40px 56px; }
+  .offset { margin-left: 0; }
+}
+@media (max-width: 600px) {
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .sechead h2, .sechead .label, .sechead .more, .sechead > .meta { grid-column: 1 / -1; justify-self: start; text-align: left; }
+  .sechead { row-gap: 6px; margin-bottom: 40px; }
+  .kv.wide { grid-template-columns: 88px minmax(0, 1fr); }
+}
+
+/* ----- 8. Reduced motion ----- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0.01ms !important;

@@ -1,6 +1,6 @@
 ---
-import '@fontsource-variable/source-serif-4';
-import '@fontsource-variable/inter';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -26,7 +26,7 @@ const ogImageURL = ogImage
   : new URL('/favicon.svg', Astro.site).toString();
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -57,7 +57,8 @@ const ogImageURL = ogImage
       (() => {
         let stored = null;
         try { stored = localStorage.getItem('theme'); } catch (_) {}
-        const sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Dark is the default; a system preference for light is honored on first visit.
+        const sys = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', stored || sys);
       })();
     </script>
