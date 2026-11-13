@@ -1,22 +1,25 @@
 ---
 layout: ../layouts/Layout.astro
 title: "Curriculum Vitae — Bo Rodda"
-description: "Curriculum vitae for Warner B. (Bo) Rodda, Assistant Professor of Experiential Media and Data Communication at Illinois Institute of Technology."
+description: "Curriculum vitae for Warner B. (Bo) Rodda, Assistant Professor of Experiential Media and Data Communications in the School of Design + Society at Illinois Institute of Technology."
 ---
 
-<article class="page cv-page">
+<article class="wrap cv-page">
 
 <div class="cv-toolbar">
   <p class="cv-name">Warner B. ("Bo") Rodda</p>
-  <a class="cv-pdf" href="/cv.pdf" download>Download PDF →</a>
+  <a class="cv-pdf lnk" href="/cv.pdf" download>Download PDF</a>
 </div>
 
 # Curriculum Vitae
 
-Assistant Professor of Experiential Media and Data Communication
-Department of Humanities · Lewis College of Science and Letters
-[Illinois Institute of Technology](https://www.illinoistech.edu)
-Siegel Hall, Suite 218 · 3301 South Dearborn · Chicago, IL 60616
+<div class="cv-body rich-text offset">
+
+Assistant Professor of Experiential Media and Data Communications<br />
+School of Design + Society<br />
+Department of Humanities · Lewis College of Science and Letters [VERIFY]<br />
+[Illinois Institute of Technology](https://www.illinoistech.edu)<br />
+Siegel Hall, Suite 218 · 3301 South Dearborn · Chicago, IL 60616<br />
 [wrodda@illinoistech.edu](mailto:wrodda@illinoistech.edu) · [IIT directory profile](https://www.iit.edu/directory/people/bo-rodda)
 
 ---
@@ -44,7 +47,7 @@ Selected for Graduate Invitational Exhibition, Woods-Gerry Gallery, RISD, 2002.
 
 **[Illinois Institute of Technology](https://www.illinoistech.edu), Chicago, IL**
 
-- **Assistant Professor of Experiential Media and Data Communication**, Department of Humanities, Lewis College of Science and Letters, 2024–present. Tenure-track appointment in the Communications and Emerging Media program. Program Director, Communications and Emerging Media (2026–present); architect of the new CEM degree program.
+- **Assistant Professor of Experiential Media and Data Communications**, School of Design + Society; Department of Humanities, Lewis College of Science and Letters [VERIFY], 2024–present. Tenure-track appointment in the Communications and Emerging Media program. Program Director, Communications and Emerging Media (2026–present); architect of the new CEM degree program.
 - **Professor of Practice, IPRO Program; Faculty Director, IPRO Labs**, Ed Kaplan Family Institute for Innovation and Tech Entrepreneurship, 2021–2024.
 - **Senior Lecturer, IPRO Program**, Ed Kaplan Family Institute, 2015–2021.
 
@@ -193,7 +196,7 @@ See [/teaching/](/teaching/) for current and selected courses.
 
 ## Industry, community, and public partnerships
 
-See [/partnerships/](/partnerships/) for the full list. Sustained collaborations include Wilson Sporting Goods, Motorola Solutions, American Red Cross, Farpoint Development, United Airlines, Infosys, Underwriters Laboratories, Sargent & Lundy, Big Monster Toys, VR Motion, Microsoft, Adler Planetarium, the Kavli Institute for Cosmological Physics, the City of Chicago, Argonne National Laboratory, the University of Chicago (UrbanCCD and the Computation Institute), the Chicago Architecture Foundation, Skidmore Owings & Merrill, McCaffery Interests, and many others.
+See [Practice](/practice/) for the full list. Sustained collaborations include Wilson Sporting Goods, Motorola Solutions, American Red Cross, Farpoint Development, United Airlines, Infosys, Underwriters Laboratories, Sargent & Lundy, Big Monster Toys, VR Motion, Microsoft, Adler Planetarium, the Kavli Institute for Cosmological Physics, the City of Chicago, Argonne National Laboratory, the University of Chicago (UrbanCCD and the Computation Institute), the Chicago Architecture Foundation, Skidmore Owings & Merrill, McCaffery Interests, and many others.
 
 ---
 
@@ -291,95 +294,57 @@ Data Visualization Society (DVS).
 
 Available upon request.
 
+</div>
+
 </article>
 
 <style>{`
-  .cv-page {
-    padding-block: var(--space-6) var(--space-9);
-  }
-  /* Constrain content children to the prose measure, left-aligned within
-     the .page container — matches the partnerships-page pattern. */
-  .cv-page > * {
-    max-width: var(--max-prose);
-  }
-
+  .cv-page { padding-block: 48px 120px; }
   .cv-toolbar {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: var(--space-6);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--color-rule);
+    align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-3);
+    gap: 4px 24px;
+    max-width: none;
+    margin-bottom: 40px;
   }
   .cv-name {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.04em;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .04em;
     text-transform: uppercase;
-    font-weight: 600;
+    color: var(--muted);
   }
-  .cv-pdf {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-link);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
-    letter-spacing: 0.02em;
+  .cv-page .cv-pdf {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
   }
-  .cv-pdf:hover { color: var(--color-link-hover); }
-
   .cv-page h1 {
-    font-size: var(--type-h1);
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    font-weight: var(--dw);
+    letter-spacing: var(--dls);
+    font-size: clamp(40px, 6.6vw, 112px);
+    line-height: 1;
+    max-width: none;
+    margin-bottom: 40px;
   }
-  .cv-page h1 + p {
-    margin-top: var(--space-3);
-    color: var(--color-ink-muted);
+  .cv-body > p:first-child { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.42; letter-spacing: -0.01em; }
+  /* Each CV section opens with a strong hairline and a mono label. */
+  .cv-body hr { display: none; }
+  .cv-body h2 {
+    max-width: none;
+    margin-top: 88px;
+    padding-top: 12px;
+    border-top: 1px solid var(--strong);
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 12px;
     line-height: 1.5;
+    letter-spacing: .06em;
+    text-transform: uppercase;
   }
-  .cv-page h2 {
-    font-size: var(--type-h3);
-    font-weight: 600;
-    margin-top: var(--space-7);
-    margin-bottom: var(--space-4);
-  }
-  .cv-page h3 {
-    font-size: var(--type-h4);
-    font-weight: 600;
-    margin-top: var(--space-5);
-    margin-bottom: var(--space-2);
-  }
-  .cv-page p {
-    line-height: 1.6;
-    margin-top: var(--space-3);
-  }
-  .cv-page ul {
-    padding-left: var(--space-5);
-    margin-top: var(--space-3);
-  }
-  .cv-page li {
-    line-height: 1.6;
-  }
-  .cv-page li + li {
-    margin-top: var(--space-2);
-  }
-  .cv-page hr {
-    margin-block: var(--space-7);
-    border: 0;
-    border-top: 1px solid var(--color-rule);
-  }
-  .cv-page a {
-    color: var(--color-link);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-  }
-  .cv-page a:hover { color: var(--color-link-hover); }
-  .cv-page strong { font-weight: 600; }
-  .cv-page em { font-style: italic; }
+  .cv-body h2 + * { margin-top: 32px; }
 `}</style>
