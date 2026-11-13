@@ -47,7 +47,7 @@ const hasCredits = data.credits.length > 0 || data.funding.length > 0 || data.pr
       </div>
     )}
 
-    <div class:list={['two', 'case-body', { 'has-gallery': data.gallery.length > 0 }]}>
+    <div class:list={['two', 'case-body', { 'has-gallery': data.gallery.length > 0, 'no-hero': !data.heroImage }]}>
       <dl class="kv case-meta">
         <dt>Years</dt><dd>{data.dateDisplay}</dd>
         <dt>Status</dt><dd>{statusLabel}</dd>
@@ -133,6 +133,8 @@ const hasCredits = data.credits.length > 0 || data.funding.length > 0 || data.pr
   }
 
   .case-body { padding-block: 56px 120px; align-items: start; }
+  /* text-only entries: a rule stands in for the hero image */
+  .case-body.no-hero { border-top: 1px solid var(--strong); padding-top: 24px; }
   .case-meta { grid-column: span 3; }
   .case-text { grid-column: 4 / span 8; }
   .has-gallery .case-text { grid-column: 4 / span 6; }

@@ -72,15 +72,10 @@ const index = CATEGORIES.map((label) => {
   if (label === 'Writing') {
     return { label, count: publications.length + essays.length, href: '/writing/' };
   }
-  if (label === 'Teaching') {
-    const n = projects.filter((p) => p.data.category === label).length;
-    return { label, count: n, href: '/teaching/' };
-  }
-  return {
-    label,
-    count: projects.filter((p) => p.data.category === label).length,
-    href: `/projects/?category=${slugify(label)}`,
-  };
+  const count = projects.filter((p) => p.data.category === label).length;
+  // Teaching projects open in the work index; with none, fall back to the Teaching page.
+  const href = label === 'Teaching' && count === 0 ? '/teaching/' : `/projects/?category=${slugify(label)}`;
+  return { label, count, href };
 });
 
 const partners = await getCollection('partners');
@@ -207,7 +202,7 @@ const fmtDate = (d: string) => dateFmt.format(new Date(`${d}T12:00:00Z`));
                   style={FOCUS[p.id] ? `object-position:${FOCUS[p.id]}` : undefined}
                 />
               ) : (
-                <span class="ph" aria-hidden="true"></span>
+                <span class="ph">{p.data.subtitle}</span>
               )}
               <h3>{p.data.title}</h3>
               <span class="meta">{p.data.dateDisplay}</span>

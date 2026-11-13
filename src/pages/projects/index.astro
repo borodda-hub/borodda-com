@@ -123,7 +123,7 @@ const groups = [
                       loading="lazy"
                     />
                   ) : (
-                    <span class="ph" aria-hidden="true"></span>
+                    <span class="ph">{p.data.subtitle}</span>
                   )}
                   <h3>{p.data.title}</h3>
                   <span class="meta">{[p.data.dateDisplay, p.data.category].filter(Boolean).join(' / ')}</span>

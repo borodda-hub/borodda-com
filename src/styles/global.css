@@ -243,6 +243,17 @@ main:focus-visible { outline: none; }
 .card h3 { font-weight: 600; font-size: 18px; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 3px; }
 a.card:hover { color: inherit; }
 a.card:hover h3 { color: var(--accent); }
+/* a project with no image: the tile carries its subtitle instead */
+.card .ph {
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  font-size: clamp(17px, 1.5vw, 22px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
 
 /* ----- 5. Prose: case studies, strands, essays, CV ----- */
 .rich-text { font-size: 18px; line-height: 1.6; }
