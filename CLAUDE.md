@@ -245,8 +245,7 @@ buttons or badges.
 
 Retired from the earlier build: Source Serif 4, Inter, the terracotta
 accent, the warm cream and brown neutrals, and the name-first hero with
-a three-sentence statement. `src/styles/global.css` and the page
-templates still carry them until the redesign is implemented.
+a three-sentence statement.
 
 ## 8. Content structures
 
@@ -274,8 +273,8 @@ counts.
 **Frontmatter** must match `src/content.config.ts`. Use proper YAML,
 and cross-link collections by slug. Do not invent schema fields. If a
 rule here calls for a field the schema lacks, say so and leave it out
-until the schema is changed. Known gap: projects have no `category`
-field yet.
+until the schema is changed. Projects have an optional `category` field;
+leave it unset on a project until Bo confirms the assignment.
 
 ## 9. Stack
 
@@ -337,30 +336,32 @@ Not in the repo, on Bo's primary Windows machine:
 ## 11. State of the build
 
 Done: scaffold, layout shell, schemas, all page templates, RSS,
-sitemap, OpenGraph, an accessibility pass, and real content in
-projects (9), publications (6), talks (14), partners (26) and research
-strands (5).
+sitemap, OpenGraph, and real content in projects (9), publications (6),
+talks (14), partners (26) and research strands (5). On 2026-11-13 the
+look in section 7 was implemented across the site: tokens, self-hosted
+Geist and Geist Mono, navigation, footer, the homepage with its hero
+gallery, and every inner template. `/partnerships/` became `/practice/`
+(copy carried over unchanged), the strands were reordered, and projects
+gained an optional `category` field.
 
 Not done, roughly in order:
 
-1. Implement the look in section 7, working from
-   `design/homepage-mockup.html`: tokens, fonts, navigation, homepage
-2. Correct the title and affiliation in `src/config.ts`, the homepage,
-   the CV page and anywhere else it reads "Data Communication" or omits
-   the School of Design + Society
-3. Rename `/partnerships/` to `/practice/` and write the page, once Bo
-   supplies the engagement list
-4. Add `category` to the projects schema and assign each project
-5. Reorder the research strands (`order` frontmatter) so Game Studies
-   and Decision Quality is first, and revise the strand pages and
-   About copy to the positioning in section 2
-6. Replace homepage placeholder tiles and placeholder writing items
-   with real entries
-7. Essays: none exist yet. Exhibitions: none exist yet.
-8. Teaching entries for the work index
-9. Canonical Google Scholar profile link in `src/config.ts`
-10. Cloudflare Pages deployment, then Plausible
-11. Final accessibility and performance audit against the new look
+1. Assign a `category` to each project once Bo confirms the proposed
+   assignments, then make the field required
+2. Confirm the appointment lines marked `[VERIFY]` in `src/pages/cv.mdx`
+   and the matching line on `/teaching/` (Department of Humanities and
+   Lewis College alongside the School of Design + Society)
+3. Write the `/practice/` page once Bo supplies the engagement list;
+   the homepage list is still the mockup's placeholder
+4. Revise the strand pages, the Research intro and About copy to the
+   positioning in section 2
+5. Portrait for the homepage About section; `public/cv.pdf` for the CV
+   download link (neither file exists yet)
+6. Essays: none exist yet. Exhibitions: none exist yet.
+7. Teaching entries for the work index
+8. Canonical Google Scholar profile link in `src/config.ts`
+9. Cloudflare Pages deployment, then Plausible
+10. Final accessibility and performance audit against the new look
 
 ## 12. Working across machines
 
