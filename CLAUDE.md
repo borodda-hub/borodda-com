@@ -1,7 +1,7 @@
 # borodda.com
 
 Personal site of **Warner B. ("Bo") Rodda**: Assistant Professor of
-Experiential Media and Data Communication in the School of Design + Society,
+Experiential Media and Data Communications in the School of Design + Society,
 College of Design Futures, at Illinois Institute of Technology, and co-founder of ChiLab
 Design Studio. (Affiliation corrected by Bo on 2026-11-13.)
 
@@ -348,9 +348,9 @@ homepage with its hero gallery, and every inner template.
 `/partnerships/` became `/practice/` (copy carried over unchanged) and
 the strands were reordered.
 
-Affiliation, corrected by Bo on 2026-11-13: School of Design + Society,
-College of Design Futures. The title stays "Experiential Media and Data
-Communication" (singular) for now. `public/cv.pdf` was exported from
+College of Design Futures. The title is "Experiential Media and Data
+Communications" (plural), everywhere, per Bo. `public/cv.pdf` is exported
+from the Word CV and carries the same title and affiliation.
 the November 2026 Word CV and still carries the old affiliation.
 
 Exhibitions are listed under "Selected exhibitions" at the foot of the
@@ -372,11 +372,9 @@ Not done, roughly in order:
    published
 4. Images for the seven text-only projects; resolve the `# CHECK:`
    notes in project and exhibition frontmatter
-5. Re-export `public/cv.pdf` once the Word CV carries the corrected
-   affiliation
-6. Canonical Google Scholar profile link in `src/config.ts`
-7. Plausible analytics
-8. Final accessibility and performance audit against the new look
+5. Canonical Google Scholar profile link in `src/config.ts`
+6. Plausible analytics
+7. Final accessibility and performance audit against the new look
 
 ## 12. Working across machines
 
