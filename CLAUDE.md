@@ -3,11 +3,11 @@
 Personal site of **Warner B. ("Bo") Rodda**: Assistant Professor of
 Experiential Media and Data Communication in the School of Design + Society,
 College of Design Futures, at Illinois Institute of Technology, and co-founder of ChiLab
-Design Studio. (Title and affiliation follow the November 2026 CV, per Bo
-on 2026-11-13. He also serves on School of Design + Society committees;
-the School is not his appointment line.)
+Design Studio. (Affiliation corrected by Bo on 2026-11-13.)
 
-The site has never been published. This is a rebuild toward launch.
+The site is on Cloudflare Pages at a public pages.dev address; a push to
+`main` publishes. It has not launched under borodda.com. This is a rebuild
+toward launch.
 
 **This file is the single source of truth for the site's rules.**
 `PROJECT_BRIEF.md` and `CLAUDE_PROJECT.md` are kept as history; where
@@ -285,7 +285,7 @@ the five in section 6; ask Bo which when adding a project.
   No Tailwind or component libraries.
 - Content Collections with Zod schemas; Markdown and MDX in the repo
 - `@astrojs/mdx`, `@astrojs/sitemap`, `@astrojs/rss`
-- Deployment: Cloudflare Pages from `main` (not yet set up)
+- Deployment: Cloudflare Pages from `main`, live at a pages.dev address
 - Analytics: Plausible (not yet set up)
 - Repo: https://github.com/borodda-hub/borodda-com (private)
 
@@ -339,13 +339,28 @@ Not in the repo, on Bo's primary Windows machine:
 ## 11. State of the build
 
 Done: scaffold, layout shell, schemas, all page templates, RSS,
-sitemap, OpenGraph, and real content in projects (9), publications (6),
-talks (14), partners (26) and research strands (5). On 2026-11-13 the
-look in section 7 was implemented across the site: tokens, self-hosted
-Geist and Geist Mono, navigation, footer, the homepage with its hero
-gallery, and every inner template. `/partnerships/` became `/practice/`
-(copy carried over unchanged), the strands were reordered, and projects
-gained a `category` field, assigned for all nine.
+sitemap, OpenGraph, and real content in projects (22, each with a
+category; seven are text only, with no hero image), publications (8),
+talks (16), partners (26), research strands (5) and exhibitions (17).
+On 2026-11-13 the look in section 7 was implemented across the site:
+tokens, self-hosted Geist and Geist Mono, navigation, footer, the
+homepage with its hero gallery, and every inner template.
+`/partnerships/` became `/practice/` (copy carried over unchanged) and
+the strands were reordered.
+
+Affiliation, corrected by Bo on 2026-11-13: School of Design + Society,
+College of Design Futures. The title stays "Experiential Media and Data
+Communication" (singular) for now. `public/cv.pdf` was exported from
+the November 2026 Word CV and still carries the old affiliation.
+
+Exhibitions are listed under "Selected exhibitions" at the foot of the
+work index (`/projects/#exhibitions`), grouped by year, newest first.
+A record with a `[DRAFT` gap in any field is held back until the gap is
+filled; one is held now (Corian Can Be Fun, 2009). The CV page keeps
+its own hand-written exhibition list.
+
+The site deploys to Cloudflare Pages on every push to `main`, so a push
+is a publication.
 
 Not done, roughly in order:
 
@@ -353,11 +368,14 @@ Not done, roughly in order:
    the homepage list is still the mockup's placeholder
 2. Revise the strand pages, the Research intro and About copy to the
    positioning in section 2
-3. Essays: none exist yet. Exhibitions: none exist yet.
-4. Teaching entries for the work index
-5. Canonical Google Scholar profile link in `src/config.ts`
-6. Cloudflare Pages deployment, then Plausible
-7. Final accessibility and performance audit against the new look
+3. Essays: none exist yet
+4. Images for the seven text-only projects; resolve the `# CHECK:`
+   notes in project and exhibition frontmatter
+5. Re-export `public/cv.pdf` once the Word CV carries the corrected
+   affiliation
+6. Canonical Google Scholar profile link in `src/config.ts`
+7. Plausible analytics
+8. Final accessibility and performance audit against the new look
 
 ## 12. Working across machines
 

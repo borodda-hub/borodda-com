@@ -19,6 +19,16 @@ const projectsForView = projects.map((p) => {
   return { id: p.id, data: p.data, decade, href: `/projects/${p.id}/` };
 });
 
+// Selected exhibitions, grouped by year, newest first.
+// A record with an unfilled "[DRAFT" gap in any field is held back until Bo fills it.
+const exhibitions = (await getCollection('exhibitions'))
+  .filter((e) => !Object.values(e.data).some((v) => typeof v === 'string' && v.includes('[DRAFT')))
+  .sort((a, b) => b.data.date.localeCompare(a.data.date));
+const exhibitionYears = Array.from(new Set(exhibitions.map((e) => e.data.date.slice(0, 4)))).map((year) => ({
+  year,
+  items: exhibitions.filter((e) => e.data.date.slice(0, 4) === year),
+}));
+
 const count = (fn: (p: (typeof projectsForView)[number]) => boolean) => projectsForView.filter(fn).length;
 
 const groups = [
@@ -136,6 +146,33 @@ const groups = [
         </div>
       </div>
     </section>
+
+    {exhibitions.length > 0 && (
+      <section class="sec" id="exhibitions" aria-labelledby="h-exhibitions">
+        <div class="sechead">
+          <h2 id="h-exhibitions"><span class="num">{pad(exhibitions.length)}</span>Selected exhibitions</h2>
+        </div>
+        <div class="ex-years">
+          {exhibitionYears.map((g) => (
+            <div class="two ex-year">
+              <h3 class="aside ex-yearlabel">{g.year}</h3>
+              <ul class="main ex-list">
+                {g.items.map((e) => (
+                  <li class="ex">
+                    <p class="ex-title">{e.data.title}</p>
+                    <p class="meta">{e.data.venue} / {e.data.city}</p>
+                    <p class="ex-work">
+                      {e.data.workShown}
+                      {e.data.award && <span class="ex-award"><span class="mark" aria-hidden="true">● </span>{e.data.award}</span>}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
   </div>
 </Layout>
 
@@ -212,6 +249,35 @@ const groups = [
 </script>
 
 <style>
+  /* exhibitions */
+  .ex-years { display: grid; gap: 40px; }
+  .ex-year { row-gap: 8px; }
+  .ex-yearlabel {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--muted);
+    padding-top: 16px;
+  }
+  .ex-list { list-style: none; padding: 0; }
+  .ex {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 4px var(--gap);
+    align-items: baseline;
+    padding-block: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .ex:first-child { border-top: 1px solid var(--strong); }
+  .ex-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .ex-work { grid-column: 1 / -1; font-size: 15px; line-height: 1.45; max-width: 72ch; }
+  .ex-award { display: block; margin-top: 4px; font-weight: 500; }
+  .mark { color: var(--accent); font-size: .6em; vertical-align: .25em; }
+  @media (max-width: 600px) {
+    .ex { grid-template-columns: minmax(0, 1fr); }
+  }
+
   .work { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 56px var(--gap); }
   .filters { grid-column: span 3; display: grid; gap: 40px; align-content: start; }
   .results { grid-column: span 9; }
