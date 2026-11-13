@@ -5,10 +5,10 @@ import Layout from '../layouts/Layout.astro';
   title="Teaching — Bo Rodda"
   description="Current courses, open courses, curricular leadership, mentorship, and teaching statement."
 >
-  <article class="page teaching-page">
-    <header class="teaching-header">
-      <h1>Teaching</h1>
-      <p class="teaching-intro">
+  <div class="wrap teaching-page">
+    <header class="pagehead">
+      <h1 class="display">Teaching</h1>
+      <p class="pagelead">
         Teaching, for me, is the place where industry-engaged research gets
         tested with students, and where the institutional infrastructure of
         the field gets either reinforced or built. The work below spans a
@@ -18,10 +18,10 @@ import Layout from '../layouts/Layout.astro';
       </p>
     </header>
 
-    <hr />
 
-    <section class="teaching-section">
-      <h2 class="teaching-section-title">Currently teaching</h2>
+    <section class="sec">
+      <div class="sechead"><h2><span class="num">01</span>Currently teaching</h2></div>
+      <div class="rich-text offset">
       <p class="teaching-section-intro">
         Faculty appointment in the Department of Humanities, Lewis College
         of Science and Letters, Illinois Institute of Technology.
@@ -32,12 +32,13 @@ import Layout from '../layouts/Layout.astro';
         <li><span class="course-code">COM 380</span> — Data Visualization and Communication <span class="course-when">(Fall 2024; Fall 2025)</span></li>
         <li><span class="course-code">HUM 371</span> — Fundamentals of Game Design <span class="course-when">(Fall 2024)</span></li>
       </ul>
+      </div>
     </section>
 
-    <hr />
 
-    <section class="teaching-section">
-      <h2 class="teaching-section-title">Coursera and open courses</h2>
+    <section class="sec">
+      <div class="sechead"><h2><span class="num">02</span>Coursera and open courses</h2></div>
+      <div class="rich-text offset">
       <article class="teaching-feature">
         <h3><a href="https://www.coursera.org/learn/illinois-tech-data-visualization-and-the-art-of-storytelling-bit">Data Visualization and the Art of Storytelling</a></h3>
         <p class="teaching-feature-meta">Coursera × Illinois Tech · launched 2025 · 266+ enrollments</p>
@@ -51,12 +52,13 @@ import Layout from '../layouts/Layout.astro';
           <a href="/research/visualization-as-humanistic-medium/">Visualization as Humanistic Medium</a> research strand.
         </p>
       </article>
+      </div>
     </section>
 
-    <hr />
 
-    <section class="teaching-section">
-      <h2 class="teaching-section-title">Curricular leadership</h2>
+    <section class="sec">
+      <div class="sechead"><h2><span class="num">03</span>Curricular leadership</h2></div>
+      <div class="rich-text offset">
 
       <article class="teaching-feature">
         <h3>Communications and Emerging Media (CEM) Degree Program</h3>
@@ -93,12 +95,13 @@ import Layout from '../layouts/Layout.astro';
           treating data visualization as a design-research medium.
         </p>
       </article>
+      </div>
     </section>
 
-    <hr />
 
-    <section class="teaching-section">
-      <h2 class="teaching-section-title">Mentorship at scale</h2>
+    <section class="sec">
+      <div class="sechead"><h2><span class="num">04</span>Mentorship at scale</h2></div>
+      <div class="rich-text offset">
       <p>
         Faculty of record for approximately <strong>1,300+ undergraduate
         students</strong> across approximately <strong>33 industry- and
@@ -133,12 +136,13 @@ import Layout from '../layouts/Layout.astro';
         <li>Saumya Sukhthankar — undergraduate independent study (Spring 2026)</li>
         <li>Zhiyu Liu — <em>A Digital Magazine on Dark Patterns Used in Modern Commercial Marketing</em> (Spring 2026)</li>
       </ul>
+      </div>
     </section>
 
-    <hr />
 
-    <section class="teaching-section">
-      <h2 class="teaching-section-title">Teaching statement</h2>
+    <section class="sec">
+      <div class="sechead"><h2><span class="num">05</span>Teaching statement</h2></div>
+      <div class="rich-text offset">
       <p>
         <em>Full teaching statement forthcoming. Short version: I treat
         industry-engaged studio teaching as a method, not a setting. The
@@ -148,95 +152,27 @@ import Layout from '../layouts/Layout.astro';
         faculty scaffolding — lets students see clearly enough to act
         well.</em>
       </p>
+      </div>
     </section>
-  </article>
+  </div>
 </Layout>
 
 <style>
-  .teaching-header {
-    margin-block: var(--space-4) var(--space-7);
-    max-width: var(--max-prose);
-  }
-  .teaching-header h1 {
-    font-size: var(--type-h1);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-  }
-  .teaching-intro {
-    margin-top: var(--space-4);
-    color: var(--color-ink);
-    line-height: 1.6;
-    max-width: var(--max-prose);
-  }
-
-  .teaching-section {
-    max-width: var(--max-prose);
-    padding-block: var(--space-3) 0;
-  }
-  .teaching-section-title {
-    font-size: var(--type-h3);
-    font-weight: 600;
-    margin-bottom: var(--space-5);
-  }
-  .teaching-section-intro {
-    margin-bottom: var(--space-4);
-    color: var(--color-ink-muted);
-    line-height: 1.55;
-  }
-  .teaching-section p {
-    line-height: 1.6;
-  }
-  .teaching-section p + p { margin-top: var(--space-4); }
-
-  .teaching-feature {
-    padding-block: var(--space-4) 0;
-  }
-  .teaching-feature + .teaching-feature {
-    margin-top: var(--space-6);
-  }
-  .teaching-feature h3 {
-    font-size: var(--type-h4);
-    font-weight: 600;
-    margin-bottom: var(--space-2);
-  }
+  .teaching-page :global(.sec:last-child) { padding-bottom: 96px; }
+  .teaching-section-intro { color: var(--muted); }
+  .teaching-feature + .teaching-feature { margin-top: 2.4em; }
+  .teaching-feature h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 6px; }
+  .teaching-feature > * + * { margin-top: .7em; }
   .teaching-feature-meta {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.02em;
-    margin-bottom: var(--space-3);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
-  .teaching-feature-h3 {
-    font-size: var(--type-h4);
-    font-weight: 600;
-    margin-top: var(--space-6);
-    margin-bottom: var(--space-3);
-  }
-
-  .course-list {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-3) 0 var(--space-4);
-    display: grid;
-    gap: var(--space-3);
-  }
-  .course-list li { line-height: 1.5; }
-  .course-list-compact { gap: var(--space-2); }
-  .course-code {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    font-weight: 600;
-    color: var(--color-ink-muted);
-    letter-spacing: 0.04em;
-  }
-  .course-when {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.02em;
-  }
-
-  .teaching-section-empty {
-    color: var(--color-ink-muted);
-  }
+  .rich-text .course-list { padding-left: 0; }
+  .course-list li { padding-block: 11px; border-top: 1px solid var(--rule); font-size: 16px; line-height: 1.45; margin: 0; }
+  .course-list li:first-child { border-top: 1px solid var(--strong); }
+  .course-code { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; color: var(--muted); }
+  .course-when { color: var(--muted); font-size: 15px; }
 </style>

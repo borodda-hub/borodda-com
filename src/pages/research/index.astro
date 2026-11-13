@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 
 const strands = await getCollection('researchStrands');
@@ -9,30 +8,21 @@ strands.sort((a, b) => a.data.order - b.data.order);
 const projects = await getCollection('projects');
 const publications = await getCollection('publications');
 
-type RelatedItem =
-  | { kind: 'project'; href: string; label: string; year: string; image?: typeof projects[number]['data']['heroImage']; alt?: string }
-  | { kind: 'publication'; href: string; label: string; year: string };
+type RelatedItem = { kind: 'Project' | 'Publication'; href: string; label: string; year: string };
 
 function relatedFor(strand: (typeof strands)[number]): RelatedItem[] {
   const items: RelatedItem[] = [];
   for (const slug of strand.data.relatedProjects) {
     const p = projects.find((x) => x.id === slug);
     if (p) {
-      items.push({
-        kind: 'project',
-        href: `/projects/${p.id}/`,
-        label: p.data.title,
-        year: p.data.dateDisplay,
-        image: p.data.heroImage,
-        alt: p.data.heroImageAlt,
-      });
+      items.push({ kind: 'Project', href: `/projects/${p.id}/`, label: p.data.title, year: p.data.dateDisplay });
     }
   }
   for (const slug of strand.data.relatedPublications) {
     const p = publications.find((x) => x.id === slug);
     if (p) {
       items.push({
-        kind: 'publication',
+        kind: 'Publication',
         href: p.data.url ?? (p.data.doi ? `https://doi.org/${p.data.doi}` : '/writing/'),
         label: p.data.title,
         year: String(p.data.year),
@@ -44,12 +34,12 @@ function relatedFor(strand: (typeof strands)[number]): RelatedItem[] {
 ---
 <Layout
   title="Research — Bo Rodda"
-  description="Five research strands spanning visualization, game studies, urban computing, experiential media, and industry-engaged pedagogy."
+  description="Five research strands: game studies and decision quality, visualization, urban computing, experiential media, and industry-engaged pedagogy."
 >
-  <article class="page research-index">
-    <header class="research-header">
-      <h1>Research</h1>
-      <p class="research-intro">
+  <div class="wrap">
+    <header class="pagehead">
+      <h1 class="display">Research</h1>
+      <p class="pagelead">
         Five overlapping strands. They cite each other often — visualization
         is the medium that translates the urban-computing simulations; the
         decision-quality work began as a way of evaluating game environments
@@ -62,154 +52,54 @@ function relatedFor(strand: (typeof strands)[number]): RelatedItem[] {
     {strands.map((s, i) => {
       const related = relatedFor(s);
       return (
-        <>
-          <hr class="strand-rule" />
-          <section class="strand">
-            <p class="strand-number">{String(i + 1).padStart(2, '0')}</p>
-            <h2 class="strand-title">
-              <a href={`/research/${s.id}/`}>{s.data.title}</a>
-            </h2>
-            <p class="strand-summary">{s.data.summary}</p>
-
+        <section class="sec strand" aria-labelledby={`h-${s.id}`}>
+          <div class="sechead">
+            <p class="label"><span class="num">{String(i + 1).padStart(2, '0')}</span>{i === 0 ? 'Primary field' : 'Strand'}</p>
+            <a class="more lnk" href={`/research/${s.id}/`}>Read the strand</a>
+          </div>
+          <div class="two">
+            <div class="strand-main">
+              <h2 class="lead" id={`h-${s.id}`}><a href={`/research/${s.id}/`}>{s.data.title}</a></h2>
+              <p class="strand-summary">{s.data.summary}</p>
+            </div>
             {related.length > 0 && (
               <div class="strand-related">
-                <span class="related-label">Featured work</span>
+                <p class="sub">Featured work</p>
                 <ul class="related-list">
                   {related.map((r) => (
                     <li>
-                      <a class="related-item" href={r.href}>
-                        <span class="related-title">{r.label}</span>
-                        <span class="related-meta">{r.kind === 'project' ? 'Project' : 'Publication'} · {r.year}</span>
+                      <a href={r.href}>
+                        <span>{r.label}</span>
+                        <span class="tag">{r.kind} / {r.year}</span>
                       </a>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-
-            <p class="strand-readmore">
-              <a href={`/research/${s.id}/`}>Read more →</a>
-            </p>
-          </section>
-        </>
+          </div>
+        </section>
       );
     })}
-  </article>
+  </div>
 </Layout>
 
 <style>
-  .research-header {
-    margin-block: var(--space-4) var(--space-7);
-    max-width: var(--max-prose);
-  }
-  .research-header h1 {
-    font-size: var(--type-h1);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-  }
-  .research-intro {
-    margin-top: var(--space-4);
-    color: var(--color-ink-muted);
-    line-height: 1.6;
-  }
+  .strand-main { grid-column: span 7; }
+  .strand-related { grid-column: 9 / span 4; }
+  .strand-summary { margin-top: 24px; font-size: 18px; line-height: 1.5; max-width: 60ch; }
 
-  .strand-rule {
-    margin-block: var(--space-8);
-  }
-
-  .strand {
-    max-width: var(--max-prose);
-  }
-  .strand-number {
-    font-family: var(--font-sans);
-    font-size: var(--type-xs);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    color: var(--color-ink-muted);
-    margin-bottom: var(--space-3);
-  }
-  .strand-title {
-    font-size: var(--type-h2);
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin-bottom: var(--space-4);
-  }
-  .strand-title a {
-    color: var(--color-ink);
-    text-decoration: none;
-  }
-  .strand-title a:hover {
-    color: var(--color-link-hover);
-    text-decoration: none;
-  }
-  .strand-summary {
-    font-size: var(--type-h4);
-    line-height: 1.5;
-    color: var(--color-ink);
-  }
-
-  .strand-related {
-    margin-top: var(--space-6);
-  }
-  .related-label {
+  .related-list li a {
     display: block;
-    font-family: var(--font-sans);
-    font-size: var(--type-xs);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-ink-muted);
-    margin-bottom: var(--space-3);
-  }
-  .related-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: var(--space-3);
-  }
-  .related-item {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-3);
-    color: var(--color-ink);
-    text-decoration: none;
-    border-bottom: 1px solid var(--color-rule);
-    padding-bottom: var(--space-3);
-  }
-  .related-item:hover {
-    text-decoration: none;
-    border-bottom-color: var(--accent);
-  }
-  .related-title {
+    padding-block: 12px;
+    border-top: 1px solid var(--rule);
+    font-size: 15px;
     font-weight: 500;
-    flex: 1 1 auto;
+    line-height: 1.35;
   }
-  .related-item:hover .related-title {
-    color: var(--color-link-hover);
-  }
-  .related-meta {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.02em;
-    flex: 0 0 auto;
-  }
+  .related-list li:first-child a { border-top: 1px solid var(--strong); }
 
-  .strand-readmore {
-    margin-top: var(--space-5);
-  }
-  .strand-readmore a {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-link);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-    letter-spacing: 0.02em;
-  }
-  .strand-readmore a:hover {
-    color: var(--color-link-hover);
+  @media (max-width: 960px) {
+    .strand-main, .strand-related { grid-column: 1 / -1; }
   }
 </style>

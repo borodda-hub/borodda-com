@@ -9,26 +9,28 @@
         <title><xsl:value-of select="/rss/channel/title"/> — RSS Feed</title>
         <style>
           :root {
-            --paper: #F0EEE6;
-            --ink: #1A1A1A;
-            --ink-muted: #5A5A55;
-            --rule: #C8C2B6;
-            --accent: #A0522D;
-            --accent-hover: #C26B3F;
+            --paper: #F4F4F2;
+            --ink: #111214;
+            --ink-muted: #62646B;
+            --rule: #D9D9D5;
+            --accent: #1F47D6;
+            --accent-hover: #1F47D6;
           }
           @media (prefers-color-scheme: dark) {
             :root {
-              --paper: #1A1814;
-              --ink: #E8E4DC;
-              --ink-muted: #9A958B;
-              --rule: #3A352D;
+              --paper: #101113;
+              --ink: #EDEDEA;
+              --ink-muted: #9A9CA3;
+              --rule: #2B2D31;
+              --accent: #86A2FF;
+              --accent-hover: #86A2FF;
             }
           }
           html { -webkit-text-size-adjust: 100%; }
           body {
             background: var(--paper);
             color: var(--ink);
-            font-family: Georgia, 'Times New Roman', serif;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 18px;
             line-height: 1.6;
             margin: 0;

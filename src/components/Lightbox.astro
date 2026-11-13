@@ -48,10 +48,9 @@
 </script>
 
 <style is:global>
-  .lightbox-trigger {
-    cursor: zoom-in;
-  }
+  .lightbox-trigger { cursor: zoom-in; }
 
+  /* The viewer is always dark, in both themes. */
   .lightbox {
     border: 0;
     padding: 0;
@@ -61,47 +60,33 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    color: white;
+    color: #EDEDEA;
   }
-  .lightbox::backdrop {
-    background: rgba(10, 8, 6, 0.94);
-  }
-  .lightbox[open] {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .lightbox::backdrop { background: rgba(16, 17, 19, 0.96); }
+  .lightbox[open] { display: flex; align-items: center; justify-content: center; }
   .lightbox-img {
     display: block;
     max-width: 92vw;
     max-height: 92vh;
     width: auto;
     height: auto;
-    border-radius: 2px;
-    background: rgba(255, 255, 255, 0.04);
   }
   .lightbox-close {
     position: fixed;
-    top: var(--space-4);
-    right: var(--space-4);
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    font-weight: 500;
-    letter-spacing: 0.06em;
+    top: 8px;
+    right: var(--edge);
+    min-height: 44px;
+    min-width: 44px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .04em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: var(--space-2) var(--space-4);
-    cursor: pointer;
-    transition: color 120ms ease, border-color 120ms ease;
+    color: #EDEDEA;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    text-decoration-color: #5E6168;
   }
-  .lightbox-close:hover {
-    color: var(--accent-hover);
-    border-color: var(--accent-hover);
-  }
-  .lightbox-close:focus-visible {
-    outline: 2px solid var(--accent-hover);
-    outline-offset: 2px;
-  }
+  .lightbox-close:hover { color: #86A2FF; text-decoration-color: #86A2FF; }
+  .lightbox-close:focus-visible { outline: 2px solid #86A2FF; outline-offset: 2px; }
 </style>

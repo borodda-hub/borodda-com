@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
+import { CATEGORIES } from '../../config';
 
 const projects = await getCollection('projects');
 projects.sort((a, b) => b.data.date.localeCompare(a.data.date));
@@ -9,6 +10,8 @@ projects.sort((a, b) => b.data.date.localeCompare(a.data.date));
 const labelize = (s: string) =>
   s.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 const statusLabel = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const pad = (n: number) => String(n).padStart(2, '0');
 
 const projectsForView = projects.map((p) => {
   const year = parseInt(p.data.date.split('-')[0], 10);
@@ -16,134 +19,134 @@ const projectsForView = projects.map((p) => {
   return { id: p.id, data: p.data, decade, href: `/projects/${p.id}/` };
 });
 
-const allThemes = Array.from(
-  new Set(projects.flatMap((p) => p.data.themes))
-).sort();
-const allDecades = Array.from(
-  new Set(projectsForView.map((p) => p.decade))
-).sort();
-const allStatuses = Array.from(
-  new Set(projects.map((p) => p.data.status))
-).sort();
+const count = (fn: (p: (typeof projectsForView)[number]) => boolean) => projectsForView.filter(fn).length;
+
+const groups = [
+  {
+    type: 'category',
+    label: 'Category',
+    options: CATEGORIES.filter((c) => projects.some((p) => p.data.category === c)).map((c) => ({
+      value: slugify(c),
+      label: c,
+      n: count((p) => p.data.category === c),
+    })),
+  },
+  {
+    type: 'theme',
+    label: 'Theme',
+    options: Array.from(new Set(projects.flatMap((p) => p.data.themes))).sort().map((t) => ({
+      value: t,
+      label: labelize(t),
+      n: count((p) => p.data.themes.includes(t)),
+    })),
+  },
+  {
+    type: 'decade',
+    label: 'Decade',
+    options: Array.from(new Set(projectsForView.map((p) => p.decade))).sort().map((d) => ({
+      value: d,
+      label: d,
+      n: count((p) => p.decade === d),
+    })),
+  },
+  {
+    type: 'status',
+    label: 'Status',
+    options: Array.from(new Set(projects.map((p) => p.data.status))).sort().map((s) => ({
+      value: s,
+      label: statusLabel(s),
+      n: count((p) => p.data.status === s),
+    })),
+  },
+].filter((g) => g.options.length > 0);
 ---
 <Layout
-  title="Projects — Bo Rodda"
+  title="Work — Bo Rodda"
   description="Selected projects across data visualization, urban computing, design research, and interactive installation."
 >
-  <article class="page projects-page">
-    <header class="projects-header">
-      <h1>Projects</h1>
-      <p class="projects-intro">
+  <div class="wrap">
+    <header class="pagehead">
+      <h1 class="display">Work</h1>
+      <p class="pagelead">
         Selected projects across data visualization, urban computing, interactive
-        installation, and design research. Filter by theme, decade, or status —
-        the URL updates so any filtered view is shareable.
+        installation, and design research. Filter by category, theme, decade, or
+        status — the URL updates so any filtered view is shareable.
       </p>
     </header>
 
-    <section class="filters" aria-label="Filter projects">
-      {allThemes.length > 0 && (
-        <div class="filter-group">
-          <span class="filter-label">Themes</span>
-          <ul class="filter-pills">
-            {allThemes.map((t) => (
-              <li>
-                <button
-                  type="button"
-                  class="pill"
-                  data-type="theme"
-                  data-value={t}
-                  aria-pressed="false"
-                >{labelize(t)}</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {allDecades.length > 0 && (
-        <div class="filter-group">
-          <span class="filter-label">Decade</span>
-          <ul class="filter-pills">
-            {allDecades.map((d) => (
-              <li>
-                <button
-                  type="button"
-                  class="pill"
-                  data-type="decade"
-                  data-value={d}
-                  aria-pressed="false"
-                >{d}</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {allStatuses.length > 0 && (
-        <div class="filter-group">
-          <span class="filter-label">Status</span>
-          <ul class="filter-pills">
-            {allStatuses.map((s) => (
-              <li>
-                <button
-                  type="button"
-                  class="pill"
-                  data-type="status"
-                  data-value={s}
-                  aria-pressed="false"
-                >{statusLabel(s)}</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <button type="button" class="filter-clear" hidden>Clear filters</button>
-    </section>
+    <section class="sec" aria-labelledby="h-index">
+      <div class="sechead">
+        <h2 id="h-index"><span class="num">{pad(projects.length)}</span>Index of projects</h2>
+        <button type="button" class="more lnk filter-clear" hidden>Clear filters</button>
+      </div>
 
-    <ul class="projects-grid">
-      {projectsForView.map((p) => (
-        <li>
-          <a
-            href={p.href}
-            class="project-tile"
-            data-themes={p.data.themes.join(' ')}
-            data-decade={p.decade}
-            data-status={p.data.status}
-          >
-            <div class="tile-frame">
-              {p.data.heroImage ? (
-                <Image
-                  src={p.data.heroImage}
-                  alt={p.data.heroImageAlt ?? ''}
-                  widths={[320, 480, 640]}
-                  sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
-                  loading="lazy"
-                />
-              ) : (
-                <span class="tile-placeholder" aria-hidden="true"></span>
-              )}
+      <div class="work">
+        <div class="filters" aria-label="Filter projects">
+          {groups.map((g) => (
+            <div class="filter-group">
+              <p class="sub">{g.label}</p>
+              <ul class="filter-list">
+                {g.options.map((o) => (
+                  <li>
+                    <button
+                      type="button"
+                      class="pill"
+                      data-type={g.type}
+                      data-value={o.value}
+                      aria-pressed="false"
+                    ><span>{o.label}</span><span class="ct">{pad(o.n)}</span></button>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h3 class="tile-title">{p.data.title}</h3>
-            <p class="tile-meta">{p.data.dateDisplay}</p>
-            <p class="tile-excerpt">{p.data.excerpt}</p>
-            {p.data.themes.length > 0 && (
-              <p class="tile-tags">{p.data.themes.map(labelize).join(' · ')}</p>
-            )}
-          </a>
-        </li>
-      ))}
-    </ul>
-    <p class="projects-empty" hidden>No projects match the current filters.</p>
-  </article>
+          ))}
+        </div>
+
+        <div class="results">
+          <ul class="cards projects-grid">
+            {projectsForView.map((p) => (
+              <li>
+                <a
+                  href={p.href}
+                  class="card project-tile"
+                  data-category={p.data.category ? slugify(p.data.category) : ''}
+                  data-themes={p.data.themes.join(' ')}
+                  data-decade={p.decade}
+                  data-status={p.data.status}
+                >
+                  {p.data.heroImage ? (
+                    <Image
+                      src={p.data.heroImage}
+                      alt={p.data.heroImageAlt ?? ''}
+                      widths={[400, 640, 960]}
+                      sizes="(min-width: 961px) 24vw, (min-width: 601px) 48vw, 100vw"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="ph" aria-hidden="true"></span>
+                  )}
+                  <h3>{p.data.title}</h3>
+                  <span class="meta">{[p.data.dateDisplay, p.data.category].filter(Boolean).join(' / ')}</span>
+                  <p class="tile-excerpt">{p.data.excerpt}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="empty projects-empty" hidden>No projects match the current filters.</p>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
 
 <script>
-  type FilterType = 'theme' | 'decade' | 'status';
+  type FilterType = 'category' | 'theme' | 'decade' | 'status';
+  const TYPES: FilterType[] = ['category', 'theme', 'decade', 'status'];
 
   const params = new URLSearchParams(location.search);
-  const active: Record<FilterType, Set<string>> = {
-    theme: new Set(params.getAll('theme')),
-    decade: new Set(params.getAll('decade')),
-    status: new Set(params.getAll('status')),
-  };
+  const active = Object.fromEntries(
+    TYPES.map((t) => [t, new Set(params.getAll(t))])
+  ) as Record<FilterType, Set<string>>;
 
   const pills = document.querySelectorAll<HTMLButtonElement>('.pill');
   const tiles = document.querySelectorAll<HTMLLIElement>('.projects-grid > li');
@@ -153,12 +156,9 @@ const allStatuses = Array.from(
   function syncPills() {
     pills.forEach((btn) => {
       const type = btn.dataset.type as FilterType;
-      const value = btn.dataset.value as string;
-      btn.setAttribute('aria-pressed', String(active[type].has(value)));
+      btn.setAttribute('aria-pressed', String(active[type].has(btn.dataset.value as string)));
     });
-    const anyActive =
-      active.theme.size + active.decade.size + active.status.size > 0;
-    if (clearBtn) clearBtn.hidden = !anyActive;
+    if (clearBtn) clearBtn.hidden = !TYPES.some((t) => active[t].size > 0);
   }
 
   function applyFilters() {
@@ -166,16 +166,15 @@ const allStatuses = Array.from(
     tiles.forEach((li) => {
       const a = li.querySelector<HTMLAnchorElement>('.project-tile');
       if (!a) return;
-      const tileThemes = (a.dataset.themes || '').split(' ').filter(Boolean);
-      const tileDecade = a.dataset.decade ?? '';
-      const tileStatus = a.dataset.status ?? '';
-      const themePass =
-        active.theme.size === 0 || tileThemes.some((t) => active.theme.has(t));
-      const decadePass =
-        active.decade.size === 0 || active.decade.has(tileDecade);
-      const statusPass =
-        active.status.size === 0 || active.status.has(tileStatus);
-      const show = themePass && decadePass && statusPass;
+      const values: Record<FilterType, string[]> = {
+        category: [a.dataset.category ?? ''],
+        theme: (a.dataset.themes || '').split(' ').filter(Boolean),
+        decade: [a.dataset.decade ?? ''],
+        status: [a.dataset.status ?? ''],
+      };
+      const show = TYPES.every(
+        (t) => active[t].size === 0 || values[t].some((v) => active[t].has(v))
+      );
       li.hidden = !show;
       if (show) visible++;
     });
@@ -184,9 +183,7 @@ const allStatuses = Array.from(
 
   function syncURL() {
     const np = new URLSearchParams();
-    active.theme.forEach((v) => np.append('theme', v));
-    active.decade.forEach((v) => np.append('decade', v));
-    active.status.forEach((v) => np.append('status', v));
+    TYPES.forEach((t) => active[t].forEach((v) => np.append(t, v)));
     const qs = np.toString();
     history.replaceState(null, '', qs ? `${location.pathname}?${qs}` : location.pathname);
   }
@@ -204,9 +201,7 @@ const allStatuses = Array.from(
   });
 
   clearBtn?.addEventListener('click', () => {
-    active.theme.clear();
-    active.decade.clear();
-    active.status.clear();
+    TYPES.forEach((t) => active[t].clear());
     syncPills();
     applyFilters();
     syncURL();
@@ -217,162 +212,42 @@ const allStatuses = Array.from(
 </script>
 
 <style>
-  .projects-header {
-    margin-block: var(--space-4) var(--space-7);
-    max-width: var(--max-prose);
-  }
-  .projects-header h1 {
-    font-size: var(--type-h1);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-  }
-  .projects-intro {
-    margin-top: var(--space-4);
-    color: var(--color-ink-muted);
-  }
+  .work { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 56px var(--gap); }
+  .filters { grid-column: span 3; display: grid; gap: 40px; align-content: start; }
+  .results { grid-column: span 9; }
 
-  .filters {
-    margin-bottom: var(--space-8);
-    display: grid;
-    gap: var(--space-5);
-  }
-  .filter-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-3);
-  }
-  .filter-label {
-    font-family: var(--font-sans);
-    font-size: var(--type-xs);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-ink-muted);
-    flex-shrink: 0;
-    min-width: 70px;
-  }
-  .filter-pills {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
+  .filter-list { list-style: none; padding: 0; }
   .pill {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--color-rule);
-    background: transparent;
-    color: var(--color-ink-muted);
-    cursor: pointer;
-    line-height: 1.4;
-    transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
-  }
-  .pill:hover {
-    border-color: var(--accent);
-    color: var(--color-ink);
-  }
-  .pill[aria-pressed='true'] {
-    background: var(--accent);
-    color: var(--paper-light);
-    border-color: var(--accent);
-  }
-  .pill[aria-pressed='true']:hover {
-    background: var(--accent-hover);
-    border-color: var(--accent-hover);
-  }
-  .filter-clear {
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
-    cursor: pointer;
-    align-self: start;
-    padding: 0;
-    background: none;
-    border: 0;
-  }
-  .filter-clear:hover { color: var(--color-link); }
-
-  .projects-grid {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-7) var(--space-6);
-  }
-  @media (min-width: 768px) {
-    .projects-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (min-width: 1280px) {
-    .projects-grid { grid-template-columns: 1fr 1fr 1fr; }
-  }
-
-  .project-tile {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-  }
-  .project-tile:hover { text-decoration: none; }
-
-  .tile-frame {
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-image);
-    overflow: hidden;
-    transition: opacity 400ms ease;
-    background-color: color-mix(in srgb, var(--color-rule) 70%, var(--color-ink-muted) 30%);
-  }
-  .tile-frame :global(img),
-  .tile-placeholder {
-    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    min-height: 44px;
+    padding-block: 10px;
+    border-top: 1px solid var(--rule);
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: var(--muted);
   }
-  .project-tile:hover .tile-frame { opacity: 0.85; }
+  .filter-list li:first-child .pill { border-top: 1px solid var(--strong); }
+  .pill .ct { font-family: var(--mono); font-size: 12px; font-weight: 400; }
+  .pill:hover { color: var(--accent); }
+  /* selected: ink text and a marker, no fill */
+  .pill[aria-pressed='true'] { color: var(--ink); }
+  .pill[aria-pressed='true'] > span:first-child::before { content: '● '; color: var(--accent); font-size: .6em; vertical-align: .2em; }
+  .filter-clear { min-height: 44px; }
 
-  .tile-title {
-    margin-top: var(--space-4);
-    font-size: var(--type-h4);
-    font-weight: 600;
-    color: var(--color-ink);
-    transition: color 200ms ease;
-  }
-  .project-tile:hover .tile-title { color: var(--color-link-hover); }
+  .projects-grid { list-style: none; padding: 0; }
+  .tile-excerpt { font-size: 15px; line-height: 1.45; margin-top: 8px; color: var(--ink); }
+  a.card:hover .tile-excerpt { color: var(--ink); }
 
-  .tile-meta {
-    margin-top: var(--space-1);
-    font-family: var(--font-sans);
-    font-size: var(--type-sm);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.01em;
+  @media (max-width: 960px) {
+    .filters, .results { grid-column: 1 / -1; }
+    .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px var(--gap); }
   }
-  .tile-excerpt {
-    margin-top: var(--space-2);
-    color: var(--color-ink);
-    max-width: none;
-    line-height: 1.55;
-  }
-  .tile-tags {
-    margin-top: var(--space-3);
-    font-family: var(--font-sans);
-    font-size: var(--type-xs);
-    color: var(--color-ink-muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .projects-empty {
-    margin-top: var(--space-7);
-    color: var(--color-ink-muted);
-    font-style: italic;
+  @media (max-width: 600px) {
+    .filters { grid-template-columns: minmax(0, 1fr); }
   }
 </style>
