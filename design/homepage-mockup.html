@@ -1,0 +1,387 @@
+<!doctype html>
+<!--
+  borodda.com homepage mockup. REFERENCE ONLY, not part of the site build.
+  Approved look as of 2026-11-13: Geist, medium display weight, cobalt accent, dark default.
+  See CLAUDE.md section 6. Open this file directly in a browser from the repo
+  (images load from ../src/content/projects/_assets/).
+  Alternates explored: change the classes on #pg.
+    theme:   t-dark | t-light
+    accent:  a-cobalt | a-chartreuse | a-verdigris
+    face:    f-geist | f-instrument | f-schibsted | f-archivo
+    weight:  w-medium | w-bold | w-black
+  Placeholder copy is in [BRACKETS]. The thesis line and the Practice list are drafts.
+  Fonts load from Google Fonts here for convenience; the site self-hosts them.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bo Rodda — homepage mockup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..900&family=Geist+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&family=Schibsted+Grotesk:wght@400..900&family=Archivo:wght@400..900&display=swap">
+<style>
+body{margin:0}
+.pg{--bg:#101113;--ink:#EDEDEA;--muted:#9A9CA3;--rule:#2B2D31;--strong:#5E6168;--tile:#1A1B1E;
+  --sans:'Geist',Arial,Helvetica,sans-serif;--mono:'Geist Mono',ui-monospace,monospace;--dw:500;--dls:-0.035em;
+  --edge:clamp(20px,2.4vw,40px);--gap:clamp(20px,2.4vw,40px);
+  background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.pg.t-light{--bg:#F4F4F2;--ink:#111214;--muted:#62646B;--rule:#D9D9D5;--strong:#111214;--tile:#E8E8E5}
+.pg.a-cobalt{--accent:#86A2FF}.pg.t-light.a-cobalt{--accent:#1F47D6}
+.pg.a-chartreuse{--accent:#C9EE4A}.pg.t-light.a-chartreuse{--accent:#4F6100}
+.pg.a-verdigris{--accent:#5FC2AC}.pg.t-light.a-verdigris{--accent:#1E6B5C}
+.pg.f-geist{--sans:'Geist',Arial,Helvetica,sans-serif}
+.pg.f-instrument{--sans:'Instrument Sans',Arial,Helvetica,sans-serif}
+.pg.f-schibsted{--sans:'Schibsted Grotesk',Arial,Helvetica,sans-serif}
+.pg.f-archivo{--sans:'Archivo',Arial,Helvetica,sans-serif}
+.pg.w-medium{--dw:500;--dls:-0.035em}
+.pg.w-bold{--dw:700;--dls:-0.03em}
+.pg.w-black{--dw:900;--dls:-0.02em}
+.pg *{box-sizing:border-box}
+.pg a{color:inherit;text-decoration:none}
+.pg a:hover{color:var(--accent)}
+.pg a.feat:hover,.pg a.card:hover,.pg a.essay:hover{color:inherit}
+.pg a.feat:hover h3,.pg a.card:hover h3,.pg a.essay:hover h3{color:var(--accent)}
+.pg a:focus-visible,.pg button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.pg h1,.pg h2,.pg h3,.pg p,.pg ul,.pg dl,.pg dd,.pg figure{margin:0;padding:0}
+.pg ul{list-style:none}
+.wrap{max-width:1680px;margin:0 auto;padding-inline:var(--edge)}
+.meta{font-family:var(--mono);font-size:12px;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em}
+.lnk{border-bottom:1px solid var(--strong);padding-bottom:2px}
+.lnk:hover{border-bottom-color:var(--accent)}
+
+/* nav */
+.nav{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding-block:10px}
+.wordmark{grid-column:span 3;font-weight:700;font-size:15px;letter-spacing:-0.01em;min-height:44px;display:flex;align-items:center}
+.navlist{grid-column:span 9;display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 24px;font-size:14px;font-weight:500}
+.navlist a,.toggle{min-height:44px;display:flex;align-items:center}
+.toggle{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:none;border:0;padding:0;cursor:pointer}
+.toggle:hover{color:var(--accent)}
+.subnav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;border-top:1px solid var(--strong);padding-block:10px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:56px;padding-block:72px 64px}
+.kicker{grid-column:1/-1}
+.thesis{grid-column:span 9;font-weight:var(--dw);letter-spacing:var(--dls);font-size:clamp(44px,6.6vw,112px);line-height:.98;text-wrap:balance;margin-top:-36px}
+.creds{grid-column:span 3;align-self:end}
+.kv{display:grid;grid-template-columns:88px minmax(0,1fr);border-top:1px solid var(--strong)}
+.kv dt,.kv dd{padding-block:10px;border-bottom:1px solid var(--rule)}
+.kv dt{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:13px}
+.kv dd{font-size:15px;line-height:1.4}
+
+/* section head */
+.sec{border-top:1px solid var(--strong);padding-block:12px 120px}
+.sechead{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:baseline;margin-bottom:56px}
+.sechead h2{grid-column:span 6;font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:24px;align-items:baseline}
+.sechead .more,.sechead > .meta{grid-column:span 6;justify-self:end;text-align:right}
+.sechead .more{font-size:14px;font-weight:500}
+
+/* featured */
+.feat{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+.feat figure{grid-column:span 9}
+.feat img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;object-position:left top;background:var(--tile)}
+.featside{grid-column:span 3;display:flex;flex-direction:column;gap:24px}
+.feat h3{font-weight:var(--dw);letter-spacing:var(--dls);font-size:clamp(28px,2.6vw,40px);line-height:1.02}
+.featside p{font-size:16px;line-height:1.45}
+
+/* work */
+.work{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+.index{grid-column:span 3}
+.index li a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;min-height:44px;padding-block:10px;border-top:1px solid var(--rule);font-size:16px;font-weight:500}
+.index li:first-child a{border-top:1px solid var(--strong)}
+.index .ct{font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted)}
+.cards{grid-column:span 9;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:64px var(--gap)}
+.card{display:flex;flex-direction:column;gap:3px}
+.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--tile);margin-bottom:10px;transition:filter .24s ease}
+.card:hover img{filter:contrast(1.05) saturate(1.05)}
+.card h3{font-weight:600;font-size:18px;line-height:1.2;letter-spacing:-0.015em;margin-bottom:3px}
+
+/* practice */
+.two{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:56px var(--gap)}
+.lead{grid-column:span 8;font-weight:var(--dw);font-size:clamp(28px,3.4vw,56px);line-height:1.04;letter-spacing:var(--dls);text-wrap:balance}
+.side{grid-column:10 / span 3}
+.plain li{padding-block:11px;border-top:1px solid var(--rule);font-size:16px;font-weight:500}
+.plain li:first-child{border-top:1px solid var(--strong)}
+.invite{display:inline-flex;min-height:44px;align-items:center;color:var(--accent);border-bottom:2px solid var(--accent)}
+.partners{grid-column:span 12;font-family:var(--mono);font-size:12px;letter-spacing:.03em;line-height:2;text-transform:uppercase;color:var(--muted)}
+
+/* writing */
+.essays{grid-column:span 7}
+.pubs{grid-column:9 / span 4}
+.sub{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.essay{display:block;padding-block:18px 22px;border-top:1px solid var(--rule)}
+.essay:first-of-type{border-top:1px solid var(--strong)}
+.essay h3{font-weight:var(--dw);font-size:clamp(24px,2.4vw,36px);line-height:1.05;letter-spacing:var(--dls);margin-bottom:8px}
+.essay p{font-size:15px;line-height:1.45;color:var(--muted);margin-bottom:4px}
+.cite{padding-block:14px;border-top:1px solid var(--rule);font-size:14.5px;line-height:1.45}
+.cite:first-of-type{border-top:1px solid var(--strong)}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:block;margin-top:6px}
+
+/* about */
+.portrait{grid-column:span 3;aspect-ratio:4/5;background:var(--tile);display:flex;align-items:center;justify-content:center}
+.bio{grid-column:5 / span 8;display:flex;flex-direction:column;gap:40px}
+.bio p{font-size:clamp(18px,1.5vw,22px);line-height:1.42;letter-spacing:-0.01em;max-width:60ch}
+.links{display:flex;flex-wrap:wrap;gap:8px 32px;font-size:14px;font-weight:500}
+.links a{min-height:44px;display:inline-flex;align-items:center}
+.strands{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--gap)}
+.strands a{display:flex;gap:20px;align-items:baseline;min-height:44px;padding-block:10px;border-top:1px solid var(--rule);font-size:15px;font-weight:500}
+
+/* contact */
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.path{border-top:1px solid var(--strong);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.path a{font-size:clamp(18px,1.7vw,26px);font-weight:500;letter-spacing:-0.02em;min-height:44px;display:inline-flex;align-items:center}
+.foot{border-top:1px solid var(--strong);padding-block:14px 40px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 32px}
+.foot .links{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.04em}
+
+@media (max-width:960px){
+  .hero{padding-block:48px}
+  .thesis{margin-top:-24px}
+  .wordmark,.navlist,.thesis,.creds,.feat figure,.featside,.index,.cards,.lead,.side,.essays,.pubs,.portrait,.bio{grid-column:1/-1}
+  .navlist{justify-content:flex-start}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .portrait{max-width:320px}
+  .sec{padding-bottom:72px}
+}
+@media (max-width:600px){
+  .cards,.paths,.strands{grid-template-columns:minmax(0,1fr)}
+  .sechead h2,.sechead .more,.sechead > .meta{grid-column:1/-1;justify-self:start;text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="pg t-dark a-cobalt f-geist w-medium" id="pg">
+
+  <header class="wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="wordmark" href="#top">Bo Rodda</a>
+      <div class="navlist">
+        <a href="#work">Work</a>
+        <a href="#about">Research</a>
+        <a href="#practice">Practice</a>
+        <a href="#writing">Writing</a>
+        <a href="#about">Teaching</a>
+        <a href="#about">CV</a>
+        <a href="#contact">Contact</a>
+        <button type="button" class="toggle" id="toggle">Light</button>
+      </div>
+    </nav>
+    <div class="subnav meta">
+      <span>School of Design + Society, Illinois Institute of Technology</span>
+      <span>Chicago, Illinois  /  Co-founder, ChiLab Design Studio</span>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="wrap hero" aria-label="Introduction">
+      <p class="kicker meta">Art and design for emerging technologies</p>
+      <h1 class="thesis">I study how people decide, and I build the instruments that let them see it.</h1>
+      <div class="creds">
+        <dl class="kv">
+          <dt>Position</dt><dd>Assistant Professor of Experiential Media and Data Communications</dd>
+          <dt>School</dt><dd>School of Design + Society, Illinois Institute of Technology</dd>
+          <dt>Studio</dt><dd>Co-founder, ChiLab Design Studio</dd>
+          <dt>Research</dt><dd><a class="lnk" href="#about">Five strands, publications and talks</a></dd>
+          <dt>CV</dt><dd><a class="lnk" href="#about">Full CV, HTML and PDF</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="wrap sec" aria-labelledby="h-feat">
+      <div class="sechead">
+        <h2 id="h-feat"><span class="num">00</span>Featured project</h2>
+        <span class="meta">Ongoing research</span>
+      </div>
+      <a class="feat" href="#work">
+        <figure><img src="../src/content/projects/_assets/goldeneye-hero.png" alt="The Goldeneye Research Terminal dashboard: a price chart with a shaded volatility range, a forecast panel and a decision journal"></figure>
+        <div class="featside">
+          <h3>Goldeneye Research Terminal</h3>
+          <p>A research instrument for commodity markets that records an analyst's conviction at the moment of judgment and resolves it against what the market did.</p>
+          <dl class="kv">
+            <dt>Category</dt><dd>Research</dd>
+            <dt>Year</dt><dd>2026–present</dd>
+            <dt>Measures</dt><dd>Decision quality, independently of outcome</dd>
+            <dt>Finding</dt><dd>The audit found no confirmed directional predictive edge. Calibrated volatility ranges are the one confirmed capability.</dd>
+          </dl>
+        </div>
+      </a>
+    </section>
+
+    <section class="wrap sec" id="work" aria-labelledby="h-work">
+      <div class="sechead">
+        <h2 id="h-work"><span class="num">01</span>Selected work</h2>
+        <a class="more lnk" href="#work">Index of 9 projects</a>
+      </div>
+      <div class="work">
+        <ul class="index" aria-label="Work index by category">
+          <li><a href="#work"><span>Research</span><span class="ct">03</span></a></li>
+          <li><a href="#work"><span>Platforms</span><span class="ct">01</span></a></li>
+          <li><a href="#work"><span>Public Art and Fabrication</span><span class="ct">05</span></a></li>
+          <li><a href="#work"><span>Teaching</span><span class="ct">[N]</span></a></li>
+          <li><a href="#writing"><span>Writing</span><span class="ct">06</span></a></li>
+        </ul>
+        <div class="cards">
+          <a class="card" href="#work">
+            <img src="../src/content/projects/_assets/lakesim-hero.jpg" alt="LakeSIM model of the Chicago Lakeside Development, with color-coded building blocks on the lakefront site plan">
+            <h3>LakeSIM</h3>
+            <span class="meta">2013–2015</span>
+            <span class="meta">UrbanCCD / University of Chicago, Argonne National Laboratory</span>
+          </a>
+          <a class="card" href="#work">
+            <img src="../src/content/projects/_assets/grand-spiral-stair-hero.webp" alt="The Grand Spiral Stair seen from above, a helical steel staircase with a blue-toned patina">
+            <h3>Grand Spiral Stair</h3>
+            <span class="meta">2021–2022</span>
+            <span class="meta">Gensler Chicago, Uber Freight</span>
+          </a>
+          <a class="card" href="#work">
+            <img src="../src/content/projects/_assets/cbd-building-age.jpg" style="object-position: 12% 50%" alt="Map of downtown Chicago shaded by average building age">
+            <h3>City of Big Data Maps</h3>
+            <span class="meta">2014–2015</span>
+            <span class="meta">Chicago Architecture Foundation</span>
+          </a>
+          <a class="card" href="#work">
+            <img src="../src/content/projects/_assets/boolean-lamp/heroImage.jpg" alt="Boolean Lamp, a hand-blown smoke-glass pendant lit on a concrete floor">
+            <h3>Boolean Lamp</h3>
+            <span class="meta">2014–present</span>
+            <span class="meta">ChiLab Design Studio</span>
+          </a>
+          <a class="card" href="#work">
+            <img src="../src/content/projects/_assets/active-light-cloud-hero.jpg" alt="Active Light Cloud, a lattice structure of ribs and sensors installed in a studio">
+            <h3>Active Light Cloud</h3>
+            <span class="meta">2008–2010</span>
+            <span class="meta">School of the Art Institute of Chicago</span>
+          </a>
+          <a class="card" href="#work">
+            <img src="../src/content/projects/_assets/bridges-hero.jpg" alt="Close view of lit fiber-optic strands from the Bridges proposal">
+            <h3>Bridges</h3>
+            <span class="meta">2011–2013</span>
+            <span class="meta">Proposal for the Chicago River</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap sec" id="practice" aria-labelledby="h-prac">
+      <div class="sechead">
+        <h2 id="h-prac"><span class="num">02</span>Practice</h2>
+        <a class="more lnk" href="#practice">Engagements and partnerships</a>
+      </div>
+      <div class="two">
+        <div class="lead">
+          <p>I work with industry, civic and cultural partners on selected projects, through Illinois Tech and independently.</p>
+          <p style="margin-top: 32px"><a class="invite" href="#contact">Tell me what you are trying to make.</a></p>
+        </div>
+        <ul class="side plain">
+          <li>Decision-quality instruments</li>
+          <li>Data visualization</li>
+          <li>Experiential media</li>
+          <li>Fabrication, through ChiLab Design Studio</li>
+        </ul>
+        <p class="partners">Prior partners include Argonne National Laboratory · University of Chicago · Skidmore, Owings &amp; Merrill · Chicago Architecture Foundation · City of Chicago · Adler Planetarium · Microsoft · Motorola Solutions · United Airlines · Wilson Sporting Goods</p>
+      </div>
+    </section>
+
+    <section class="wrap sec" id="writing" aria-labelledby="h-writ">
+      <div class="sechead">
+        <h2 id="h-writ"><span class="num">03</span>Writing</h2>
+        <a class="more lnk" href="#writing">All essays and publications</a>
+      </div>
+      <div class="two">
+        <div class="essays">
+          <p class="sub">Essays</p>
+          <a class="essay" href="#writing">
+            <h3>The rendering is not the building</h3>
+            <p>[SUBTITLE OR EXCERPT]</p>
+            <span class="meta">[DATE] · [N] min read</span>
+          </a>
+          <a class="essay" href="#writing">
+            <h3>[ESSAY TITLE]</h3>
+            <p>[SUBTITLE OR EXCERPT]</p>
+            <span class="meta">[DATE] · [N] min read</span>
+          </a>
+          <a class="essay" href="#writing">
+            <h3>[ESSAY TITLE]</h3>
+            <p>[SUBTITLE OR EXCERPT]</p>
+            <span class="meta">[DATE] · [N] min read</span>
+          </a>
+        </div>
+        <div class="pubs">
+          <p class="sub">Publications</p>
+          <p class="cite">Rodda, W. B. Decision quality as a portable analytic lens for game studies: Method, coding protocol, and illustrative analysis of Wing Commander. Games and Simulation (Springer).<span class="tag">Under review, 2026</span></p>
+          <p class="cite">Collisson, B., &amp; Rodda, W. B. Do you want to play a game? Educational escape rooms and the skillful psychology student. Scholarship of Teaching and Learning in Psychology.<span class="tag">Journal article, 2025</span></p>
+          <p class="cite">Bergerson, J., Muehleisen, R. T., Rodda, W. B., Guzowski, L., Ozik, J., Auld, J., &amp; Collier, N. Designing future cities: LakeSIM integrated design tool. ISOCARP Review 11.<span class="tag">Book chapter, 2015</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap sec" id="about" aria-labelledby="h-about">
+      <div class="sechead">
+        <h2 id="h-about"><span class="num">04</span>About</h2>
+        <span class="meta">BFA, Rhode Island School of Design · MFA, School of the Art Institute of Chicago</span>
+      </div>
+      <div class="two">
+        <div class="portrait"><span class="meta">[PORTRAIT]</span></div>
+        <div class="bio">
+          <p>Bo Rodda studies and builds at the intersection of design, computation, and lived experience. As Assistant Professor of Experiential Media and Data Communications in the School of Design + Society at Illinois Institute of Technology, his research spans game studies, urban computing, and data visualization, with recent peer-reviewed work developing <em>decision quality</em> as a portable method for analyzing games and decision environments. He has built dynamic urban data platforms with the University of Chicago and Argonne National Laboratory, exhibited internationally as co-founder of ChiLab Design Studio, and led dozens of industry-partnered design studios at Illinois Tech's Kaplan Institute.</p>
+          <div>
+            <p class="sub">Research strands</p>
+            <div class="strands">
+              <a href="#about"><span class="num">1</span>Visualization as Humanistic Medium</a>
+              <a href="#about"><span class="num">2</span>Game Studies and Decision Quality</a>
+              <a href="#about"><span class="num">3</span>Urban Computing and Smart Cities</a>
+              <a href="#about"><span class="num">4</span>Experiential and Immersive Media</a>
+              <a href="#about"><span class="num">5</span>Industry-Engaged Pedagogy and Institutional Innovation</a>
+            </div>
+          </div>
+          <div class="links">
+            <a class="lnk" href="#about">Research</a>
+            <a class="lnk" href="#about">Curriculum vitae</a>
+            <a class="lnk" href="#about">Download CV (PDF)</a>
+            <a class="lnk" href="#about">Teaching</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap sec" id="contact" aria-labelledby="h-contact" style="padding-bottom: 80px">
+      <div class="sechead">
+        <h2 id="h-contact"><span class="num">05</span>Contact</h2>
+      </div>
+      <div class="paths">
+        <div class="path">
+          <span class="meta">Academic and research</span>
+          <a href="mailto:wrodda@illinoistech.edu">wrodda@illinoistech.edu</a>
+        </div>
+        <div class="path">
+          <span class="meta">Practice and partnerships</span>
+          <a href="mailto:wrodda@illinoistech.edu">wrodda@illinoistech.edu</a>
+        </div>
+        <div class="path">
+          <span class="meta">Press and speaking</span>
+          <a href="mailto:wrodda@illinoistech.edu">wrodda@illinoistech.edu</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div class="foot meta">
+      <span>© 2026 Bo Rodda</span>
+      <div class="links">
+        <a href="https://orcid.org/0009-0006-6488-4265">ORCID</a>
+        <a href="#top">Google Scholar</a>
+        <a href="https://www.linkedin.com/in/bo-rodda-3249a614/">LinkedIn</a>
+        <a href="#top">RSS</a>
+      </div>
+    </div>
+  </footer>
+</div>
+<script>
+  const pg = document.getElementById('pg'), t = document.getElementById('toggle');
+  t.addEventListener('click', () => {
+    const dark = pg.classList.toggle('t-dark');
+    pg.classList.toggle('t-light', !dark);
+    t.textContent = dark ? 'Light' : 'Dark';
+  });
+</script>
+</body>
+</html>

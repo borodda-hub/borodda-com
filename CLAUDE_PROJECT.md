@@ -1,3 +1,7 @@
+> **Historical.** This is the original setup guide for the claude.ai
+> content Project. The custom instructions embedded below are out of
+> date. `CLAUDE.md` is the single source of truth for the site's rules.
+
 # Claude Project: borodda.com Content Development
 
 This is the setup and operating guide for a Claude Project on

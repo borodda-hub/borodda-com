@@ -1,3 +1,7 @@
+> **Historical.** This is the original build brief from May 2026. Its
+> audiences, hiring rules, homepage, typography and color decisions
+> have been superseded. `CLAUDE.md` is the single source of truth.
+
 # Claude Code Project Brief — borodda.com
 
 You are building a personal academic and design-portfolio website for Warner B. ("Bo") Rodda, Assistant Professor of Experiential Media and Data Communication at Illinois Institute of Technology. The site will replace his existing borodda.com. Read this entire brief before writing any code. Confirm understanding before scaffolding.
