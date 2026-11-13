@@ -4,6 +4,7 @@ subtitle: "A research and paper-trading terminal built to measure decision quali
 date: "2026-05-01"
 dateDisplay: "2026–present"
 status: "ongoing"
+category: "Research"
 themes: ["data-viz", "design-research"]
 partners: []
 featured: true

@@ -4,6 +4,7 @@ subtitle: "Lakeside Sustainable Infrastructure Model"
 date: "2013-01-01"
 dateDisplay: "2013–2015"
 status: "completed"
+category: "Research"
 themes: ["data-viz", "urban-computing", "design-research"]
 partners:
   - "UrbanCCD / University of Chicago"

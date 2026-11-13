@@ -4,6 +4,7 @@ subtitle: "Real-time energy monitoring and dashboard design for a national labor
 date: "2010-06-01"
 dateDisplay: "2010–2012"
 status: "completed"
+category: "Platforms"
 themes: ["data-viz", "design-research", "sustainability"]
 partners:
   - "Argonne National Laboratory"

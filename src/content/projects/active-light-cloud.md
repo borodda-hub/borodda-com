@@ -4,6 +4,7 @@ subtitle: "Gesture-responsive lighting installation"
 date: "2009-01-01"
 dateDisplay: "2008–2010"
 status: "completed"
+category: "Public Art and Fabrication"
 themes: ["interactive-installation", "design-research"]
 partners:
   - "School of the Art Institute of Chicago"

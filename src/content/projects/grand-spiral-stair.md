@@ -4,6 +4,7 @@ subtitle: Centerpiece staircase for Uber Freight at the Old Chicago Post Office
 date: '2022-01-01'
 dateDisplay: 2021–2022
 status: completed
+category: "Public Art and Fabrication"
 themes:
   - design-research
   - digital-fabrication

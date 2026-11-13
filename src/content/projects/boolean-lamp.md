@@ -4,6 +4,7 @@ subtitle: Hand-blown glass pendants by ChiLab Design Studio
 date: '2014-01-01'
 dateDisplay: 2014–present
 status: ongoing
+category: "Public Art and Fabrication"
 themes:
   - object-design
   - design-research

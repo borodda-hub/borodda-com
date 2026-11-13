@@ -4,6 +4,7 @@ subtitle: "Activated architecture through projected interaction"
 date: "2010-06-01"
 dateDisplay: "2010–2011"
 status: "completed"
+category: "Public Art and Fabrication"
 themes: ["interactive-installation", "exhibition"]
 partners:
   - "Platform 01, Beppu, Japan"

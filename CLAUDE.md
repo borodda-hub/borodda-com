@@ -275,8 +275,8 @@ counts.
 **Frontmatter** must match `src/content.config.ts`. Use proper YAML,
 and cross-link collections by slug. Do not invent schema fields. If a
 rule here calls for a field the schema lacks, say so and leave it out
-until the schema is changed. Projects have an optional `category` field;
-leave it unset on a project until Bo confirms the assignment.
+until the schema is changed. Every project needs a `category`, one of
+the five in section 6; ask Bo which when adding a project.
 
 ## 9. Stack
 
@@ -345,21 +345,19 @@ look in section 7 was implemented across the site: tokens, self-hosted
 Geist and Geist Mono, navigation, footer, the homepage with its hero
 gallery, and every inner template. `/partnerships/` became `/practice/`
 (copy carried over unchanged), the strands were reordered, and projects
-gained an optional `category` field.
+gained a `category` field, assigned for all nine.
 
 Not done, roughly in order:
 
-1. Assign a `category` to each project once Bo confirms the proposed
-   assignments, then make the field required
-2. Write the `/practice/` page once Bo supplies the engagement list;
+1. Write the `/practice/` page once Bo supplies the engagement list;
    the homepage list is still the mockup's placeholder
-3. Revise the strand pages, the Research intro and About copy to the
+2. Revise the strand pages, the Research intro and About copy to the
    positioning in section 2
-4. Essays: none exist yet. Exhibitions: none exist yet.
-5. Teaching entries for the work index
-6. Canonical Google Scholar profile link in `src/config.ts`
-7. Cloudflare Pages deployment, then Plausible
-8. Final accessibility and performance audit against the new look
+3. Essays: none exist yet. Exhibitions: none exist yet.
+4. Teaching entries for the work index
+5. Canonical Google Scholar profile link in `src/config.ts`
+6. Cloudflare Pages deployment, then Plausible
+7. Final accessibility and performance audit against the new look
 
 ## 12. Working across machines
 

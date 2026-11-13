@@ -4,6 +4,7 @@ subtitle: "A proposal for nearly 1,000 lights in the Chicago River"
 date: "2011-01-01"
 dateDisplay: "2011–2013"
 status: "archived"
+category: "Public Art and Fabrication"
 themes: ["public-art", "urban-computing"]
 partners: []
 featured: false

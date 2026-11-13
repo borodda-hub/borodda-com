@@ -4,6 +4,7 @@ subtitle: "Large-format data visualizations of Chicago"
 date: "2014-01-01"
 dateDisplay: "2014–2015"
 status: "completed"
+category: "Research"
 themes: ["data-viz", "urban-computing", "exhibition"]
 partners:
   - "Chicago Architecture Foundation"
