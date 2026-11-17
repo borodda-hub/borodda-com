@@ -13,7 +13,10 @@ const statusLabel = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const pad = (n: number) => String(n).padStart(2, '0');
 
-const projectsForView = projects.map((p) => {
+// Crop anchor for cards whose subject sits off-center in the 4:3 cover crop.
+const FOCUS: Record<string, string> = { 'departure-lounge': '100% 50%' };
+
+const projectsForView =projects.map((p) => {
   const year = parseInt(p.data.date.split('-')[0], 10);
   const decade = `${Math.floor(year / 10) * 10}s`;
   return { id: p.id, data: p.data, decade, href: `/projects/${p.id}/` };
@@ -131,6 +134,7 @@ const groups = [
                       widths={[400, 640, 960]}
                       sizes="(min-width: 961px) 24vw, (min-width: 601px) 48vw, 100vw"
                       loading="lazy"
+                      style={FOCUS[p.id] ? `object-position:${FOCUS[p.id]}` : undefined}
                     />
                   ) : (
                     <span class="ph">{p.data.subtitle}</span>
