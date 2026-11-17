@@ -58,7 +58,7 @@ gallery:
 ---
 **Old buildings ask hard questions of new design.**
 
-The Old Chicago Post Office was, for most of the twentieth century, one of the largest postal facilities in the country — a building whose interior logic was logistics, defined by the movement of paper. After the USPS vacated it in the 1990s [INFERRED — verify decade], the structure sat largely empty for decades before being redeveloped as a mixed-use commercial building. Uber Freight took its headquarters there. The historical irony is plain: a logistics building became a logistics company's headquarters. The cargo changed; the argument did not.
+The Old Chicago Post Office was, for most of the twentieth century, one of the largest postal facilities in the country — a building whose interior logic was logistics, defined by the movement of paper. After the USPS vacated it in the 1990s, the structure sat largely empty for decades before being redeveloped as a mixed-use commercial building. Uber Freight took its headquarters there. The historical irony is plain: a logistics building became a logistics company's headquarters. The cargo changed; the argument did not.
 
 The Grand Spiral Stair sits in the middle of that argument.
 

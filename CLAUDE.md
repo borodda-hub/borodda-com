@@ -348,10 +348,10 @@ homepage with its hero gallery, and every inner template.
 `/partnerships/` became `/practice/` (copy carried over unchanged) and
 the strands were reordered.
 
-College of Design Futures. The title is "Experiential Media and Data
-Communications" (plural), everywhere, per Bo. `public/cv.pdf` is exported
-from the Word CV and carries the same title and affiliation.
-the November 2026 Word CV and still carries the old affiliation.
+The affiliation is School of Design + Society, College of Design
+Futures. The title is "Experiential Media and Data Communications"
+(plural), everywhere, per Bo. `public/cv.pdf` is exported from the
+November 2026 Word CV and carries the same title and affiliation.
 
 Exhibitions are listed under "Selected exhibitions" at the foot of the
 work index (`/projects/#exhibitions`), grouped by year, newest first.
