@@ -14,6 +14,10 @@ partners:
 - Argonne National Laboratory
 - School of the Art Institute of Chicago
 featured: false
+heroImage: ./_assets/array-of-things-hero.jpg
+heroImageAlt: >-
+  Diagram of a sensor network over a grey three-dimensional model of downtown
+  Chicago: glowing orange nodes on buildings, joined by a mesh of cyan lines
 excerpt: 'A network of sensor nodes on Chicago streets, conceived as a shared scientific instrument for the city. Contribution: component and fabrication design, and public engagement.'
 credits:
 - role: Principal Investigator
